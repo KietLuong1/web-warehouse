@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import './App.css'
 import Service from './pages/Import_Export'
 import Dashboard from './pages/Dashboard'
+import Transaction from './pages/Transaction'
 
 function App() {
   return (
@@ -15,6 +16,7 @@ function App() {
           {/* Menu item routes */}
           <Route path='/dashboard' element={<Dashboard />} />
           <Route path='/service' element={<Service />} />
+          <Route path='/transaction' element={<Transaction />} />
           {/* Add other routes */}
         </Routes>
       </div>
