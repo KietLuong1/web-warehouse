@@ -6,7 +6,6 @@ import {
   Handshake,
   ImportExport,
   Inventory,
-  Mail,
   Receipt,
   Summarize,
   Warehouse
@@ -38,7 +37,7 @@ export const MenuItems = [
   },
 
   {
-    title: 'Consignment/Expiration dates',
+    title: 'Consignment',
     icon: <CalendarViewDay />,
     link: '/consignment'
   },
@@ -64,11 +63,11 @@ export const MenuItems = [
     icon: <Receipt />,
     link: '/transaction'
   },
-  {
-    title: 'Mailbox',
-    icon: <Mail />,
-    link: '/email'
-  },
+  // {
+  //   title: 'Mailbox',
+  //   icon: <Mail />,
+  //   link: '/email'
+  // },
 
   {
     title: 'Report',
