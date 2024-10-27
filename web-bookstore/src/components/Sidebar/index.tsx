@@ -5,7 +5,7 @@ import { useState } from 'react'
 import { Menu, MenuItem, Sidebar, sidebarClasses } from 'react-pro-sidebar'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { IMAGES } from '../../configs/images'
-import { MenuItems } from './MenuItems'
+import { MenuItems } from './MenuItem'
 import './styles.scss'
 
 export const SidebarCmp = () => {
@@ -48,7 +48,7 @@ export const SidebarCmp = () => {
             src={IMAGES.logo}
             style={{
               display: 'block',
-              paddingTop: '30px',
+              paddingTop: '20px',
               backgroundColor: 'transparent'
             }}
             imageStyle={{
@@ -62,7 +62,7 @@ export const SidebarCmp = () => {
           />
           {!collapsed && (
             <Stack className='cmp-sidebar__heading-text'>
-              <Typography color='white' fontWeight={400} variant='h4' fontFamily={'Poppins'}>
+              <Typography color='white' fontWeight={400} variant='h5' fontFamily={'Poppins'}>
                 Warehouse Management
               </Typography>
             </Stack>
