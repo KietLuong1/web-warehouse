@@ -293,8 +293,8 @@ export const CustomTable = <TData extends MRT_RowData>({
       sx: {
         boxShadow: 'none',
         background: 'transparent',
-        marginLeft: '16px',
-        marginRight: '16px'
+        marginLeft: '20px',
+        marginRight: '20px'
       }
     },
     muiBottomToolbarProps: {
