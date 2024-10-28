@@ -4,6 +4,7 @@ import './App.css'
 import Service from './pages/Import_Export'
 import Dashboard from './pages/Dashboard'
 import Transaction from './pages/Transaction'
+import Login from './pages/Login'
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
           <Route path='/service' element={<Service />} />
           <Route path='/transaction' element={<Transaction />} />
           {/* Add other routes */}
+          <Route path='/login' element={<Login/>}/>
         </Routes>
       </div>
     </BrowserRouter>
