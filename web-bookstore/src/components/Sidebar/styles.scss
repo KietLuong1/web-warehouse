@@ -1,7 +1,7 @@
 .cmp-sidebar {
     height: 100vh;
     position: sticky;
-    
+
     &__container {
         padding: 5px;
         min-height: 60px;
@@ -29,6 +29,7 @@
 
     &.ps-sidebar-root {
         width: 70px;
+        height: auto;
     }
 
     &.ps-sidebar-root.ps-collapsed {
