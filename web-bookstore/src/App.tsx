@@ -3,6 +3,7 @@ import { BrowserRouter, Navigate, Route, Routes } from 'react-router-dom'
 import Service from './pages/Import_Export'
 import Dashboard from './pages/Dashboard'
 import Transaction from './pages/Transaction'
+import Login from './pages/Login'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './App.css'
 
@@ -32,6 +33,8 @@ function App() {
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/service' element={<Service />} />
             <Route path='/transaction' element={<Transaction />} />
+            {/* Add other routes */}
+            <Route path='/login' element={<Login/>}/>
           </Routes>
         </div>
       </BrowserRouter>

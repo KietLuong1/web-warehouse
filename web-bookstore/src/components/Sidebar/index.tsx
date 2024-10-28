@@ -48,22 +48,22 @@ export const SidebarCmp = () => {
             src={IMAGES.logo}
             style={{
               display: 'block',
-              paddingTop: '20px',
+              paddingTop: '2px',
               backgroundColor: 'transparent'
             }}
             imageStyle={{
-              height: '45px',
+              height: '55px',
               width: 'auto',
               position: 'relative',
-              borderRadius: '50%'
+              borderRadius: '30%'
             }}
             disableSpinner={true}
             disableTransition={true}
           />
           {!collapsed && (
             <Stack className='cmp-sidebar__heading-text'>
-              <Typography color='white' fontWeight={400} variant='h5' fontFamily={'Poppins'}>
-                Warehouse Management
+              <Typography color='white' fontWeight={700} variant='h4' fontFamily={'Poppins'}>
+                WMS
               </Typography>
             </Stack>
           )}
