@@ -34,7 +34,7 @@ function App() {
             <Route path='/service' element={<Service />} />
             <Route path='/transaction' element={<Transaction />} />
             {/* Add other routes */}
-            <Route path='/login' element={<Login/>}/>
+            <Route path='/login' element={<Login />} />
           </Routes>
         </div>
       </BrowserRouter>
