@@ -12,6 +12,7 @@ export const SidebarCmp = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const [collapsed, setCollapsed] = useState(false)
+
   return (
     <Sidebar
       collapsed={collapsed}
@@ -72,20 +73,17 @@ export const SidebarCmp = () => {
 
       <Menu
         menuItemStyles={{
-          button: {
+          button: ({ active }) => ({
             color: 'white',
+            backgroundColor: active ? '#2d3748' : 'transparent',
             '&:hover': {
               color: 'white',
-              backgroundColor: '#2d3748'
+              backgroundColor: active ? '#2d3748' : '#2d3748'
             },
-            [`&.active`]: {
-              backgroundColor: '#13395e',
-              color: 'white'
-            },
-            [`& .pro-icon-wrapper`]: {
+            '& .pro-icon-wrapper': {
               color: 'white'
             }
-          }
+          })
         }}
       >
         {MenuItems.map((val) => {
