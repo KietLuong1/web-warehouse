@@ -6,6 +6,7 @@ import Transaction from './pages/Transaction'
 import Login from './pages/Login'
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import './App.css'
+import ToastifyContainer from './components/Toastify'
 
 // Create a query client instance
 const queryClient = new QueryClient({
@@ -36,6 +37,7 @@ function App() {
             {/* Add other routes */}
             <Route path='/login' element={<Login />} />
           </Routes>
+          <ToastifyContainer />
         </div>
       </BrowserRouter>
     </QueryClientProvider>

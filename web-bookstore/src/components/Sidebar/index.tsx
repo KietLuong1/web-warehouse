@@ -74,6 +74,7 @@ export const SidebarCmp = () => {
       <Menu
         menuItemStyles={{
           button: ({ active }) => ({
+            marginLeft: "5px",
             color: 'white',
             backgroundColor: active ? '#2d3748' : 'transparent',
             '&:hover': {
