@@ -2,7 +2,7 @@ import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { MenuIcon, X } from 'lucide-react'
 import Image from 'material-ui-image'
 import { useState } from 'react'
-import { Menu, MenuItem, Sidebar, sidebarClasses } from 'react-pro-sidebar'
+import { Menu, MenuItem, Sidebar, sidebarClasses, SubMenu } from 'react-pro-sidebar'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { IMAGES } from '../../configs/images'
 import { MenuItems } from './MenuItem'
@@ -19,9 +19,13 @@ export const SidebarCmp = () => {
       className='cmp-sidebar'
       rootStyles={{
         [`.${sidebarClasses.container}`]: {
-          backgroundColor: '#1F2937'
+          backgroundColor: '#1F2937',
+          height: '100vh',
+          position: 'fixed'
         }
       }}
+      width='250px'
+      collapsedWidth='100px'
     >
       <Stack className='cmp-sidebar__container'>
         <Box className='cmp-sidebar__items'>
@@ -74,24 +78,70 @@ export const SidebarCmp = () => {
       <Menu
         menuItemStyles={{
           button: ({ active }) => ({
-            marginLeft: "5px",
             color: 'white',
+            marginLeft: '5px',
             backgroundColor: active ? '#2d3748' : 'transparent',
             '&:hover': {
               color: 'white',
               backgroundColor: active ? '#2d3748' : '#2d3748'
-            },
-            '& .pro-icon-wrapper': {
-              color: 'white'
             }
           })
         }}
       >
         {MenuItems.map((val) => {
+          if (collapsed) {
+            if (val.submenus) {
+              const firstSubmenuLink = val.submenus[0].link
+              return (
+                <MenuItem
+                  icon={val.icon}
+                  key={val.title}
+                  onClick={() => {
+                    navigate(firstSubmenuLink)
+                  }}
+                  active={location.pathname === val.link}
+                >
+                  {val.title}
+                </MenuItem>
+              )
+            }
+            // For regular items, render normally
+            return (
+              <MenuItem
+                icon={val.icon}
+                key={val.link}
+                onClick={() => {
+                  navigate(val.link)
+                }}
+                active={location.pathname === val.link}
+              >
+                {val.title}
+              </MenuItem>
+            )
+          }
+
+          // When expanded, render with submenus
+          if (val.submenus) {
+            return (
+              <SubMenu label={val.title} icon={val.icon} key={val.title} active={location.pathname === val.link}>
+                {val.submenus.map((subItem) => (
+                  <MenuItem
+                    key={subItem.title}
+                    icon={subItem.icon}
+                    active={location.pathname === subItem.link}
+                    onClick={() => navigate(subItem.link)}
+                  >
+                    {subItem.title}
+                  </MenuItem>
+                ))}
+              </SubMenu>
+            )
+          }
+
           return (
             <MenuItem
               icon={val.icon}
-              key={val.link}
+              key={val.title}
               onClick={() => {
                 navigate(val.link)
               }}
