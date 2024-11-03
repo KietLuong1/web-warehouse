@@ -4,9 +4,12 @@ import {
   Feed,
   Folder,
   Handshake,
+  HomeRepairService,
   ImportExport,
   Inventory,
+  LocationOn,
   Receipt,
+  Settings,
   Summarize,
   Warehouse
 } from '@mui/icons-material'
@@ -48,12 +51,6 @@ export const MenuItems = [
   },
 
   {
-    title: 'Cost Calculating',
-    icon: <Calculate />,
-    link: '/cost-calculating'
-  },
-
-  {
     title: 'Suppliers',
     icon: <Handshake />,
     link: '/suppliers'
@@ -63,15 +60,31 @@ export const MenuItems = [
     icon: <Receipt />,
     link: '/transaction'
   },
-  // {
-  //   title: 'Mailbox',
-  //   icon: <Mail />,
-  //   link: '/email'
-  // },
-
   {
     title: 'Report',
     icon: <Summarize />,
     link: '/report'
+  },
+  {
+    title: 'Settings',
+    icon: <Settings />,
+    link: '/settings',
+    submenus: [
+      {
+        title: 'Cost Calculating',
+        icon: <Calculate />,
+        link: '/cost-calculating'
+      },
+      {
+        title: 'Location',
+        icon: <LocationOn />,
+        link: '/location'
+      },
+      {
+        title: 'Container',
+        icon: <HomeRepairService />,
+        link: '/container'
+      }
+    ]
   }
 ]

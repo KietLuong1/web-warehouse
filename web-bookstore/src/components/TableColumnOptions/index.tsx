@@ -1,6 +1,6 @@
+import { ViewWeek } from '@mui/icons-material'
 import { IconButton, Popover, Tooltip } from '@mui/material'
 import React, { Attributes, PropsWithChildren } from 'react'
-import { MaterialSymbol } from 'react-material-symbols'
 import { COLOR_CODE } from '../../configs/color'
 
 const CustomTableColumnOptions: React.FC<PropsWithChildren> = ({ children }) => {
@@ -32,7 +32,7 @@ const CustomTableColumnOptions: React.FC<PropsWithChildren> = ({ children }) => 
             p: '10px'
           }}
         >
-          <MaterialSymbol icon='view_column' size={20} color={COLOR_CODE.GREY_800} />
+          <ViewWeek />
         </IconButton>
       </Tooltip>
       <Popover

@@ -1,9 +1,4 @@
 .cmp-sidebar {
-    position: sticky;
-    top: 0; 
-    height: 100vh; 
-    overflow-y: auto; 
-
     &__container {
         padding: 5px;
         min-height: 60px;
@@ -28,19 +23,38 @@
         transition: 0.4s;
     }
 
-    &.ps-sidebar-root {
-        width: 70px;
-        position: sticky;
-    }
-
-    &.ps-sidebar-root.ps-collapsed {
-        width: 90px;
-    }
-
     &.ps-collapsed {
         .ps-menu-label {
             width: 0;
             opacity: 0;
         }
     }
+
+    .ps-menu-button {
+        margin: 0 !important;
+        width: 100% !important;
+
+        & .pro-icon-wrapper {
+            color: 'white'
+        }
+    }
+
+    .ps-submenu-content {
+        background-color: #1F2937 !important;
+        max-height: none !important;
+
+        // Ensure submenu expands properly
+        &.ps-submenu-content-open {
+            height: auto !important;
+            opacity: 1;
+            position: relative;
+        }
+    }
+
+    // Ensure menu container grows
+    .ps-menu-root {
+        height: auto !important;
+        min-height: 100%;
+    }
+
 }

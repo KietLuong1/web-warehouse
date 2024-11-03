@@ -1,6 +1,6 @@
+import { FilterList } from '@mui/icons-material'
 import { Badge, IconButton, Popover, Tooltip } from '@mui/material'
 import React, { Attributes, PropsWithChildren } from 'react'
-import { MaterialSymbol } from 'react-material-symbols'
 import { useSearchParams } from 'react-router-dom'
 import { COLOR_CODE } from '../../configs/color'
 
@@ -43,7 +43,7 @@ const CustomTableFilterContainer: React.FC<PropsWithChildren<Props>> = ({ childr
           }}
         >
           <Badge variant='dot' color='error' invisible={!isHasFilterParams}>
-            <MaterialSymbol icon='filter_list' size={20} color={COLOR_CODE.GREY_800} />
+            <FilterList />
           </Badge>
         </IconButton>
       </Tooltip>
