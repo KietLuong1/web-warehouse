@@ -1,84 +1,66 @@
-import React from "react";
-import { Chip } from "@mui/material";
 import {
-    HourglassEmpty as InProgressIcon,
-    CheckCircle as ActiveIcon,
-    Cancel as InactiveIcon,
-    RemoveCircleOutline as ClosedIcon,
-} from "@mui/icons-material";
+  CheckCircle as ActiveIcon,
+  RemoveCircleOutline as ClosedIcon,
+  Cancel as InactiveIcon,
+  HourglassEmpty as InProgressIcon
+} from '@mui/icons-material'
+import { Chip } from '@mui/material'
+import React from 'react'
 
-// Define statuses
-export enum CustomChipStatus {
-    InProgress = "in progress",
-    Active = "active",
-    Inactive = "inactive",
-    Closed = "closed",
+// export type CustomChipStatus = 'In progress' | 'Active' | 'Inactive' | 'Closed'
+
+// Define custom styles for each status icon
+const statusStyles = (variant: string) => {
+  const iconStyle = { color: 'white', fontSize: '1.25rem', borderRadius: '50%' }
+
+  switch (variant) {
+    case 'In progress':
+      return {
+        icon: <InProgressIcon style={iconStyle} />,
+        backgroundColor: '#1677FF'
+      }
+    case 'Active':
+      return {
+        icon: <ActiveIcon style={iconStyle} />,
+        backgroundColor: '#28A745'
+      }
+    case 'Inactive':
+      return {
+        icon: <InactiveIcon style={iconStyle} />,
+        backgroundColor: '#F5A623'
+      }
+    case 'Closed':
+      return {
+        icon: <ClosedIcon style={iconStyle} />,
+        backgroundColor: '#6C757D'
+      }
+    default:
+      return {
+        icon: <InProgressIcon style={iconStyle} />,
+        backgroundColor: '#1677FF'
+      }
+  }
 }
 
-// Define custom styles 
-const statusStyles: Record<CustomChipStatus, { style: React.CSSProperties; icon: JSX.Element }> = {
-    [CustomChipStatus.InProgress]: {
-        style: {
-            backgroundColor: "#1677FF", // blue
-            color: "white",
-            fontWeight: "bold",
-            fontSize: "0.875rem",
-        },
-        icon: <InProgressIcon style={{ color: "white", fontSize: "1.2rem" }} />,
-    },
-    [CustomChipStatus.Active]: {
-        style: {
-            backgroundColor: "#6DC195", // green
-            color: "white",
-            fontWeight: "600",
-            fontSize: "0.875rem",
-            padding: "0.4rem 0.8rem",
-        },
-        icon: <ActiveIcon style={{ color: "white", fontSize: "1.2rem" }} />,
-    },
-    [CustomChipStatus.Inactive]: {
-        style: {
-            backgroundColor: "#E0282E", // red
-            color: "white",
-            fontWeight: "normal",
-            fontSize: "0.875rem",
-            padding: "0.4rem 0.8rem",
-        },
-        icon: <InactiveIcon style={{ color: "white", fontSize: "1.2rem" }} />,
-    },
-    [CustomChipStatus.Closed]: {
-        style: {
-            backgroundColor: "#5C636A", // grey
-            color: "white",
-            fontWeight: "lighter",
-            fontSize: "0.875rem",
-            padding: "0.4rem 0.8rem",
-        },
-        icon: <ClosedIcon style={{ color: "white", fontSize: "1.2rem" }} />,
-    },
-};
-
-// Define props 
-interface StatusChipProps {
-    status: CustomChipStatus;
+// Define ChipStatus component
+type Props = {
+  status: string
 }
 
-// Define the CustomChipStatus component
-const ChipStatus: React.FC<StatusChipProps> = ({ status }) => {
-    const { style, icon } = statusStyles[status];
+const ChipStatus: React.FC<Props> = ({ status }) => {
+  const { icon, backgroundColor } = statusStyles(status)
+  return (
+    <Chip
+      label={status}
+      icon={icon}
+      // className='flex items-center capitalize'
+      sx={{
+        backgroundColor: backgroundColor,
+        color: 'white',
+        pointerEvents: 'none'
+      }}
+    />
+  )
+}
 
-    return (
-        <Chip
-            label={status}
-            icon={icon}
-            sx={{
-                ...style,
-                display: "flex",
-                alignItems: "center",
-                textTransform: "capitalize",
-            }}
-        />
-    );
-};
-
-export default ChipStatus;
+export default ChipStatus

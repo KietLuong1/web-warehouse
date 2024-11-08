@@ -56,7 +56,7 @@ export const MenuItems = [
     link: '/suppliers'
   },
   {
-    title: 'Transaction',
+    title: 'Transactions',
     icon: <Receipt />,
     link: '/transaction'
   },

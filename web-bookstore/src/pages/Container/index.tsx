@@ -1,14 +1,14 @@
 import { Button } from '@mui/material'
-import ChipStatus, { CustomChipStatus } from '../../components/ChipStatus'
+import ChipStatus from '../../components/ChipStatus'
 import { Toastify } from '../../components/Toastify'
 
 function Container() {
   return (
     <div>
-      <ChipStatus status={CustomChipStatus.InProgress} />
-      <ChipStatus status={CustomChipStatus.Active} />
-      <ChipStatus status={CustomChipStatus.Inactive} />
-      <ChipStatus status={CustomChipStatus.Closed} />
+      <ChipStatus status='Active' />
+      <ChipStatus status='Inactive' />
+      <ChipStatus status='In progress' />
+      <ChipStatus status='Closed' />
 
       <Button variant='contained' onClick={() => Toastify('success', 'test')}>
         success
