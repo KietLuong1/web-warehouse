@@ -2,7 +2,7 @@ import React from 'react'
 import { Warehouse } from '@mui/icons-material'
 import Breadcrumbs from '@mui/material/Breadcrumbs'
 import Link from '@mui/material/Link'
-import TransactionsTable from './TransactionsTable '
+import Table from './TransactionsTable '
 import { Box, Typography  } from '@mui/material'
 
 function Transaction() {
@@ -24,7 +24,7 @@ function Transaction() {
         Transaction Overview
       </Typography>
 
-      <TransactionsTable />
+      <Table />
     </Box>
   )
 }
