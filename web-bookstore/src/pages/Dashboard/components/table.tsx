@@ -3,25 +3,25 @@ import { DataGrid, GridColDef } from '@mui/x-data-grid';
 import Paper from '@mui/material/Paper';
 
 const columns: GridColDef[] = [
-  { field: 'id', headerName: 'ID', width: 70 },
-  { field: 'itemName', headerName: 'Item Name', width: 200 },
-  { field: 'category', headerName: 'Category', width: 150 },
+  { field: 'id', headerName: 'ID', flex: 0.3  },
+  { field: 'itemName', headerName: 'Item Name', flex: 1 },
+  { field: 'category', headerName: 'Category', flex: 1 },
   {
     field: 'quantity',
     headerName: 'Quantity',
     type: 'number',
-    width: 100,
+    flex: 0.7,
   },
   {
     field: 'location',
     headerName: 'Location',
-    width: 130,
+    flex: 1,
   },
-  { field: 'supplier', headerName: 'Supplier', width: 200 },
+  { field: 'supplier', headerName: 'Supplier',  flex: 1},
   {
     field: 'stockStatus',
     headerName: 'Stock Status',
-    width: 150,
+    flex: 1,
   },
 ];
 
