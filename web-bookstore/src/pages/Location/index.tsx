@@ -1,6 +1,6 @@
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
-import { Location } from '../../queries'
+import { Locations } from '../../queries'
 import { useGetListLocations } from '../../queries/Location/useGetListLocations'
 import { allColumns } from './allColumns'
 import { LocationToolbar } from './LocationToolbar'
@@ -9,7 +9,7 @@ function ViewLocation() {
   const { data, isFetching } = useGetListLocations()
 
   return (
-    <CustomTable<Location>
+    <CustomTable<Locations>
       data={data || []}
       isLoading={isFetching}
       columns={allColumns}

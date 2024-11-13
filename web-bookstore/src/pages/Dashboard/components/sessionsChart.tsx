@@ -1,10 +1,9 @@
-import * as React from 'react'
-import { useTheme } from '@mui/material/styles'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Chip from '@mui/material/Chip'
-import Typography from '@mui/material/Typography'
 import Stack from '@mui/material/Stack'
+import { useTheme } from '@mui/material/styles'
+import Typography from '@mui/material/Typography'
 import { LineChart } from '@mui/x-charts/LineChart'
 
 function AreaGradient({ color, id }: { color: string; id: string }) {
@@ -40,7 +39,7 @@ export default function SessionsChart() {
   const colorPalette = [theme.palette.primary.light, theme.palette.primary.main, theme.palette.primary.dark]
 
   return (
-    <Card variant='outlined' sx={{ width: '100%' }}>
+    <Card sx={{ width: '100%' }}>
       <CardContent>
         <Typography component='h2' variant='subtitle2' gutterBottom>
           Sessions

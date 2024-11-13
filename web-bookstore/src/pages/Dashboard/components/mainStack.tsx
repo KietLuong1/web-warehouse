@@ -1,23 +1,18 @@
-import Stack from '@mui/material/Stack'
+import { Grid2 } from '@mui/material'
 import Box from '@mui/material/Box'
-import PieChart from './pieChart'
-import Chart from './chart'
-import Table from './table'
-import StatCard, { StatCardProps } from './statCard'
+import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
-import SessionsChart from './sessionsChart'
 import PageViewsBarChart from './pageViewsBarChart'
-import ReportCard from './reportCard'
+import SessionsChart from './sessionsChart'
+import StatCard, { StatCardProps } from './statCard'
+import Table from './table'
 
 function Item({ children }: { children: React.ReactNode }) {
   return (
     <Box
       sx={{
-        padding: 2,
-        backgroundColor: 'grey.200',
         textAlign: 'center',
-        borderRadius: 1,
-        width: '100%'
+        borderRadius: 2
       }}
     >
       {children}
@@ -63,9 +58,6 @@ export default function MainStack() {
     <Stack
       spacing={2}
       sx={{
-        width: '100%',
-        maxWidth: '1700px',
-        margin: '0 auto',
         paddingX: 2
       }}
     >
@@ -73,36 +65,25 @@ export default function MainStack() {
         Overview
       </Typography>
 
-      <Stack direction='row' spacing={2}>
+      <Grid2 container spacing={2}>
         {data.map((card, index) => (
-          <Item key={index}>
-            <StatCard {...card} />
-          </Item>
+          <Grid2 size={4}>
+            <Item key={index} children={<StatCard {...card} />} />
+          </Grid2>
         ))}
-        <Item>
-          <ReportCard />
-        </Item>
-      </Stack>
+      </Grid2>
 
-      <Stack direction='row' spacing={2}>
-        <Item>
-          <SessionsChart />
-        </Item>
-        <Item>
-          <PageViewsBarChart />
-        </Item>
-      </Stack>
-
-      <Stack direction='row' spacing={2}>
-        <Item>
-          <PieChart />
-        </Item>
-        <Item>
-          <Chart />
-        </Item>
-      </Stack>
-
-      <Table />
+      <Grid2 container spacing={2}>
+        <Grid2 size={6}>
+          <Item children={<SessionsChart />} />
+        </Grid2>
+        <Grid2 size={6}>
+          <Item children={<PageViewsBarChart />} />
+        </Grid2>
+        <Grid2 size={12}>
+          <Item children={<Table />} />
+        </Grid2>
+      </Grid2>
     </Stack>
   )
 }

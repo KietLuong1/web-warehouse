@@ -1,14 +1,14 @@
 import { MRT_ColumnDef } from 'material-react-table'
-import { Location } from '../../queries'
+import { Locations } from '../../queries'
 import ChipStatus from '../../components/ChipStatus'
 
-export const allColumns: MRT_ColumnDef<Location>[] = [
+export const allColumns: MRT_ColumnDef<Locations>[] = [
   {
     accessorKey: 'code',
     header: 'Code',
     enableHiding: false,
     size: 100,
-    Cell: ({ cell }) => <div className='font-medium'>{cell.getValue<number>()}</div>
+    Cell: ({ cell }) => <div>{cell.getValue<number>()}</div>
   },
   {
     accessorKey: 'zone',

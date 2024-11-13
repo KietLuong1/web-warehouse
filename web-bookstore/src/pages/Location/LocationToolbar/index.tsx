@@ -7,7 +7,7 @@ import CustomTableColumnOptions from '../../../components/TableColumnOptions'
 import CustomTableColumnOptionsModal from '../../../components/TableColumnOptions/CustomTableColumnOptionModal'
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
-import { Import_Export } from '../../../queries'
+import { Locations } from '../../../queries'
 import Import_ExportFilter from '../LocationFilter'
 
 export const LocationToolbar: React.FC<Props> = ({ table }) => {
@@ -56,7 +56,7 @@ export const LocationToolbar: React.FC<Props> = ({ table }) => {
           </Tooltip>
           <CustomTableColumnOptions>
             <Tooltip title='Column Options' arrow placement='top'>
-              <CustomTableColumnOptionsModal<Import_Export> table={table} />
+              <CustomTableColumnOptionsModal<Locations> table={table} />
             </Tooltip>
           </CustomTableColumnOptions>
           <Button type='primary' size='large' onClick={() => {}} icon={<PlusOutlined />}>
@@ -69,7 +69,7 @@ export const LocationToolbar: React.FC<Props> = ({ table }) => {
 }
 
 type Props = {
-  table?: MRT_TableInstance<Location>
+  table: MRT_TableInstance<Locations>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSetParams?: (params: any) => void
 }
