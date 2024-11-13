@@ -8,17 +8,7 @@ import { CustomTableSearch } from '../../../components/CustomTableSearch'
 
 export default function Header() {
   return (
-    <Stack
-      direction='row'
-      alignItems='center'
-      spacing={2}
-      sx={{
-        width: '100%',
-        maxWidth: { sm: '100%', md: '1700px' },
-        justifyContent: 'space-between',
-        pt: 1.5
-      }}
-    >
+    <Stack direction='row' spacing={1} style={{ paddingTop: '10px', margin: '0 16px 0 16px' }}>
       <Box flex={1}>
         <Breadcrumbs aria-label='breadcrumb'>
           <Link underline='hover' sx={{ display: 'flex', alignItems: 'center' }} color='inherit' fontFamily='Poppins'>
@@ -31,7 +21,7 @@ export default function Header() {
         </Breadcrumbs>
       </Box>
 
-      <Stack direction='row' spacing={1} sx={{ justifyContent: 'flex-end' }}>
+      <Stack direction='row' spacing={1}>
         <CustomTableSearch placeholder='Search...' />
         <CustomDatePicker />
       </Stack>

@@ -1,9 +1,9 @@
 import axiosInstance from '../../configs/services/http'
-import { Location } from './types'
+import { Locations } from './types'
 
-const fetchListLocations = async (): Promise<Location[]> => {
+const fetchListLocations = async (): Promise<Locations[]> => {
   try {
-    const response = await axiosInstance.get<Location[]>('/location')
+    const response = await axiosInstance.get<Locations[]>('/location')
     return response.data
   } catch (error) {
     console.error('Failed to fetch list imports:', error)

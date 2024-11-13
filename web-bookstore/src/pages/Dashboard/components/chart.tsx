@@ -1,5 +1,5 @@
-import { Column, Pie } from '@ant-design/charts'
-import { Grid } from '@mui/material'
+import { Column } from '@ant-design/charts'
+import { Card, CardContent } from '@mui/material'
 import React from 'react'
 
 const Chart: React.FC = () => {
@@ -43,6 +43,12 @@ const Chart: React.FC = () => {
     ]
   }
 
-  return <Column {...config} />
+  return (
+    <Card sx={{ width: '100%' }}>
+      <CardContent>
+        <Column {...config} />
+      </CardContent>
+    </Card>
+  )
 }
 export default Chart
