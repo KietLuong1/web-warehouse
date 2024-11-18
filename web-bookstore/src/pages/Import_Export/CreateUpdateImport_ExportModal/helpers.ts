@@ -1,13 +1,10 @@
-import { ImportExportKey, ImportExports } from '../../../queries'
+import { ImportExportKey, ImportExportTypes } from '../../../queries'
 
-export const ImportExportInitValues: ImportExports = {
+export const ImportExportInitValues: ImportExportTypes = {
   [ImportExportKey.ID]: '',
-  [ImportExportKey.NAME]: '',
-  [ImportExportKey.AGE]: 0,
-  [ImportExportKey.EMAIL]: '',
-  [ImportExportKey.DEPARTMENT]: '',
-  [ImportExportKey.SALARY]: 0,
-  [ImportExportKey.STATUS]: '',
-  [ImportExportKey.JOIN_DATE]: 0,
-  [ImportExportKey.ROLE]: ''
+  [ImportExportKey.BATCH_ID]: '',
+  [ImportExportKey.PRODUCT]: '',
+  [ImportExportKey.LOCATION]: '',
+  [ImportExportKey.EXPIRED_DATE]: '',
+  [ImportExportKey.QUANTITY]: 0
 }

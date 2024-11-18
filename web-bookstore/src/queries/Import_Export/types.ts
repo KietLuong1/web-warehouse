@@ -1,13 +1,10 @@
 import { ImportExportKey } from './keys'
 
-export type ImportExports = {
+export type ImportExportTypes = {
   [ImportExportKey.ID]: string
-  [ImportExportKey.NAME]: string
-  [ImportExportKey.AGE]: number
-  [ImportExportKey.EMAIL]: string
-  [ImportExportKey.STATUS]: string
-  [ImportExportKey.SALARY]: number
-  [ImportExportKey.DEPARTMENT]: string
-  [ImportExportKey.ROLE]: string
-  [ImportExportKey.JOIN_DATE]: number
+  [ImportExportKey.BATCH_ID]: string
+  [ImportExportKey.PRODUCT]: string
+  [ImportExportKey.LOCATION]: string
+  [ImportExportKey.EXPIRED_DATE]: string;
+  [ImportExportKey.QUANTITY]: number
 }

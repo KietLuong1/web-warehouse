@@ -1,14 +1,15 @@
 import { Button, Grid2, Stack } from '@mui/material'
-import { Form, Input } from 'antd'
+import { DatePicker, Form, Input } from 'antd'
+import dayjs from 'dayjs'
 import React, { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Toastify } from '../../../components/Toastify'
-import { ImportExportKey, ImportExports } from '../../../queries'
-import { useCreateImport_Export } from '../../../queries/Import_Export/useCreateImport_Export'
-import { useGetListImport } from '../../../queries/Import_Export/useGetListImport_Export'
+import { ImportExportKey, ImportExportTypes } from '../../../queries'
+import { useGetListImport } from '../../../queries/Import_Export/useGetListImportExport'
 import { useImportExportDetail } from '../../../queries/Import_Export/useImportExportDetail'
 import { useUpdateImport_Export } from '../../../queries/Import_Export/useUpdateImportExport'
 import { ImportExportInitValues } from './helpers'
+import { useCreateImport_Export } from '../../../queries/Import_Export/useCreateImport_Export'
 
 type Props = {
   importId?: string
@@ -17,14 +18,12 @@ type Props = {
   onCloseModal: () => void
 }
 export const CreateUpdateImport_ExportModal: React.FC<Props> = ({ importId, onCloseModal, isEdit = false }) => {
-  const [form] = Form.useForm()
-
   const { handleInvalidateListImport } = useGetListImport()
   const { onCreateImport_Export, isPending: isCreatingLoading } = useCreateImport_Export({
     onSuccess: () => {
       Toastify('success', 'Record has been added successfully!')
       handleInvalidateListImport()
-      form.resetFields()
+      reset(ImportExportInitValues)
       onCloseModal()
     }
   })
@@ -33,7 +32,6 @@ export const CreateUpdateImport_ExportModal: React.FC<Props> = ({ importId, onCl
       Toastify(`success`, `Record has been updated successfully.`)
       handleInvalidateListImport()
       handleInvalidateDetail()
-      form.resetFields()
       onCloseModal()
     }
   })
@@ -41,7 +39,7 @@ export const CreateUpdateImport_ExportModal: React.FC<Props> = ({ importId, onCl
   const { data: detailData, handleInvalidateDetail } = useImportExportDetail({
     id: importId ?? ''
   })
-  const { handleSubmit, control, reset } = useForm<ImportExports>({
+  const { handleSubmit, control, reset } = useForm<ImportExportTypes>({
     defaultValues: {},
     mode: 'onChange',
     shouldFocusError: true,
@@ -50,109 +48,101 @@ export const CreateUpdateImport_ExportModal: React.FC<Props> = ({ importId, onCl
 
   useEffect(() => {
     if (isEdit && detailData) {
-      form.setFieldsValue(detailData)
       reset(detailData)
     }
-  }, [detailData, isEdit, reset, form])
+  }, [detailData, isEdit, reset])
 
   const handleCancel = () => {
-    form.resetFields()
-    reset(ImportExportInitValues)
-    onCloseModal()
+    if (!isEdit) {
+      reset(ImportExportInitValues)
+      onCloseModal()
+    } else {
+      onCloseModal()
+    }
   }
 
-  const onSubmit = (data: ImportExports) => {
+  const onSubmit = (data: ImportExportTypes) => {
     if (isEdit) {
       if (!importId) {
-        Toastify('error', 'Import ID is missing for update operation.')
+        Toastify('error', 'An ID is missing for update operation.')
         return
       }
       onUpdateImportExport({ data, id: importId })
     } else {
-      onCreateImport_Export(data)
+      const result = {
+        ...data,
+        [ImportExportKey.EXPIRED_DATE]: dayjs(data.expiredDate).format('YYYY-MM-DD')
+      }
+      onCreateImport_Export(result)
     }
   }
   return (
-    <Form form={form} layout='vertical' onSubmitCapture={handleSubmit(onSubmit)}>
+    <Form layout='vertical' onFinish={handleSubmit(onSubmit)}>
       <Grid2 container>
         <Grid2 size={12}>
           <Controller
-            name={ImportExportKey.NAME}
+            name={ImportExportKey.BATCH_ID}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Name'} required>
-                <Input {...field} placeholder='Enter Name' aria-errormessage={error?.message} />
+              <Form.Item label={'Batch ID'} required>
+                <Input {...field} placeholder='Enter Batch ID' aria-errormessage={error?.message} />
               </Form.Item>
             )}
           />
         </Grid2>
+
         <Grid2 size={12}>
           <Controller
-            name={ImportExportKey.AGE}
+            name={ImportExportKey.PRODUCT}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Age'} required>
-                <Input {...field} placeholder='Enter Age' aria-errormessage={error?.message} />
+              <Form.Item label={'Product Name'} required>
+                <Input {...field} placeholder='Enter Product Name' aria-errormessage={error?.message} />
               </Form.Item>
             )}
           />
         </Grid2>
+
         <Grid2 size={12}>
           <Controller
-            name={ImportExportKey.EMAIL}
+            name={ImportExportKey.LOCATION}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Email'} required>
-                <Input {...field} placeholder='Enter Email' aria-errormessage={error?.message} />
+              <Form.Item label={'Location'} required>
+                <Input {...field} placeholder='Enter Location' aria-errormessage={error?.message} />
               </Form.Item>
             )}
           />
         </Grid2>
         <Grid2 container spacing={2} size={12}>
-          <Grid2 size={6}>
+          <Grid2 size={4}>
             <Controller
-              name={ImportExportKey.JOIN_DATE}
+              name={ImportExportKey.EXPIRED_DATE}
               control={control}
               render={({ field, fieldState: { error } }) => (
-                <Form.Item label={'Join Date'}>
-                  <Input {...field} type='date' placeholder='Enter Join Date' aria-errormessage={error?.message} />
+                <Form.Item label='Expired Date' validateStatus={error ? 'error' : ''} help={error?.message} required>
+                  <DatePicker
+                    {...field}
+                    value={field.value ? dayjs(field.value) : null}
+                    onChange={(date) => field.onChange(date)}
+                    format='YYYY-MM-DD'
+                    placeholder='Enter Expired Date'
+                  />
                 </Form.Item>
               )}
             />
           </Grid2>
-          <Grid2 size={6}>
+          <Grid2 size={8}>
             <Controller
-              name={ImportExportKey.SALARY}
+              name={ImportExportKey.QUANTITY}
               control={control}
               render={({ field, fieldState: { error } }) => (
-                <Form.Item label={'Salary'}>
-                  <Input type='number' {...field} placeholder='Enter Salary' aria-errormessage={error?.message} />
+                <Form.Item label={'Quantity'}>
+                  <Input {...field} type='number' placeholder='Enter Quantity' aria-errormessage={error?.message} />
                 </Form.Item>
               )}
             />
           </Grid2>
-        </Grid2>
-        <Grid2 size={12}>
-          <Controller
-            name={ImportExportKey.DEPARTMENT}
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Department'} required>
-                <Input {...field} placeholder='Enter Department' aria-errormessage={error?.message} />
-              </Form.Item>
-            )}
-          />
-        </Grid2>
-        <Grid2 size={12}>
-          <Controller
-            name={ImportExportKey.ROLE}
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Role'} required>
-                <Input {...field} placeholder='Enter Role' aria-errormessage={error?.message} />
-              </Form.Item>
-            )}
-          />
         </Grid2>
         <Grid2 size={12}>
           <Stack display={'flex'} justifyContent={'flex-end'} direction={'row'}>

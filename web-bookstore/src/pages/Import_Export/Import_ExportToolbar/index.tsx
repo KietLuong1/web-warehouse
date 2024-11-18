@@ -8,10 +8,10 @@ import CustomTableColumnOptions from '../../../components/TableColumnOptions'
 import CustomTableColumnOptionsModal from '../../../components/TableColumnOptions/CustomTableColumnOptionModal'
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
-import { ImportExports } from '../../../queries'
+import { ImportExportTypes } from '../../../queries'
 import { CreateUpdateImport_ExportModal } from '../CreateUpdateImport_ExportModal'
 import Import_ExportFilter from '../Import_ExportFillter'
-import { useGetListImport } from '../../../queries/Import_Export/useGetListImport_Export'
+import { useGetListImport } from '../../../queries/Import_Export/useGetListImportExport'
 
 export const Import_ExportToolbar: React.FC<Props> = ({ table }) => {
   const { handleInvalidateListImport } = useGetListImport()
@@ -52,7 +52,7 @@ export const Import_ExportToolbar: React.FC<Props> = ({ table }) => {
           </Tooltip>
           <CustomTableColumnOptions>
             <Tooltip title='Column Options' arrow placement='top'>
-              <CustomTableColumnOptionsModal<ImportExports> table={table} />
+              <CustomTableColumnOptionsModal<ImportExportTypes> table={table} />
             </Tooltip>
           </CustomTableColumnOptions>
           <Button type='primary' size='large' onClick={openCreateModal} icon={<PlusOutlined />}>
@@ -67,11 +67,7 @@ export const Import_ExportToolbar: React.FC<Props> = ({ table }) => {
         onCancel={closeModal}
         footer={null}
         centered
-        bodyStyle={{
-          maxHeight: '60vh',
-          overflowY: 'auto',
-          padding: '8px'
-        }}
+        styles={{ body: { maxHeight: '60vh', overflowY: 'auto', padding: '8px', backgroundColor: 'transparent' } }}
       >
         <CreateUpdateImport_ExportModal onCloseModal={closeModal} />
       </Modal>
@@ -80,7 +76,7 @@ export const Import_ExportToolbar: React.FC<Props> = ({ table }) => {
 }
 
 type Props = {
-  table: MRT_TableInstance<ImportExports>
+  table: MRT_TableInstance<ImportExportTypes>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSetParams?: (params: any) => void
 }

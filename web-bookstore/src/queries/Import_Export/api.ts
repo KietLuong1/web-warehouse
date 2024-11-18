@@ -1,9 +1,9 @@
 import axiosInstance from '../../configs/services/http'
-import { ImportExports } from './types'
+import { ImportExportTypes } from './types'
 
-export const fetchListImports = async (): Promise<ImportExports[]> => {
+export const fetchListImports = async (): Promise<ImportExportTypes[]> => {
   try {
-    const response = await axiosInstance.get<ImportExports[]>(`/imports`)
+    const response = await axiosInstance.get<ImportExportTypes[]>(`/imports`)
     return response.data
   } catch (error) {
     console.error('Failed to fetch list imports:', error)
@@ -11,9 +11,9 @@ export const fetchListImports = async (): Promise<ImportExports[]> => {
   }
 }
 
-export const getImportExportById = async ({ id }: { id: string }): Promise<ImportExports> => {
+export const getImportExportById = async ({ id }: { id: string }): Promise<ImportExportTypes> => {
   try {
-    const response = await axiosInstance.get<ImportExports>(`/imports/${id}`)
+    const response = await axiosInstance.get<ImportExportTypes>(`/imports/${id}`)
     return response.data
   } catch (error) {
     console.error('Failed to get record:', error)
@@ -21,9 +21,9 @@ export const getImportExportById = async ({ id }: { id: string }): Promise<Impor
   }
 }
 
-export const createImportExport = async (body: ImportExports): Promise<ImportExports> => {
+export const createImportExport = async (body: ImportExportTypes): Promise<ImportExportTypes> => {
   try {
-    const response = await axiosInstance.post<ImportExports>(`/imports`, body)
+    const response = await axiosInstance.post<ImportExportTypes>(`/imports`, body)
     return response.data
   } catch (error) {
     console.error('Failed to create create record:', error)
@@ -31,9 +31,9 @@ export const createImportExport = async (body: ImportExports): Promise<ImportExp
   }
 }
 
-export const updateImportExport = async (body: ImportExports, id: string): Promise<ImportExports> => {
+export const updateImportExport = async (body: ImportExportTypes, id: string): Promise<ImportExportTypes> => {
   try {
-    const response = await axiosInstance.put<ImportExports>(`/imports/${id}`, body)
+    const response = await axiosInstance.put<ImportExportTypes>(`/imports/${id}`, body)
     return response.data
   } catch (error) {
     console.error('Failed to update record:', error)
@@ -41,10 +41,10 @@ export const updateImportExport = async (body: ImportExports, id: string): Promi
   }
 }
 
-export const deleteImportExport = async (body: ImportExports): Promise<ImportExports> => {
+export const deleteImportExport = async (body: ImportExportTypes): Promise<ImportExportTypes> => {
   const { id } = body
   try {
-    const response = await axiosInstance.delete<ImportExports>(`/imports/${id}`, {})
+    const response = await axiosInstance.delete<ImportExportTypes>(`/imports/${id}`, {})
     return response.data
   } catch (error) {
     console.error('Failed to delete record:', error)
