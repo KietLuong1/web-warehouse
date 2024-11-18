@@ -1,9 +1,9 @@
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchListImports } from './api'
-import { ImportExports } from './types'
+import { ImportExportTypes } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useGetListImport(options?: UseMutationOptions<any, Error, ImportExports>) {
+export function useGetListImport(options?: UseMutationOptions<any, Error, ImportExportTypes>) {
   const {
     data,
     error,

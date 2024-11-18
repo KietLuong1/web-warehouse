@@ -1,15 +1,15 @@
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ImportExports } from './types'
+import { ImportExportTypes } from './types'
 import { getImportExportById } from './api'
 
-export function useImportExportDetail(options: UseMutationOptions<ImportExports> & { id: string }) {
+export function useImportExportDetail(options: UseMutationOptions<ImportExportTypes> & { id: string }) {
   const {
     data,
     isPending: isLoadingDetail,
     isSuccess,
     error,
     refetch: getImportExportDetail
-  } = useQuery<ImportExports>({
+  } = useQuery<ImportExportTypes>({
     queryKey: ['imports', { ...options }],
     queryFn: () => getImportExportById({ id: options.id }),
     ...options

@@ -4,9 +4,9 @@ import { useCallback, useState } from 'react'
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
 import { Toastify } from '../../components/Toastify'
-import { ImportExports } from '../../queries'
+import { ImportExportTypes } from '../../queries'
 import { useDeleteImport_Export } from '../../queries/Import_Export/useDeleteImportExport'
-import { useGetListImport } from '../../queries/Import_Export/useGetListImport_Export'
+import { useGetListImport } from '../../queries/Import_Export/useGetListImportExport'
 import { allColumns } from './allColumns'
 import { CreateUpdateImport_ExportModal } from './CreateUpdateImport_ExportModal'
 import { Import_ExportToolbar } from './Import_ExportToolbar'
@@ -14,7 +14,7 @@ import { Import_ExportToolbar } from './Import_ExportToolbar'
 function Service() {
   const { data, isFetching, handleInvalidateListImport } = useGetListImport()
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const [selectedRow, setSelectedRow] = useState<ImportExports | undefined>(undefined)
+  const [selectedRow, setSelectedRow] = useState<ImportExportTypes | undefined>(undefined)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
@@ -29,7 +29,7 @@ function Service() {
   })
 
   const handleDeleteRecord = useCallback(
-    (rowData: ImportExports) => {
+    (rowData: ImportExportTypes) => {
       Modal.confirm({
         title: 'Are you sure?',
         content: 'This action cannot be undone.',
@@ -42,31 +42,8 @@ function Service() {
     [onDeleteImportExport]
   )
 
-  // const handleEditRecord = (rowData: ImportExports, e: Event) => {
-  //   e.stopPropagation()
-  //   setIsModalVisible(true)
-
-  //   return (
-  //     <Modal
-  //       title='Edit Record'
-  //       open={isModalVisible}
-  //       onCancel={closeModal}
-  //       footer={null}
-  //       centered
-  //       style={{
-  //         maxHeight: '70vh',
-  //         overflowY: 'auto',
-  //         padding: '8px'
-  //       }}
-  //     >
-  //             <CreateUpdateImport_ExportModal onCloseModal={closeModal} isEdit importId={row.id} />
-
-  //     </Modal>
-  //   )
-  // }
-
-  const renderRowActions = (row: ImportExports) => (
-    <div style={{ display: 'flex', gap: '8px' }}>
+  const renderRowActions = (row: ImportExportTypes) => (
+    <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
       <Tooltip title='Edit'>
         <EditOutlined
           style={{ fontSize: '16px', color: 'blue', cursor: 'pointer' }}
@@ -88,7 +65,7 @@ function Service() {
 
   return (
     <>
-      <CustomTable<ImportExports>
+      <CustomTable<ImportExportTypes>
         data={data || []}
         isLoading={isFetching}
         columns={allColumns}
@@ -111,12 +88,7 @@ function Service() {
         onCancel={closeModal}
         footer={null}
         centered
-        bodyStyle={{
-          maxHeight: '60vh',
-          overflowY: 'auto',
-          padding: '8px',
-          backgroundColor: 'transparent'
-        }}
+        styles={{ body: { maxHeight: '60vh', overflowY: 'auto', padding: '8px', backgroundColor: 'transparent' } }}
       >
         <CreateUpdateImport_ExportModal onCloseModal={closeModal} isEdit importId={selectedRow?.id} />
       </Modal>

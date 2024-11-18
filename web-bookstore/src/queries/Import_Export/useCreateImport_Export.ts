@@ -1,10 +1,10 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query'
 import { Toastify } from '../../components/Toastify'
 import { createImportExport } from './api'
-import { ImportExports } from './types'
+import { ImportExportTypes } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useCreateImport_Export(options?: UseMutationOptions<any, Error, ImportExports>) {
+export function useCreateImport_Export(options?: UseMutationOptions<any, Error, ImportExportTypes>) {
   const {
     mutate: onCreateImport_Export,
     isPending,
