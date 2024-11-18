@@ -2,7 +2,7 @@ import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-qu
 import { ImportExports } from './types'
 import { getImportExportById } from './api'
 
-export function useImportExportDetail(options?: UseMutationOptions<ImportExports> & { id: string }) {
+export function useImportExportDetail(options: UseMutationOptions<ImportExports> & { id: string }) {
   const {
     data,
     isPending: isLoadingDetail,
@@ -11,12 +11,12 @@ export function useImportExportDetail(options?: UseMutationOptions<ImportExports
     refetch: getImportExportDetail
   } = useQuery<ImportExports>({
     queryKey: ['imports', { ...options }],
-    queryFn: () => getImportExportById({ id: options?.id }),
+    queryFn: () => getImportExportById({ id: options.id }),
     ...options
   })
   const queryClient = useQueryClient()
 
-  const handleInvalidateDetail = () => queryClient.invalidateQueries({ queryKey: ['imports', { id: options?.id }] })
+  const handleInvalidateDetail = () => queryClient.invalidateQueries({ queryKey: ['imports', { id: options.id }] })
   return {
     data,
     isLoadingDetail,

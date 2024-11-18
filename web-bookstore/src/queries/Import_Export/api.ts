@@ -11,25 +11,43 @@ export const fetchListImports = async (): Promise<ImportExports[]> => {
   }
 }
 
-export const getImportExportById = async ({ id }: { id: string | undefined }): Promise<ImportExports> => {
+export const getImportExportById = async ({ id }: { id: string }): Promise<ImportExports> => {
   try {
     const response = await axiosInstance.get<ImportExports>(`/imports/${id}`)
     return response.data
   } catch (error) {
-    console.error('Failed to fetch list imports:', error)
+    console.error('Failed to get record:', error)
     throw error
   }
 }
 
-export const createImportExport = async (body: ImportExports): Promise<void> => {
-  return await axiosInstance.post(`/imports`, body)
+export const createImportExport = async (body: ImportExports): Promise<ImportExports> => {
+  try {
+    const response = await axiosInstance.post<ImportExports>(`/imports`, body)
+    return response.data
+  } catch (error) {
+    console.error('Failed to create create record:', error)
+    throw error
+  }
 }
 
-export const updateImportExport = (body: ImportExports, id: string) => {
-  return axiosInstance.put(`/imports/${id}`, body)
+export const updateImportExport = async (body: ImportExports, id: string): Promise<ImportExports> => {
+  try {
+    const response = await axiosInstance.put<ImportExports>(`/imports/${id}`, body)
+    return response.data
+  } catch (error) {
+    console.error('Failed to update record:', error)
+    throw error
+  }
 }
 
-export const deleteImportExport = (body: ImportExports) => {
+export const deleteImportExport = async (body: ImportExports): Promise<ImportExports> => {
   const { id } = body
-  return axiosInstance.delete(`/imports/${id}`, {})
+  try {
+    const response = await axiosInstance.delete<ImportExports>(`/imports/${id}`, {})
+    return response.data
+  } catch (error) {
+    console.error('Failed to delete record:', error)
+    throw error
+  }
 }

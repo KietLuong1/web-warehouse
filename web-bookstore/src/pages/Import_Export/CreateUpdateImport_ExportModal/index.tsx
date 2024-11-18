@@ -1,7 +1,7 @@
 import { Button, Grid2, Stack } from '@mui/material'
 import { Form, Input } from 'antd'
-import React, { useMemo } from 'react'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import React, { useEffect } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { Toastify } from '../../../components/Toastify'
 import { ImportExportKey, ImportExports } from '../../../queries'
 import { useCreateImport_Export } from '../../../queries/Import_Export/useCreateImport_Export'
@@ -17,55 +17,63 @@ type Props = {
   onCloseModal: () => void
 }
 export const CreateUpdateImport_ExportModal: React.FC<Props> = ({ importId, onCloseModal, isEdit = false }) => {
+  const [form] = Form.useForm()
+
   const { handleInvalidateListImport } = useGetListImport()
   const { onCreateImport_Export, isPending: isCreatingLoading } = useCreateImport_Export({
     onSuccess: () => {
-      Toastify('success', 'Import has been added successfully!')
+      Toastify('success', 'Record has been added successfully!')
       handleInvalidateListImport()
+      form.resetFields()
       onCloseModal()
     }
   })
   const { onUpdateImportExport, isPending: isUpdating } = useUpdateImport_Export({
     onSuccess: () => {
-      Toastify(`success`, `Import has been updated successfully.`)
+      Toastify(`success`, `Record has been updated successfully.`)
       handleInvalidateListImport()
       handleInvalidateDetail()
+      form.resetFields()
       onCloseModal()
     }
   })
-  if (!importId) {
-    console.error('Import ID is missing.')
-    return
-  }
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { data, handleInvalidateDetail } = useImportExportDetail({ id: importId })
- 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const defaultValues = useMemo(() => {
-    if (!isEdit) {
-      return ImportExportInitValues
-    }
-    return {
-      ...data
-    }
-  }, [data, isEdit])
 
-  // eslint-disable-next-line react-hooks/rules-of-hooks
-  const { handleSubmit, control } = useForm<ImportExports>({
-    defaultValues: defaultValues,
+  const { data: detailData, handleInvalidateDetail } = useImportExportDetail({
+    id: importId ?? ''
+  })
+  const { handleSubmit, control, reset } = useForm<ImportExports>({
+    defaultValues: {},
     mode: 'onChange',
     shouldFocusError: true,
     reValidateMode: 'onChange'
   })
-  const onSubmit: SubmitHandler<ImportExports> = (data) => {
+
+  useEffect(() => {
+    if (isEdit && detailData) {
+      form.setFieldsValue(detailData)
+      reset(detailData)
+    }
+  }, [detailData, isEdit, reset, form])
+
+  const handleCancel = () => {
+    form.resetFields()
+    reset(ImportExportInitValues)
+    onCloseModal()
+  }
+
+  const onSubmit = (data: ImportExports) => {
     if (isEdit) {
+      if (!importId) {
+        Toastify('error', 'Import ID is missing for update operation.')
+        return
+      }
       onUpdateImportExport({ data, id: importId })
     } else {
       onCreateImport_Export(data)
     }
   }
   return (
-    <Form layout='vertical' onSubmitCapture={handleSubmit(onSubmit)}>
+    <Form form={form} layout='vertical' onSubmitCapture={handleSubmit(onSubmit)}>
       <Grid2 container>
         <Grid2 size={12}>
           <Controller
@@ -148,7 +156,7 @@ export const CreateUpdateImport_ExportModal: React.FC<Props> = ({ importId, onCl
         </Grid2>
         <Grid2 size={12}>
           <Stack display={'flex'} justifyContent={'flex-end'} direction={'row'}>
-            <Button disabled={isCreatingLoading || isUpdating} variant='outlined' color='error' onClick={onCloseModal}>
+            <Button disabled={isCreatingLoading || isUpdating} variant='outlined' color='error' onClick={handleCancel}>
               Cancel
             </Button>
             <Button type='submit' variant='contained' size='large' color='primary' style={{ marginLeft: '16px' }}>

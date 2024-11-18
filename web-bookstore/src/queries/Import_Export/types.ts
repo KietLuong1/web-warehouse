@@ -6,8 +6,8 @@ export type ImportExports = {
   [ImportExportKey.AGE]: number
   [ImportExportKey.EMAIL]: string
   [ImportExportKey.STATUS]: string
-  [ImportExportKey?.SALARY]: number
+  [ImportExportKey.SALARY]: number
   [ImportExportKey.DEPARTMENT]: string
   [ImportExportKey.ROLE]: string
-  [ImportExportKey?.JOIN_DATE]: number
+  [ImportExportKey.JOIN_DATE]: number
 }
