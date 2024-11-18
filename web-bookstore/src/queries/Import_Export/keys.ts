@@ -1,4 +1,4 @@
-export enum Import_ExportKey {
+export enum ImportExportKey {
   ID = 'id',
   NAME = 'name',
   AGE = 'age',
