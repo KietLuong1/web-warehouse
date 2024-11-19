@@ -1,33 +1,29 @@
 import { PlusOutlined } from '@ant-design/icons'
 import { Refresh } from '@mui/icons-material'
 import { IconButton, Stack, Tooltip } from '@mui/material'
-import { Button } from 'antd'
+import { Button, Modal } from 'antd'
 import { MRT_TableInstance } from 'material-react-table'
+import { useCallback, useState } from 'react'
 import CustomTableColumnOptions from '../../../components/TableColumnOptions'
 import CustomTableColumnOptionsModal from '../../../components/TableColumnOptions/CustomTableColumnOptionModal'
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
-import { Import_Export } from '../../../queries/Import_Export'
+import { ImportExportTypes } from '../../../queries'
+import { CreateUpdateImport_ExportModal } from '../CreateUpdateImport_ExportModal'
 import Import_ExportFilter from '../Import_ExportFillter'
+import { useGetListImport } from '../../../queries/Import_Export/useGetListImportExport'
 
 export const Import_ExportToolbar: React.FC<Props> = ({ table }) => {
-  //   const dispatch = useDispatch()
+  const { handleInvalidateListImport } = useGetListImport()
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
-  //   const onCreatePartner = useCallback(() => {
-  //     dispatch(
-  //       showDialog({
-  //         type: DIALOG_TYPES.CONTENT_DIALOG,
-  //         data: {
-  //           title: 'Create Business Partner',
-  //           maxWidth: 'lg',
-  //           content: <CreateEditBusinessAccounts />,
-  //           onCancel: () => {
-  //             dispatch(hideDialog())
-  //           }
-  //         }
-  //       })
-  //     )
-  //   }, [dispatch])
+  const openCreateModal = useCallback(() => {
+    setIsModalVisible(true)
+  }, [])
+
+  const closeModal = useCallback(() => {
+    setIsModalVisible(false)
+  }, [])
 
   return (
     <Stack direction='column' mt={1}>
@@ -44,7 +40,7 @@ export const Import_ExportToolbar: React.FC<Props> = ({ table }) => {
                   backgroundColor: COLOR_CODE.BG_SURFACE_HOVER
                 }
               }}
-              onClick={() => {}}
+              onClick={handleInvalidateListImport}
             >
               <Refresh />
             </IconButton>
@@ -56,20 +52,31 @@ export const Import_ExportToolbar: React.FC<Props> = ({ table }) => {
           </Tooltip>
           <CustomTableColumnOptions>
             <Tooltip title='Column Options' arrow placement='top'>
-              <CustomTableColumnOptionsModal<Import_Export> table={table} />
+              <CustomTableColumnOptionsModal<ImportExportTypes> table={table} />
             </Tooltip>
           </CustomTableColumnOptions>
-          <Button type='primary' size='large' onClick={() => {}} icon={<PlusOutlined />}>
+          <Button type='primary' size='large' onClick={openCreateModal} icon={<PlusOutlined />}>
             Create
           </Button>
         </Stack>
       </Stack>
+
+      <Modal
+        title='Create Import'
+        open={isModalVisible}
+        onCancel={closeModal}
+        footer={null}
+        centered
+        styles={{ body: { maxHeight: '60vh', overflowY: 'auto', padding: '8px', backgroundColor: 'transparent' } }}
+      >
+        <CreateUpdateImport_ExportModal onCloseModal={closeModal} />
+      </Modal>
     </Stack>
   )
 }
 
 type Props = {
-  table?: MRT_TableInstance<Import_Export>
+  table: MRT_TableInstance<ImportExportTypes>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSetParams?: (params: any) => void
 }

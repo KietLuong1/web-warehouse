@@ -1,68 +1,44 @@
 import { MRT_ColumnDef } from 'material-react-table'
-import { Import_Export } from '../../queries/Import_Export'
+import { ImportExportTypes } from '../../queries'
 
-export const allColumns: MRT_ColumnDef<Import_Export>[] = [
+export const allColumns: MRT_ColumnDef<ImportExportTypes>[] = [
   {
-    accessorKey: 'name',
-    header: 'Name',
+    accessorKey: 'id',
+    header: 'Import ID',
     enableHiding: false,
-    size: 200,
-    Cell: ({ cell }) => <div className='font-medium'>{cell.getValue<string>()}</div>
+    size: 150,
+    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>
   },
   {
-    accessorKey: 'age',
-    id: 'age',
-    header: 'Age',
-    Cell: ({ cell }) => <i>{cell.getValue<number>().toLocaleString()}</i>,
-    size: 100
+    accessorKey: 'batchId',
+    header: 'Batch ID',
+    enableHiding: false,
+    size: 150,
+    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>
   },
   {
-    accessorKey: 'email',
-    header: 'Email',
-    enableClickToCopy: true,
-    size: 250
+    accessorKey: 'product',
+    header: 'Product Name',
+    size: 250,
+    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
-    Cell: ({ cell }) => (
-      <div
-        className={`px-2 py-1 rounded-full text-xs font-medium w-fit ${
-          cell.getValue<string>() === 'active' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
-        }`}
-      >
-        {cell.getValue<string>()}
-      </div>
-    ),
-    filterVariant: 'select',
-    size: 120
+    accessorKey: 'location',
+    header: 'Location',
+    size: 250,
+    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>
   },
   {
-    accessorKey: 'joinDate',
-    header: 'Join Date',
-    Cell: ({ cell }) => <div>{new Date(cell.getValue<string>()).toLocaleDateString()}</div>,
+    accessorKey: 'expiredDate',
+    header: 'Expired Date',
+    size: 130,
     sortingFn: 'datetime',
-    size: 150
+    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>
   },
   {
-    accessorKey: 'salary',
-    header: 'Salary',
-    Cell: ({ cell }) => <div className='text-left'>${cell.getValue<number>().toLocaleString()}</div>,
-    muiTableHeadCellProps: { align: 'left' },
-    aggregationFn: 'mean',
-    size: 150
-  },
-  {
-    accessorKey: 'department',
-    header: 'Department',
-    filterVariant: 'select',
-    Cell: ({ cell }) => <div className='font-medium'>{cell.getValue<string>()}</div>,
-    size: 150
-  },
-  {
-    accessorKey: 'role',
-    header: 'Role',
-    filterVariant: 'autocomplete',
-    size: 200
+    accessorKey: 'quantity',
+    header: 'Quantity',
+    size: 150,
+    Cell: ({ cell }) => <div>{cell.getValue<number>()}</div>
   }
 ]

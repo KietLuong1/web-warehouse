@@ -1,11 +1,8 @@
-export enum Import_ExportKey {
+export enum ImportExportKey {
   ID = 'id',
-  NAME = 'name',
-  AGE = 'age',
-  EMAIL = 'email',
-  STATUS = 'status',
-  JOIN_DATE = 'joinDate',
-  SALARY = 'salary',
-  DEPARTMENT = 'department',
-  ROLE = 'role'
+  BATCH_ID = 'batchId',
+  PRODUCT = 'product',
+  LOCATION = 'location',
+  EXPIRED_DATE = 'expiredDate',
+  QUANTITY = 'quantity'
 }
