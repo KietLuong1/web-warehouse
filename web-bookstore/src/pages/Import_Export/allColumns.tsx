@@ -1,5 +1,5 @@
 import { MRT_ColumnDef } from 'material-react-table'
-import { Import_Export } from '../../queries'
+import { Import_Export } from '../../queries/Import_Export'
 
 export const allColumns: MRT_ColumnDef<Import_Export>[] = [
   {

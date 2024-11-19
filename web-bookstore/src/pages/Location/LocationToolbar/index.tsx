@@ -7,8 +7,8 @@ import CustomTableColumnOptions from '../../../components/TableColumnOptions'
 import CustomTableColumnOptionsModal from '../../../components/TableColumnOptions/CustomTableColumnOptionModal'
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
-import { Locations } from '../../../queries'
-import Import_ExportFilter from '../LocationFilter'
+import { Locations } from '../../../queries/Location'
+import LocationFilter from '../LocationFilter'
 
 export const LocationToolbar: React.FC<Props> = ({ table }) => {
   //   const dispatch = useDispatch()
@@ -51,7 +51,7 @@ export const LocationToolbar: React.FC<Props> = ({ table }) => {
           </Tooltip>
           <Tooltip title='Filter' arrow placement='top'>
             <CustomTableFilterContainer filterParamsKeys={undefined}>
-              <Import_ExportFilter />
+              <LocationFilter />
             </CustomTableFilterContainer>
           </Tooltip>
           <CustomTableColumnOptions>
