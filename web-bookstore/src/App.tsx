@@ -11,6 +11,7 @@ import Location from './pages/Location'
 import Login from './pages/Login'
 import Transaction from './pages/Transaction'
 import Container from './pages/Container'
+import Inventory from './pages/Inventory'
 
 // Create a query client instance
 const queryClient = new QueryClient({
@@ -37,6 +38,7 @@ function App() {
             {/* Menu item routes */}
             <Route path='/dashboard' element={<Dashboard />} />
             <Route path='/service' element={<Service />} />
+            <Route path='/inventory' element={<Inventory />} />
             <Route path='/transaction' element={<Transaction />} />
             <Route path='/container' element={<Container />} />
             <Route path='/cost-calculating' element={<CostCalculating />} />

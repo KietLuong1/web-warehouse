@@ -7,10 +7,10 @@ import CustomTableColumnOptions from '../../../components/TableColumnOptions'
 import CustomTableColumnOptionsModal from '../../../components/TableColumnOptions/CustomTableColumnOptionModal'
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
-import { Locations } from '../../../queries/Location'
-import LocationFilter from '../LocationFilter'
+import { Inventorys } from '../../../queries/Inventory'
+import InventoryFilter from '../InventoryFilter'
 
-export const LocationToolbar: React.FC<Props> = ({ table }) => {
+export const InventoryToolbar: React.FC<Props> = ({ table }) => {
   //   const dispatch = useDispatch()
 
   //   const onCreatePartner = useCallback(() => {
@@ -51,12 +51,12 @@ export const LocationToolbar: React.FC<Props> = ({ table }) => {
           </Tooltip>
           <Tooltip title='Filter' arrow placement='top'>
             <CustomTableFilterContainer filterParamsKeys={undefined}>
-              <LocationFilter />
+              <InventoryFilter />
             </CustomTableFilterContainer>
           </Tooltip>
           <CustomTableColumnOptions>
             <Tooltip title='Column Options' arrow placement='top'>
-              <CustomTableColumnOptionsModal<Locations> table={table} />
+              <CustomTableColumnOptionsModal<Inventorys> table={table} />
             </Tooltip>
           </CustomTableColumnOptions>
           <Button type='primary' size='large' onClick={() => {}} icon={<PlusOutlined />}>
@@ -69,7 +69,7 @@ export const LocationToolbar: React.FC<Props> = ({ table }) => {
 }
 
 type Props = {
-  table: MRT_TableInstance<Locations>
+  table: MRT_TableInstance<Inventorys>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSetParams?: (params: any) => void
 }
