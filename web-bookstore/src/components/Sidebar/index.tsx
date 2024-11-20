@@ -21,10 +21,10 @@ export const SidebarCmp = () => {
         [`.${sidebarClasses.container}`]: {
           backgroundColor: '#1F2937',
           height: '100vh',
-          position: 'fixed'
+          position: 'fixed',
         }
       }}
-      width='250px'
+      width='230px'
       collapsedWidth='100px'
     >
       <Stack className='cmp-sidebar__container'>

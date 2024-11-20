@@ -1,18 +1,18 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query'
 import { Toastify } from '../../components/Toastify'
-import { deleteImportExport } from './api'
-import { ImportExportTypes } from './types'
+import { deleteTransaction } from './api'
+import { TransactionTypes } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useDeleteImport_Export(options?: UseMutationOptions<any, Error, ImportExportTypes>) {
+export function useDeleteTransaction(options?: UseMutationOptions<any, Error, TransactionTypes>) {
   const {
-    mutate: onDeleteImportExport,
+    mutate: onDeleteTransaction,
     isPending: isDeleting,
     isSuccess,
     error
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  } = useMutation<any, Error, ImportExportTypes>({
-    mutationFn: (data: ImportExportTypes) => deleteImportExport(data),
+  } = useMutation<any, Error, TransactionTypes>({
+    mutationFn: (data: TransactionTypes) => deleteTransaction(data),
     onError: () => {
       Toastify('error', 'Something went wrong please try again!')
     },
@@ -20,7 +20,7 @@ export function useDeleteImport_Export(options?: UseMutationOptions<any, Error, 
   })
 
   return {
-    onDeleteImportExport,
+    onDeleteTransaction,
     isDeleting,
     isSuccess,
     error

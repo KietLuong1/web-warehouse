@@ -8,13 +8,13 @@ import CustomTableColumnOptions from '../../../components/TableColumnOptions'
 import CustomTableColumnOptionsModal from '../../../components/TableColumnOptions/CustomTableColumnOptionModal'
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
-import { ImportExportTypes } from '../../../queries'
-import { CreateUpdateImport_ExportModal } from '../CreateUpdateImport_ExportModal'
-import Import_ExportFilter from '../Import_ExportFillter'
-import { useGetListImport } from '../../../queries/Import_Export/useGetListImportExport'
+import { TransactionTypes } from '../../../queries'
+import { CreateUpdateTransactionModal } from '../CreateUpdateTransactionModal'
+import TransactionFilter from '../TransactionFillter'
+import { useGetListTransactions } from '../../../queries/Transaction/useGetListTransactions'
 
-export const Import_ExportToolbar: React.FC<Props> = ({ table }) => {
-  const { handleInvalidateListImport } = useGetListImport()
+export const TransactionToolbar: React.FC<Props> = ({ table }) => {
+  const { handleInvalidateListTransactions } = useGetListTransactions()
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const openCreateModal = useCallback(() => {
@@ -40,19 +40,19 @@ export const Import_ExportToolbar: React.FC<Props> = ({ table }) => {
                   backgroundColor: COLOR_CODE.BG_SURFACE_HOVER
                 }
               }}
-              onClick={handleInvalidateListImport}
+              onClick={handleInvalidateListTransactions}
             >
               <Refresh />
             </IconButton>
           </Tooltip>
           <Tooltip title='Filter' arrow placement='top'>
             <CustomTableFilterContainer filterParamsKeys={undefined}>
-              <Import_ExportFilter />
+              <TransactionFilter />
             </CustomTableFilterContainer>
           </Tooltip>
           <CustomTableColumnOptions>
             <Tooltip title='Column Options' arrow placement='top'>
-              <CustomTableColumnOptionsModal<ImportExportTypes> table={table} />
+              <CustomTableColumnOptionsModal<TransactionTypes> table={table} />
             </Tooltip>
           </CustomTableColumnOptions>
           <Button type='primary' size='large' onClick={openCreateModal} icon={<PlusOutlined />}>
@@ -62,21 +62,21 @@ export const Import_ExportToolbar: React.FC<Props> = ({ table }) => {
       </Stack>
 
       <Modal
-        title='Create Import'
+        title='Create Transaction'
         open={isModalVisible}
         onCancel={closeModal}
         footer={null}
         centered
         styles={{ body: { maxHeight: '60vh', overflowY: 'auto', padding: '8px', backgroundColor: 'transparent' } }}
       >
-        <CreateUpdateImport_ExportModal onCloseModal={closeModal} />
+        <CreateUpdateTransactionModal onCloseModal={closeModal} />
       </Modal>
     </Stack>
   )
 }
 
 type Props = {
-  table: MRT_TableInstance<ImportExportTypes>
+  table: MRT_TableInstance<TransactionTypes>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSetParams?: (params: any) => void
 }
