@@ -1,4 +1,4 @@
-export enum ImportExportKey {
+export enum TransactionKey {
   ID = 'id',
   BATCH_ID = 'batchId',
   PRODUCT = 'product',

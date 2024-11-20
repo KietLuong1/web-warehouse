@@ -13,7 +13,7 @@ import React from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { COLOR_CODE } from '../../../configs/color'
 
-const Import_ExportFilter: React.FC<Props> = () => {
+const TransactionFilter: React.FC<Props> = () => {
   //example of using select component
   const [age, setAge] = React.useState('')
   const handleChange = (event: SelectChangeEvent) => {
@@ -74,4 +74,4 @@ const Import_ExportFilter: React.FC<Props> = () => {
 // eslint-disable-next-line @typescript-eslint/no-empty-object-type
 type Props = {}
 
-export default Import_ExportFilter
+export default TransactionFilter

@@ -4,12 +4,12 @@ import dayjs from 'dayjs'
 import React, { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Toastify } from '../../../components/Toastify'
-import { ImportExportKey, ImportExportTypes } from '../../../queries'
-import { useGetListImport } from '../../../queries/Import_Export/useGetListImportExport'
-import { useImportExportDetail } from '../../../queries/Import_Export/useImportExportDetail'
-import { useUpdateImport_Export } from '../../../queries/Import_Export/useUpdateImportExport'
-import { ImportExportInitValues } from './helpers'
-import { useCreateImport_Export } from '../../../queries/Import_Export/useCreateImport_Export'
+import { TransactionKey, TransactionTypes } from '../../../queries'
+import { useGetListTransactions } from '../../../queries/Transaction/useGetListTransactions'
+import { useTransactionDetail } from '../../../queries/Transaction/useTransactionDetail'
+import { useUpdateTransaction } from '../../../queries/Transaction/useTransactionExport'
+import { TransactionInitValues } from './helpers'
+import { useCreateTransaction } from '../../../queries/Transaction/useCreateTransaction'
 
 type Props = {
   importId?: string
@@ -17,29 +17,29 @@ type Props = {
   isEdit?: boolean
   onCloseModal: () => void
 }
-export const CreateUpdateImport_ExportModal: React.FC<Props> = ({ importId, onCloseModal, isEdit = false }) => {
-  const { handleInvalidateListImport } = useGetListImport()
-  const { onCreateImport_Export, isPending: isCreatingLoading } = useCreateImport_Export({
+export const CreateUpdateTransactionModal: React.FC<Props> = ({ importId, onCloseModal, isEdit = false }) => {
+  const { handleInvalidateListTransactions } = useGetListTransactions()
+  const { onCreateTransaction, isPending: isCreatingLoading } = useCreateTransaction({
     onSuccess: () => {
       Toastify('success', 'Record has been added successfully!')
-      handleInvalidateListImport()
-      reset(ImportExportInitValues)
+      handleInvalidateListTransactions()
+      reset(TransactionInitValues)
       onCloseModal()
     }
   })
-  const { onUpdateImportExport, isPending: isUpdating } = useUpdateImport_Export({
+  const { onUpdateTransaction, isPending: isUpdating } = useUpdateTransaction({
     onSuccess: () => {
       Toastify(`success`, `Record has been updated successfully.`)
-      handleInvalidateListImport()
+      handleInvalidateListTransactions()
       handleInvalidateDetail()
       onCloseModal()
     }
   })
 
-  const { data: detailData, handleInvalidateDetail } = useImportExportDetail({
+  const { data: detailData, handleInvalidateDetail } = useTransactionDetail({
     id: importId ?? ''
   })
-  const { handleSubmit, control, reset } = useForm<ImportExportTypes>({
+  const { handleSubmit, control, reset } = useForm<TransactionTypes>({
     defaultValues: {},
     mode: 'onChange',
     shouldFocusError: true,
@@ -54,26 +54,26 @@ export const CreateUpdateImport_ExportModal: React.FC<Props> = ({ importId, onCl
 
   const handleCancel = () => {
     if (!isEdit) {
-      reset(ImportExportInitValues)
+      reset(TransactionInitValues)
       onCloseModal()
     } else {
       onCloseModal()
     }
   }
 
-  const onSubmit = (data: ImportExportTypes) => {
+  const onSubmit = (data: TransactionTypes) => {
     if (isEdit) {
       if (!importId) {
         Toastify('error', 'An ID is missing for update operation.')
         return
       }
-      onUpdateImportExport({ data, id: importId })
+      onUpdateTransaction({ data, id: importId })
     } else {
       const result = {
         ...data,
-        [ImportExportKey.EXPIRED_DATE]: dayjs(data.expiredDate).format('YYYY-MM-DD')
+        [TransactionKey.EXPIRED_DATE]: dayjs(data.expiredDate).format('YYYY-MM-DD')
       }
-      onCreateImport_Export(result)
+      onCreateTransaction(result)
     }
   }
   return (
@@ -81,7 +81,7 @@ export const CreateUpdateImport_ExportModal: React.FC<Props> = ({ importId, onCl
       <Grid2 container>
         <Grid2 size={12}>
           <Controller
-            name={ImportExportKey.BATCH_ID}
+            name={TransactionKey.BATCH_ID}
             control={control}
             render={({ field, fieldState: { error } }) => (
               <Form.Item label={'Batch ID'} required>
@@ -93,7 +93,7 @@ export const CreateUpdateImport_ExportModal: React.FC<Props> = ({ importId, onCl
 
         <Grid2 size={12}>
           <Controller
-            name={ImportExportKey.PRODUCT}
+            name={TransactionKey.PRODUCT}
             control={control}
             render={({ field, fieldState: { error } }) => (
               <Form.Item label={'Product Name'} required>
@@ -105,7 +105,7 @@ export const CreateUpdateImport_ExportModal: React.FC<Props> = ({ importId, onCl
 
         <Grid2 size={12}>
           <Controller
-            name={ImportExportKey.LOCATION}
+            name={TransactionKey.LOCATION}
             control={control}
             render={({ field, fieldState: { error } }) => (
               <Form.Item label={'Location'} required>
@@ -117,7 +117,7 @@ export const CreateUpdateImport_ExportModal: React.FC<Props> = ({ importId, onCl
         <Grid2 container spacing={2} size={12}>
           <Grid2 size={4}>
             <Controller
-              name={ImportExportKey.EXPIRED_DATE}
+              name={TransactionKey.EXPIRED_DATE}
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <Form.Item label='Expired Date' validateStatus={error ? 'error' : ''} help={error?.message} required>
@@ -134,7 +134,7 @@ export const CreateUpdateImport_ExportModal: React.FC<Props> = ({ importId, onCl
           </Grid2>
           <Grid2 size={8}>
             <Controller
-              name={ImportExportKey.QUANTITY}
+              name={TransactionKey.QUANTITY}
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <Form.Item label={'Quantity'}>

@@ -1,64 +1,43 @@
 import {
   Calculate,
-  CalendarViewDay,
   Feed,
-  Folder,
   Handshake,
   HomeRepairService,
   ImportExport,
   Inventory,
   LocationOn,
-  Receipt,
   Settings,
   Summarize,
-  Warehouse
+  Warehouse,
+  People,
+  QuestionAnswer,
 } from '@mui/icons-material'
 
 export const MenuItems = [
   {
-    title: 'Home',
+    title: 'Dashboard', 
     icon: <Warehouse />,
     link: '/dashboard'
   },
-
   {
-    title: 'Import/Export',
+    title: 'Transactions', 
     icon: <ImportExport />,
-    link: '/service'
+    link: '/transaction'
   },
-
   {
-    title: 'Inventory List',
+    title: 'Inventory', 
     icon: <Inventory />,
     link: '/inventory'
   },
-
   {
-    title: 'Product Information',
+    title: 'Products',
     icon: <Feed />,
-    link: '/product-information'
-  },
-
-  {
-    title: 'Consignment',
-    icon: <CalendarViewDay />,
-    link: '/consignment'
+    link: '/product'
   },
   {
-    title: 'Documents',
-    icon: <Folder />,
-    link: '/documents'
-  },
-
-  {
-    title: 'Suppliers',
-    icon: <Handshake />,
-    link: '/suppliers'
-  },
-  {
-    title: 'Transactions',
-    icon: <Receipt />,
-    link: '/transaction'
+    title: 'Expense Tracking', 
+    icon: <Calculate />,
+    link: '/expense-tracking'
   },
   {
     title: 'Report',
@@ -66,22 +45,32 @@ export const MenuItems = [
     link: '/report'
   },
   {
+    title: 'Suppliers',
+    icon: <Handshake />,
+    link: '/supplier'
+  },
+  {
+    title: 'Customers',
+    icon: <People />,
+    link: '/customer'
+  },
+  {
+    title: 'Location', 
+    icon: <LocationOn />,
+    link: '/location'
+  },
+  {
     title: 'Settings',
     icon: <Settings />,
-    link: '/settings',
+    link: '/setting',
     submenus: [
       {
-        title: 'Cost Calculating',
-        icon: <Calculate />,
-        link: '/cost-calculating'
+        title: 'FAQs',
+        icon: <QuestionAnswer />,
+        link: '/faqs'
       },
       {
-        title: 'Location',
-        icon: <LocationOn />,
-        link: '/location'
-      },
-      {
-        title: 'Container',
+        title: 'Containers', 
         icon: <HomeRepairService />,
         link: '/container'
       }

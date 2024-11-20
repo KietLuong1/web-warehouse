@@ -1,20 +1,20 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query'
 import { Toastify } from '../../components/Toastify'
-import { updateImportExport } from './api'
-import { ImportExports } from './types'
+import { updateTransaction } from './api'
+import { TransactionTypes } from './types'
 
-export function useUpdateImport_Export(
+export function useUpdateTransaction(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  options?: UseMutationOptions<any, unknown, { data: ImportExports; id: string }>
+  options?: UseMutationOptions<any, unknown, { data: TransactionTypes; id: string }>
 ) {
   const {
-    mutate: onUpdateImportExport,
+    mutate: onUpdateTransaction,
     isPending,
     isSuccess,
     error
-  } = useMutation<Error, unknown, { data: ImportExports; id: string }>({
+  } = useMutation<Error, unknown, { data: TransactionTypes; id: string }>({
     mutationFn: ({ data, id }) => {
-      return updateImportExport(data, id)
+      return updateTransaction(data, id)
     },
     onError: () => {
       Toastify('error', 'Something went wrong. Please try again')
@@ -23,7 +23,7 @@ export function useUpdateImport_Export(
   })
 
   return {
-    onUpdateImportExport,
+    onUpdateTransaction,
     isPending,
     isSuccess,
     error
