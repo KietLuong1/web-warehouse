@@ -1,6 +1,6 @@
 import { LocationKey } from './keys'
 
-export type Locations = {
+export type LocationTypes = {
   [LocationKey.LOCATION_ID]: string
   [LocationKey.CODE]: number
   [LocationKey.ZONE]: string
