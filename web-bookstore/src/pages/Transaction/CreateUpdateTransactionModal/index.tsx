@@ -7,7 +7,7 @@ import { Toastify } from '../../../components/Toastify'
 import { TransactionKey, TransactionTypes } from '../../../queries'
 import { useGetListTransactions } from '../../../queries/Transaction/useGetListTransactions'
 import { useTransactionDetail } from '../../../queries/Transaction/useTransactionDetail'
-import { useUpdateTransaction } from '../../../queries/Transaction/useTransactionExport'
+import { useUpdateTransaction } from '../../../queries/Transaction/useUpdateTransaction'
 import { TransactionInitValues } from './helpers'
 import { useCreateTransaction } from '../../../queries/Transaction/useCreateTransaction'
 
