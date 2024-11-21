@@ -1,8 +1,8 @@
 import { MRT_ColumnDef } from 'material-react-table'
-import { Locations } from '../../queries/Location'
+import { LocationTypes } from '../../queries/Location'
 import ChipStatus from '../../components/ChipStatus'
 
-export const allColumns: MRT_ColumnDef<Locations>[] = [
+export const allColumns: MRT_ColumnDef<LocationTypes>[] = [
   {
     accessorKey: 'code',
     header: 'Code',
