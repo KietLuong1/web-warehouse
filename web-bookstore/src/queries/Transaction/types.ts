@@ -5,6 +5,6 @@ export type TransactionTypes = {
   [TransactionKey.BATCH_ID]: string
   [TransactionKey.PRODUCT]: string
   [TransactionKey.LOCATION]: string
-  [TransactionKey.EXPIRED_DATE]: string;
+  [TransactionKey.EXPIRED_DATE]: string
   [TransactionKey.QUANTITY]: number
 }

@@ -1,13 +1,13 @@
 import { MRT_ColumnDef } from 'material-react-table'
-import { Inventorys } from '../../queries/Inventory'
+import { InventoryTypes } from '../../queries/Inventory'
 
-export const allColumns: MRT_ColumnDef<Inventorys>[] = [
+export const allColumns: MRT_ColumnDef<InventoryTypes>[] = [
   {
     accessorKey: 'inventory_id',
     header: 'Inventory ID',
     enableHiding: false,
+    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
     size: 150,
-    Cell: ({ cell }) => <div>{cell.getValue<number>()}</div>
   },
   {
     accessorKey: 'product_id',
@@ -24,13 +24,13 @@ export const allColumns: MRT_ColumnDef<Inventorys>[] = [
   {
     accessorKey: 'quantity',
     header: 'Quantity',
-    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
+    Cell: ({ cell }) => <div>{cell.getValue<number>()}</div>,
     size: 200
   },
   {
     accessorKey: 'batch_number',
     header: 'Batch Number',
-    Cell: ({ cell }) => <div>{cell.getValue<number>()}</div>,
+    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
     size: 200
   },
   {

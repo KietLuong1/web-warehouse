@@ -1,4 +1,4 @@
-import axiosInstance from '../../configs/services/http'
+import { axiosInstance } from '../../configs/services/http/index'
 import { TransactionTypes } from './types'
 
 export const fetchListTransactions = async (): Promise<TransactionTypes[]> => {
@@ -26,7 +26,7 @@ export const createTransaction = async (body: TransactionTypes): Promise<Transac
     const response = await axiosInstance.post<TransactionTypes>(`/imports`, body)
     return response.data
   } catch (error) {
-    console.error('Failed to create create record:', error)
+    console.error('Failed to create record:', error)
     throw error
   }
 }

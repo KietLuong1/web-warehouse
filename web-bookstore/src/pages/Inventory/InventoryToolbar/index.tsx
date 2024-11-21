@@ -1,33 +1,29 @@
 import { PlusOutlined } from '@ant-design/icons'
 import { Refresh } from '@mui/icons-material'
 import { IconButton, Stack, Tooltip } from '@mui/material'
-import { Button } from 'antd'
+import { Button, Modal } from 'antd'
 import { MRT_TableInstance } from 'material-react-table'
+import { useCallback, useState } from 'react'
 import CustomTableColumnOptions from '../../../components/TableColumnOptions'
 import CustomTableColumnOptionsModal from '../../../components/TableColumnOptions/CustomTableColumnOptionModal'
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
-import { Inventorys } from '../../../queries/Inventory'
+import { InventoryTypes } from '../../../queries/Inventory'
+import { CreateUpdateInventoryModal } from '../CreateUpdateInventoryModal'
 import InventoryFilter from '../InventoryFilter'
+import { useGetListInventory } from '../../../queries/Inventory/useGetListInventorys'
 
 export const InventoryToolbar: React.FC<Props> = ({ table }) => {
-  //   const dispatch = useDispatch()
+  const { handleInvalidateListInventory } = useGetListInventory()
+  const [isModalVisible, setIsModalVisible] = useState(false)
 
-  //   const onCreatePartner = useCallback(() => {
-  //     dispatch(
-  //       showDialog({
-  //         type: DIALOG_TYPES.CONTENT_DIALOG,
-  //         data: {
-  //           title: 'Create Business Partner',
-  //           maxWidth: 'lg',
-  //           content: <CreateEditBusinessAccounts />,
-  //           onCancel: () => {
-  //             dispatch(hideDialog())
-  //           }
-  //         }
-  //       })
-  //     )
-  //   }, [dispatch])
+  const openCreateModal = useCallback(() => {
+    setIsModalVisible(true)
+  }, [])
+
+  const closeModal = useCallback(() => {
+    setIsModalVisible(false)
+  }, [])
 
   return (
     <Stack direction='column' mt={1}>
@@ -44,7 +40,7 @@ export const InventoryToolbar: React.FC<Props> = ({ table }) => {
                   backgroundColor: COLOR_CODE.BG_SURFACE_HOVER
                 }
               }}
-              onClick={() => {}}
+              onClick={handleInvalidateListInventory}
             >
               <Refresh />
             </IconButton>
@@ -56,20 +52,31 @@ export const InventoryToolbar: React.FC<Props> = ({ table }) => {
           </Tooltip>
           <CustomTableColumnOptions>
             <Tooltip title='Column Options' arrow placement='top'>
-              <CustomTableColumnOptionsModal<Inventorys> table={table} />
+              <CustomTableColumnOptionsModal<InventoryTypes> table={table} />
             </Tooltip>
           </CustomTableColumnOptions>
-          <Button type='primary' size='large' onClick={() => {}} icon={<PlusOutlined />}>
+          <Button type='primary' size='large' onClick={openCreateModal} icon={<PlusOutlined />}>
             Create
           </Button>
         </Stack>
       </Stack>
+
+      <Modal
+        title='Create Inventory'
+        open={isModalVisible}
+        onCancel={closeModal}
+        footer={null}
+        centered
+        styles={{ body: { maxHeight: '60vh', overflowY: 'auto', padding: '8px', backgroundColor: 'transparent' } }}
+      >
+        <CreateUpdateInventoryModal onCloseModal={closeModal} />
+      </Modal>
     </Stack>
   )
 }
 
 type Props = {
-  table: MRT_TableInstance<Inventorys>
+  table: MRT_TableInstance<InventoryTypes>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSetParams?: (params: any) => void
 }
