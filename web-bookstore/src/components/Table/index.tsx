@@ -294,7 +294,8 @@ export const CustomTable = <TData extends MRT_RowData>({
         boxShadow: 'none',
         background: 'transparent',
         marginLeft: '20px',
-        marginRight: '20px'
+        marginRight: '20px',
+        width: '100vw'
       }
     },
     muiBottomToolbarProps: {
@@ -325,7 +326,7 @@ export const CustomTable = <TData extends MRT_RowData>({
         },
         '& .MuiTableRow-root': {
           td: {
-            backgroundColor: COLOR_CODE.WHITE,
+            backgroundColor: COLOR_CODE.WHITE
             // minWidth: 'auto',
             // maxWidth: 'none'
           }
