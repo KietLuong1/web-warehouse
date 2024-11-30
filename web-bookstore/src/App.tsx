@@ -14,7 +14,6 @@ import Inventory from './pages/Inventory'
 import Product from './pages/Product'
 import Report from './pages/Report'
 import Supplier from './pages/Supplier'
-import Customer from './pages/Customer'
 import FAQs from './pages/FAQs'
 
 // Create a query client instance
@@ -47,7 +46,6 @@ function App() {
             <Route path='/expense-tracking' element={<ExpenseTracking />} />
             <Route path='/report' element={<Report />} />
             <Route path='/supplier' element={<Supplier />} />
-            <Route path='/customer' element={<Customer />} />
             <Route path='/location' element={<Location />} />
             <Route path='/faqs' element={<FAQs />} />
             <Route path='/container' element={<Container />} />
