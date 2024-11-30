@@ -1,7 +1,6 @@
 import {
   Calculate,
   Feed,
-  Handshake,
   HomeRepairService,
   ImportExport,
   Inventory,
@@ -46,13 +45,8 @@ export const MenuItems = [
   },
   {
     title: 'Suppliers',
-    icon: <Handshake />,
-    link: '/supplier'
-  },
-  {
-    title: 'Customers',
     icon: <People />,
-    link: '/customer'
+    link: '/supplier'
   },
   {
     title: 'Location', 

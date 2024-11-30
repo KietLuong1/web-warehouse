@@ -1,8 +1,10 @@
 import { UseQueryOptions } from '@tanstack/react-query'
 
 export enum API_QUERIES {
-  IMPORT_EXPORT = '/imports',
-  LOCATION = '/location'
+  TRANSACTION = '/imports',
+  LOCATION = '/location',
+  INVENTORY = '/inventory',
+  SUPPLIER = '/suppliers'
 }
 
 export type QueryOptions<T> = Omit<UseQueryOptions, 'QueryKey'> & { QueryKey: T }
