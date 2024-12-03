@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react'
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
 import { Toastify } from '../../components/Toastify'
-import { SupplierTypes } from '../../queries'
+import { ProductTypes } from '../../queries'
 import { useDeleteSupplier } from '../../queries/Supplier/useDeleteSupplier'
 import { useGetListSuppliers } from '../../queries/Supplier/useGetListSuppliers'
 import { allColumns } from './allColumns'
@@ -14,7 +14,7 @@ import { SupplierToolbar } from './SupplierToolbar'
 function Supplier() {
   const { data, isFetching, handleInvalidateListSuppliers } = useGetListSuppliers()
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const [selectedRow, setSelectedRow] = useState<SupplierTypes | undefined>(undefined)
+  const [selectedRow, setSelectedRow] = useState<ProductTypes | undefined>(undefined)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
@@ -29,7 +29,7 @@ function Supplier() {
   })
 
   const handleDeleteRecord = useCallback(
-    (rowData: SupplierTypes) => {
+    (rowData: ProductTypes) => {
       Modal.confirm({
         title: 'Are you sure?',
         content: 'This action cannot be undone.',
@@ -42,7 +42,7 @@ function Supplier() {
     [onDeleteSupplier]
   )
 
-  const renderRowActions = (row: SupplierTypes) => (
+  const renderRowActions = (row: ProductTypes) => (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
       <Tooltip title='Edit'>
         <EditOutlined
@@ -65,7 +65,7 @@ function Supplier() {
 
   return (
     <>
-      <CustomTable<SupplierTypes>
+      <CustomTable<ProductTypes>
         data={data || []}
         isLoading={isFetching}
         columns={allColumns}
