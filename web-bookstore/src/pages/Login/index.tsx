@@ -23,6 +23,7 @@ import { Visibility, VisibilityOff } from '@mui/icons-material'
 import ForgotPassword from './ForgotPassword'
 
 const Login: React.FC = () => {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
   const [collapsed, setCollapsed] = useState(false)
 
   //
