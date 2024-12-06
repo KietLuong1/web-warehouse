@@ -16,8 +16,7 @@ export const axiosInstance2 = axios.create({
   }
 })
 
-export const axiosInstance3 = axios.create({
-  // For Supplier
+export const axiosInstance3 = axios.create({ // For Supplier, Product
   baseURL: 'https://674a78858680202966349258.mockapi.io',
   headers: {
     'Content-Type': 'application/json'

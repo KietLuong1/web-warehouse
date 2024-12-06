@@ -9,12 +9,12 @@ import CustomTableColumnOptionsModal from '../../../components/TableColumnOption
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
 import { ProductTypes } from '../../../queries'
-import { CreateUpdateSupplierModal } from '../CreateUpdateSupplierModal'
-import SupplierFilter from '../SupplierFillter'
-import { useGetListSuppliers } from '../../../queries/Supplier/useGetListSuppliers'
+import { CreateUpdateProductModal } from '../CreateUpdateProductModal'
+import ProductFilter from '../ProductFillter'
+import { useGetListProducts } from '../../../queries/Product/useGetListProducts'
 
-export const SupplierToolbar: React.FC<Props> = ({ table }) => {
-  const { handleInvalidateListSuppliers } = useGetListSuppliers()
+export const ProductToolbar: React.FC<Props> = ({ table }) => {
+  const { handleInvalidateListProducts } = useGetListProducts()
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const openCreateModal = useCallback(() => {
@@ -40,14 +40,14 @@ export const SupplierToolbar: React.FC<Props> = ({ table }) => {
                   backgroundColor: COLOR_CODE.BG_SURFACE_HOVER
                 }
               }}
-              onClick={handleInvalidateListSuppliers}
+              onClick={handleInvalidateListProducts}
             >
               <Refresh />
             </IconButton>
           </Tooltip>
           <Tooltip title='Filter' arrow placement='top'>
             <CustomTableFilterContainer filterParamsKeys={undefined}>
-              <SupplierFilter />
+              <ProductFilter />
             </CustomTableFilterContainer>
           </Tooltip>
           <CustomTableColumnOptions>
@@ -62,14 +62,14 @@ export const SupplierToolbar: React.FC<Props> = ({ table }) => {
       </Stack>
 
       <Modal
-        title='Create Supplier'
+        title='Create Product'
         open={isModalVisible}
         onCancel={closeModal}
         footer={null}
         centered
         styles={{ body: { maxHeight: '60vh', overflowY: 'auto', padding: '8px', backgroundColor: 'transparent' } }}
       >
-        <CreateUpdateSupplierModal onCloseModal={closeModal} />
+        <CreateUpdateProductModal onCloseModal={closeModal} />
       </Modal>
     </Stack>
   )
