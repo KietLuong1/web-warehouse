@@ -13,6 +13,10 @@ export const SidebarCmp = () => {
   const location = useLocation()
   const [collapsed, setCollapsed] = useState(false)
 
+  const isAdmin = true
+
+  const filterMenuItem = isAdmin ? MenuItems : MenuItems.filter((item) => item.title !== 'Account')
+
   return (
     <Sidebar
       collapsed={collapsed}
@@ -21,7 +25,7 @@ export const SidebarCmp = () => {
         [`.${sidebarClasses.container}`]: {
           backgroundColor: '#1F2937',
           height: '100vh',
-          position: 'fixed',
+          position: 'fixed'
         }
       }}
       width='230px'
@@ -88,7 +92,7 @@ export const SidebarCmp = () => {
           })
         }}
       >
-        {MenuItems.map((val) => {
+        {filterMenuItem.map((val) => {
           if (collapsed) {
             if (val.submenus) {
               const firstSubmenuLink = val.submenus[0].link

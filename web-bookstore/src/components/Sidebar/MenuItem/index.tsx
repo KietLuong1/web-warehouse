@@ -10,21 +10,22 @@ import {
   Warehouse,
   People,
   QuestionAnswer,
+  AccountBox
 } from '@mui/icons-material'
 
 export const MenuItems = [
   {
-    title: 'Dashboard', 
+    title: 'Dashboard',
     icon: <Warehouse />,
     link: '/dashboard'
   },
   {
-    title: 'Transactions', 
+    title: 'Transactions',
     icon: <ImportExport />,
     link: '/transaction'
   },
   {
-    title: 'Inventory', 
+    title: 'Inventory',
     icon: <Inventory />,
     link: '/inventory'
   },
@@ -34,7 +35,7 @@ export const MenuItems = [
     link: '/product'
   },
   {
-    title: 'Expense Tracking', 
+    title: 'Expense Tracking',
     icon: <Calculate />,
     link: '/expense-tracking'
   },
@@ -49,9 +50,14 @@ export const MenuItems = [
     link: '/supplier'
   },
   {
-    title: 'Location', 
+    title: 'Location',
     icon: <LocationOn />,
     link: '/location'
+  },
+  {
+    title: 'Account',
+    icon: <AccountBox />,
+    link: '/account'
   },
   {
     title: 'Settings',
@@ -64,7 +70,7 @@ export const MenuItems = [
         link: '/faqs'
       },
       {
-        title: 'Containers', 
+        title: 'Containers',
         icon: <HomeRepairService />,
         link: '/container'
       }

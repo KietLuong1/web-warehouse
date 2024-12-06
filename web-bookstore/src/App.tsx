@@ -15,6 +15,7 @@ import Product from './pages/Product'
 import Report from './pages/Report'
 import Supplier from './pages/Supplier'
 import FAQs from './pages/FAQs'
+import Account from './pages/Account'
 
 // Create a query client instance
 const queryClient = new QueryClient({
@@ -47,9 +48,11 @@ function App() {
             <Route path='/report' element={<Report />} />
             <Route path='/supplier' element={<Supplier />} />
             <Route path='/location' element={<Location />} />
+            <Route path='/account' element={<Account />} />
+
             <Route path='/faqs' element={<FAQs />} />
             <Route path='/container' element={<Container />} />
-            
+
             {/* Add other routes */}
             <Route path='/login' element={<Login />} />
           </Routes>
