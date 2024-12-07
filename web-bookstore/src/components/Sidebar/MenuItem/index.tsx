@@ -1,16 +1,13 @@
 import {
-  Calculate,
+  AccountBox,
   Feed,
-  HomeRepairService,
   ImportExport,
   Inventory,
   LocationOn,
-  Settings,
-  Summarize,
-  Warehouse,
   People,
   QuestionAnswer,
-  AccountBox
+  Settings,
+  Warehouse
 } from '@mui/icons-material'
 
 export const MenuItems = [
@@ -34,16 +31,16 @@ export const MenuItems = [
     icon: <Feed />,
     link: '/product'
   },
-  {
-    title: 'Expense Tracking',
-    icon: <Calculate />,
-    link: '/expense-tracking'
-  },
-  {
-    title: 'Report',
-    icon: <Summarize />,
-    link: '/report'
-  },
+  // {
+  //   title: 'Expense Tracking',
+  //   icon: <Calculate />,
+  //   link: '/expense-tracking'
+  // },
+  // {
+  //   title: 'Report',
+  //   icon: <Summarize />,
+  //   link: '/report'
+  // },
   {
     title: 'Suppliers',
     icon: <People />,
@@ -69,11 +66,11 @@ export const MenuItems = [
         icon: <QuestionAnswer />,
         link: '/faqs'
       },
-      {
-        title: 'Containers',
-        icon: <HomeRepairService />,
-        link: '/container'
-      }
+      // {
+      //   title: 'Containers',
+      //   icon: <HomeRepairService />,
+      //   link: '/container'
+      // }
     ]
   }
 ]
