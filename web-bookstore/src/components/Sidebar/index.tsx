@@ -25,7 +25,8 @@ export const SidebarCmp = () => {
         [`.${sidebarClasses.container}`]: {
           backgroundColor: '#1F2937',
           height: '100vh',
-          position: 'fixed'
+          position: 'fixed',
+          overflowY: 'hidden'
         }
       }}
       width='230px'
