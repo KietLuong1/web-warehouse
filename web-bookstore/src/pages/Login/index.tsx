@@ -1,76 +1,53 @@
-import React from 'react'
-import {
-  Box,
-  Button,
-  Checkbox,
-  Container,
-  Divider,
-  Grid,
-  Link,
-  TextField,
-  Typography,
-  Stack,
-  FormControl,
-  InputLabel,
-  OutlinedInput,
-  InputAdornment,
-  IconButton
-} from '@mui/material'
+import { Box, Container, Link, Stack, Typography } from '@mui/material'
+import { Button, Checkbox, Form, Input } from 'antd'
 import Image from 'material-ui-image'
-import { IMAGES } from './../../configs/images'
-import { useState } from 'react'
-import { Visibility, VisibilityOff } from '@mui/icons-material'
+import React from 'react'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { useNavigate } from 'react-router-dom'
+import { IMAGES } from '../../configs/images'
+import { useAuth } from '../../context/AuthContext'
+import { loginApi } from '../../queries/Login/api'
 import ForgotPassword from './ForgotPassword'
+import './styles.scss'
+
+export type FieldType = {
+  email: string
+  password: string
+  // remember?: string;
+}
 
 const Login: React.FC = () => {
-  // eslint-disable-next-line @typescript-eslint/no-unused-vars
-  const [collapsed, setCollapsed] = useState(false)
+  const { login } = useAuth()
 
-  //
-  const [showPassword, setShowPassword] = useState(false)
+  const navigate = useNavigate()
+  const [open, setOpen] = React.useState(false)
 
-  const handleClickShowPassword = () => setShowPassword((show) => !show)
+  const { handleSubmit, control } = useForm<FieldType>()
 
-  const handleMouseDownPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
+  // Handle form submission
+  const onSubmit: SubmitHandler<FieldType> = async (data) => {
+    const token = await loginApi(data)
+    if (token) {
+      login(token)
+      localStorage.setItem('authToken', token)
+      navigate('/dashboard')
+    } else {
+      alert('Invalid credentials')
+    }
   }
-
-  const handleMouseUpPassword = (event: React.MouseEvent<HTMLButtonElement>) => {
-    event.preventDefault()
-  }
-
-  // 
-  const [open, setOpen] = React.useState(false);
 
   const handleClickOpen = () => {
-    setOpen(true);
-  };
+    setOpen(true)
+  }
 
   const handleClose = () => {
-    setOpen(false);
-  };
+    setOpen(false)
+  }
 
   return (
-    <Container
-      maxWidth='xs'
-      sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh' }}
-    >
-      <Box
-        sx={{
-          width: '100%',
-          p: 4,
-          borderRadius: 2,
-          boxShadow: '0px 4px 12px rgba(0, 0, 0, 0.3)',
-          textAlign: 'center',
-          backgroundColor: '#fff'
-        }}
-      >
-        <Stack
-          sx={{
-            display: 'flex',
-            flexDirection: collapsed ? 'column' : 'row'
-          }}
-        >
+    <Container maxWidth='xs' className='login-container'>
+      <Box className='login-container_box'>
+        <Stack className='img-container' sx={{ flexDirection: 'row' }}>
           <Image
             src={IMAGES.logo}
             style={{
@@ -87,151 +64,114 @@ const Login: React.FC = () => {
             disableSpinner={true}
             disableTransition={true}
           />
-          {!collapsed && (
-            <Stack className='cmp-sidebar__heading-text'>
-              <Typography color='#009DC3' fontWeight={700} variant='h5' fontFamily={'Poppins'}>
-                WMS
-              </Typography>
-            </Stack>
-          )}
+          <Stack>
+            <Typography color='#009DC3' fontWeight={700} variant='h5' fontFamily={'Poppins'}>
+              WMS
+            </Typography>
+          </Stack>
         </Stack>
 
         <Typography fontWeight={600} variant='h4' fontFamily={'Poppins'} marginBottom={3}>
           Sign in
         </Typography>
 
-        <Box component='form' noValidate sx={{ mt: 2 }}>
-          {/* Email Input */}
-          <TextField
-            id='outlined-textarea'
-            label='Email'
-            placeholder='your@email.com'
-            fullWidth
-            sx={{
-              mb: 2,
-              fontFamily: 'Poppins',
-              '& .MuiInputBase-input': { fontFamily: 'Poppins' },
-              '& .MuiInputLabel-root': { fontFamily: 'Poppins' }
-            }}
+        <Form layout='vertical' initialValues={{ remember: true }} onFinish={handleSubmit(onSubmit)} autoComplete='off'>
+          <Controller
+            name={'email'}
+            control={control}
+            render={({ field }) => (
+              <Form.Item<FieldType>
+                label='Email'
+                {...field}
+                rules={[{ required: true, message: 'Please input your email!' }]}
+              >
+                <Input placeholder='Email' />
+              </Form.Item>
+            )}
           />
 
-          {/* Password Input */}
-          <FormControl sx={{ width: '100%', mb: 2 }} variant='outlined'>
-            <InputLabel htmlFor='outlined-adornment-password'>Password</InputLabel>
-            <OutlinedInput
-              id='outlined-adornment-password'
-              type={showPassword ? 'text' : 'password'}
-              endAdornment={
-                <InputAdornment position='end'>
-                  <IconButton
-                    aria-label={showPassword ? 'hide the password' : 'display the password'}
-                    onClick={handleClickShowPassword}
-                    onMouseDown={handleMouseDownPassword}
-                    onMouseUp={handleMouseUpPassword}
-                    edge='end'
-                  >
-                    {showPassword ? <VisibilityOff /> : <Visibility />}
-                  </IconButton>
-                </InputAdornment>
-              }
-              label='Password'
-              sx={{ fontFamily: 'Poppins' }}
-            />
-          </FormControl>
+          <Controller
+            name={'password'}
+            control={control}
+            render={({ field }) => (
+              <Form.Item<FieldType>
+                label='Password'
+                {...field}
+                rules={[{ required: true, message: 'Invalid password! Please try again' }]}
+              >
+                <Input placeholder='Password' />
+              </Form.Item>
+            )}
+          />
 
-          {/* Remember me and Forgot password */}
-          <Box display='flex' justifyContent='space-between' alignItems='center' sx={{ mb: 2 }}>
-            <Box display='flex' alignItems='center'>
-              <Checkbox color='primary' size='small' />
-              <Typography variant='body2' color='textSecondary'>
-                Remember me
-              </Typography>
-            </Box>
-            <Link
-              href='#'
-              variant='body2'
-              color='textSecondary'
-              sx={{
-                fontWeight: 500,
-                '&:hover': {
-                  color: '#006882'
-                }
-              }}
-              onClick={handleClickOpen}
-            >
-              Forgot your password?
-            </Link>
-            <ForgotPassword open={open} handleClose={handleClose} />
-          </Box>
-
-          {/* Sign In Button */}
-          <Button
-            type='submit'
-            fullWidth
-            variant='contained'
-            sx={{
-              mt: 1,
-              mb: 2,
-              backgroundColor: '#009DC3',
-              color: '#fff',
-              textTransform: 'none',
-              fontWeight: 700,
-              fontSize: '16px',
-              py: 1.5,
-              boxShadow: 'none',
-              '&:hover': {
-                backgroundColor: '#006882',
-                color: '#fff',
-                boxShadow: '0px 2px 6px rgba(0, 0, 0, 0.2)'
-              }
-            }}
+          <Form.Item<FieldType>
+            // name="remember"
+            valuePropName='checked'
+            label={null}
           >
-            Sign in
-          </Button>
+            <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
+              <Checkbox>Remember me</Checkbox>
 
-          {/* Sign Up Link */}
-          <Typography variant='body2' color='textSecondary' sx={{ mb: 2 }}>
-            Don't have an account?{' '}
-            <Link
-              href='#'
-              variant='body2'
-              sx={{
-                fontWeight: 500,
-                '&:hover': {
-                  color: '#006882'
-                }
-              }}
-            >
-              Sign up
-            </Link>
-          </Typography>
-
-          <Divider sx={{ my: 2 }}>or</Divider>
-
-          {/* Social Login Buttons */}
-          <Grid container spacing={2}>
-            <Grid item xs={12}>
-              <Button
-                fullWidth
-                variant='outlined'
+              <Link
+                href='#'
+                variant='body2'
+                color='textSecondary'
                 sx={{
-                  color: '#000',
-                  borderColor: '#ddd',
-                  textTransform: 'none',
-                  fontWeight: 600,
-                  fontSize: '14px',
-                  py: 1.2,
+                  fontWeight: 500,
                   '&:hover': {
-                    backgroundColor: '#f5f5f5',
-                    borderColor: '#ccc'
+                    color: '#006882'
                   }
                 }}
+                onClick={handleClickOpen}
               >
-                Sign in with Google
-              </Button>
-            </Grid>
+                Forgot password?
+              </Link>
+              <ForgotPassword open={open} handleClose={handleClose} />
+            </Stack>
+          </Form.Item>
+
+          <Form.Item label={null}>
+            <Button type='primary' htmlType='submit'>
+              Submit
+            </Button>
+          </Form.Item>
+        </Form>
+
+        {/* <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
+          Don't have an account?{" "}
+          <Link
+            href="#"
+            variant="body2"
+            sx={{
+              fontWeight: 500,
+              "&:hover": {
+                color: "#006882",
+              },
+            }}
+          >
+            Sign up
+          </Link>
+        </Typography>
+
+        <Divider sx={{ my: 2 }}>or</Divider> */}
+
+        {/* Social Login Buttons */}
+        {/* <Grid container spacing={2}>
+          <Grid item xs={12}>
+            <Button
+              variant="outlined"
+              style={{
+                color: "#000",
+                borderColor: "#ddd",
+                textTransform: "none",
+                fontWeight: 600,
+                fontSize: "14px",
+              }}
+            >
+              Sign in with Google
+            </Button>
           </Grid>
-        </Box>
+        </Grid> */}
       </Box>
     </Container>
   )
