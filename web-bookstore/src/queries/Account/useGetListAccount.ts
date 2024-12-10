@@ -1,21 +1,40 @@
-import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
+import { isEmpty } from 'lodash'
+import { useState } from 'react'
 import { fetchListAccount } from './api'
-import { AccountTypes } from './types'
+import { AccountTypes, ApiResponse } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useGetListAccount(options?: UseMutationOptions<any, Error, AccountTypes>) {
+export function useGetListAccount(options?: UseQueryOptions<ApiResponse<AccountTypes>, Error>) {
+  const [params, setParams] = useState<ApiResponse<AccountTypes>>()
+  console.log('params', params)
   const {
-    data,
+    data = {},
     error,
     isFetching,
     refetch: onGetAllListAccount
-  } = useQuery({
-    queryKey: ['account'],
-    queryFn: fetchListAccount,
+  } = useQuery<ApiResponse<AccountTypes>>({
+    queryKey: ['users', params],
+    queryFn: () => fetchListAccount(params),
+    enabled: !isEmpty(params),
     ...options
   })
+
   const queryClient = useQueryClient()
 
-  const handleInvalidateListAccount = () => queryClient.invalidateQueries({ queryKey: ['account'] })
-  return { data, error, isFetching, onGetAllListAccount, handleInvalidateListAccount }
+  const handleInvalidateListAccount = () => queryClient.invalidateQueries({ queryKey: ['users'] })
+
+  const { userDtos = [], pageSize, pageNumber, totalPages } = data || {}
+
+  return {
+    error,
+    isFetching,
+    setParams,
+    onGetAllListAccount,
+    handleInvalidateListAccount,
+    userDtos,
+    pageNumber,
+    totalPages,
+    pageSize
+  }
 }

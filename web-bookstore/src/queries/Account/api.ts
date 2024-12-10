@@ -1,9 +1,12 @@
-import { axiosInstance4 } from '../../configs/services/http/index'
-import { AccountTypes } from './types'
+import { axiosAccount } from '../../configs/services/http/index'
+import { AccountPayLoad, AccountTypes, ApiResponse } from './types'
 
-export const fetchListAccount = async (): Promise<AccountTypes[]> => {
+export const fetchListAccount = async (params?: ApiResponse<AccountTypes>): Promise<ApiResponse<AccountTypes>> => {
   try {
-    const response = await axiosInstance4.get<AccountTypes[]>('/account')
+    console.log('🚀 ~ fetchListAccount ~ params:', params)
+    const response = await axiosAccount.get<ApiResponse<AccountTypes>>(`users`, { params })
+
+    console.log('Account', response.data)
     return response.data
   } catch (error) {
     console.error('Failed to fetch list account:', error)
@@ -11,9 +14,13 @@ export const fetchListAccount = async (): Promise<AccountTypes[]> => {
   }
 }
 
-export const getAccountById = async ({ id }: { id: string }): Promise<AccountTypes> => {
+export const getAccountById = async ({ userId }: { userId: string }): Promise<AccountTypes> => {
   try {
-    const response = await axiosInstance4.get<AccountTypes>(`/account/${id}`)
+    const response = await axiosAccount.get<AccountTypes>(`/user${userId}`, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    })
     return response.data
   } catch (error) {
     console.error('Failed to get record:', error)
@@ -21,9 +28,20 @@ export const getAccountById = async ({ id }: { id: string }): Promise<AccountTyp
   }
 }
 
-export const createAccount = async (body: AccountTypes): Promise<AccountTypes> => {
+export const createAccount = async (body: AccountPayLoad): Promise<AccountTypes> => {
   try {
-    const response = await axiosInstance4.post<AccountTypes>(`/account`, body)
+    console.log('Sending payload:', body)
+
+    const response = await axiosAccount.post<AccountTypes>(
+      `user`,
+      { userDto: body },
+      {
+        headers: {
+          Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+        },
+        withCredentials: true
+      }
+    )
     return response.data
   } catch (error) {
     console.error('Failed to create record:', error)
@@ -31,9 +49,14 @@ export const createAccount = async (body: AccountTypes): Promise<AccountTypes> =
   }
 }
 
-export const updateAccount = async (body: AccountTypes, id: string): Promise<AccountTypes> => {
+export const updateAccount = async (body: AccountPayLoad): Promise<AccountTypes> => {
   try {
-    const response = await axiosInstance4.put<AccountTypes>(`/account/${id}`, body)
+    const userId = body.userId
+    const response = await axiosAccount.put<AccountTypes>(`/user/${userId}`, body, {
+      headers: {
+        Authorization: `Bearer ${localStorage.getItem('accessToken')}`
+      }
+    })
     return response.data
   } catch (error) {
     console.error('Failed to update record:', error)

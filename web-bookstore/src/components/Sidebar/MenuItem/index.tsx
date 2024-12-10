@@ -1,5 +1,6 @@
 import {
   AccountBox,
+  ArrowBack,
   Feed,
   ImportExport,
   Inventory,
@@ -54,7 +55,7 @@ export const MenuItems = [
   {
     title: 'Account',
     icon: <AccountBox />,
-    link: '/account'
+    link: '/users'
   },
   {
     title: 'Settings',
@@ -65,12 +66,17 @@ export const MenuItems = [
         title: 'FAQs',
         icon: <QuestionAnswer />,
         link: '/faqs'
-      },
+      }
       // {
       //   title: 'Containers',
       //   icon: <HomeRepairService />,
       //   link: '/container'
       // }
     ]
+  },
+  {
+    title: 'Logout',
+    icon: <ArrowBack />,
+    link: '/login'
   }
 ]

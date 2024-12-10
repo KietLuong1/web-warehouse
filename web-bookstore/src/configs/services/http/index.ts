@@ -1,5 +1,16 @@
 import axios from 'axios'
 
+export const getToken = () => localStorage.getItem('accessToken')
+
+export const axiosAccount = axios.create({
+  baseURL: `http://localhost:8080/api/v1/`,
+  headers: {
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${getToken}`
+  },
+  timeout: 300000
+})
+
 export const axiosInstance = axios.create({
   // For Transaction, Location
   baseURL: 'https://671f1b7a1dfc42991983f6dc.mockapi.io/api/v1',
@@ -16,7 +27,8 @@ export const axiosInstance2 = axios.create({
   }
 })
 
-export const axiosInstance3 = axios.create({ // For Supplier, Product
+export const axiosInstance3 = axios.create({
+  // For Supplier, Product
   baseURL: 'https://674a78858680202966349258.mockapi.io',
   headers: {
     'Content-Type': 'application/json'

@@ -3,34 +3,34 @@ import { AccountTypes } from '../../queries/Account'
 
 export const allColumns: MRT_ColumnDef<AccountTypes>[] = [
   {
-    accessorKey: 'account_id',
-    header: 'Account ID',
+    accessorKey: 'userId',
+    header: 'User ID',
     enableHiding: false,
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
     size: 150
   },
   {
-    accessorKey: 'fullName',
+    accessorKey: 'name',
     header: 'Full Name',
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
     size: 150
   },
   {
-    accessorKey: 'address',
-    header: 'Address',
+    accessorKey: 'username',
+    header: 'User Name',
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
     size: 150
   },
   {
-    accessorKey: 'phoneNumber',
-    header: 'Phone Number',
+    accessorKey: 'email',
+    header: 'Email',
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
     size: 200
   },
 
   {
-    accessorKey: 'createdAt',
-    header: 'Created At',
+    accessorKey: 'role',
+    header: 'Role',
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
     size: 200
   }

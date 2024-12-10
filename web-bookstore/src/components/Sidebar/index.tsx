@@ -1,22 +1,37 @@
 import { Box, IconButton, Stack, Typography } from '@mui/material'
 import { MenuIcon, X } from 'lucide-react'
 import Image from 'material-ui-image'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Menu, MenuItem, Sidebar, sidebarClasses, SubMenu } from 'react-pro-sidebar'
 import { useLocation, useNavigate } from 'react-router-dom'
 import { IMAGES } from '../../configs/images'
 import { MenuItems } from './MenuItem'
 import './styles.scss'
+import { useAuth } from '../../context/AuthContext'
 
 export const SidebarCmp = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const [collapsed, setCollapsed] = useState(false)
+  const { logout } = useAuth()
+  const [isAdmin, setIsAdmin] = useState(false)
 
-  const isAdmin = true
+  useEffect(() => {
+    const userRole = localStorage.getItem('userRole') || sessionStorage.getItem('userRole')
+    console.log('Retrieved role:', userRole)
+    setIsAdmin(userRole === 'ADMIN')
+  }, [])
 
   const filterMenuItem = isAdmin ? MenuItems : MenuItems.filter((item) => item.title !== 'Account')
 
+  const handleMenuClick = (link: string, title: string) => {
+    if (title === 'Logout') {
+      logout() // Call logout function
+      navigate('/login') // Redirect to login page
+    } else {
+      navigate(link) // Navigate to the specified route
+    }
+  }
   return (
     <Sidebar
       collapsed={collapsed}
@@ -102,7 +117,7 @@ export const SidebarCmp = () => {
                   icon={val.icon}
                   key={val.title}
                   onClick={() => {
-                    navigate(firstSubmenuLink)
+                    handleMenuClick(firstSubmenuLink, val.title)
                   }}
                   active={location.pathname === val.link}
                 >
@@ -116,7 +131,7 @@ export const SidebarCmp = () => {
                 icon={val.icon}
                 key={val.link}
                 onClick={() => {
-                  navigate(val.link)
+                  handleMenuClick(val.link, val.title)
                 }}
                 active={location.pathname === val.link}
               >
@@ -134,7 +149,7 @@ export const SidebarCmp = () => {
                     key={subItem.title}
                     icon={subItem.icon}
                     active={location.pathname === subItem.link}
-                    onClick={() => navigate(subItem.link)}
+                    onClick={() => handleMenuClick(subItem.link, subItem.title)}
                   >
                     {subItem.title}
                   </MenuItem>
@@ -148,7 +163,7 @@ export const SidebarCmp = () => {
               icon={val.icon}
               key={val.title}
               onClick={() => {
-                navigate(val.link)
+                handleMenuClick(val.link, val.title)
               }}
               active={location.pathname === val.link}
             >
