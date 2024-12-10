@@ -1,6 +1,6 @@
 import { EditOutlined } from '@mui/icons-material'
 import { Modal, Tooltip } from 'antd'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
 import { AccountTypes } from '../../queries/Account'
@@ -10,14 +10,22 @@ import { allColumns } from './allColumns'
 import { CreateUpdateAccountModal } from './CreateUpdateInventoryModal'
 
 function Account() {
-  const { data, isFetching } = useGetListAccount()
+  const { userDtos, isFetching, setParams, pageNumber, pageSize, totalPages } = useGetListAccount()
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const [selectedRow, setSelectedRow] = useState<AccountTypes | undefined>(undefined)
+  const [selectedRow, setSelectedRow] = useState<AccountTypes>()
+  // Remove unnecessary query parameters
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalVisible])
+
+  useEffect(() => {
+    setParams({
+      pageNumber: 0,
+      pageSize: 10
+    })
+  }, [pageNumber, pageSize, setParams])
 
   const renderRowActions = (row: AccountTypes) => (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
@@ -35,8 +43,8 @@ function Account() {
 
   return (
     <>
-      <CustomTable<AccountTypes>
-        data={data || []}
+      <CustomTable
+        data={userDtos}
         isLoading={isFetching}
         columns={allColumns}
         isLayoutGridMode
@@ -49,16 +57,17 @@ function Account() {
         initialState={{ columnPinning: { right: ['mrt-row-actions'] } }}
         renderToolbarInternalActions={({ table }) => <AccountToolbar table={table} />}
         renderTopToolbarCustomActions={({ table }) => <CustomTableSearch table={table} placeholder='Search by Name' />}
+        rowCount={totalPages}
       />
       <Modal
-        title='Edit Inventory'
+        title='Edit Account'
         open={isModalVisible}
         onCancel={closeModal}
         footer={null}
         centered
         styles={{ body: { maxHeight: '60vh', overflowY: 'auto', padding: '8px', backgroundColor: 'transparent' } }}
       >
-        <CreateUpdateAccountModal onCloseModal={closeModal} isEdit accountId={selectedRow?.account_id} />
+        <CreateUpdateAccountModal onCloseModal={closeModal} isEdit userId={selectedRow?.userId} />
       </Modal>
     </>
   )

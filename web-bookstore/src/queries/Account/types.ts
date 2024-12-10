@@ -1,9 +1,29 @@
 import { AccountKey } from './keys'
 
 export type AccountTypes = {
-  [AccountKey.ACCOUNT_ID]: string
-  [AccountKey.FULL_NAME]: string
-  [AccountKey.PHONE_NUMBER]: string
-  [AccountKey.ADDRESS]: string
-  [AccountKey.CREATED_AT]: string
+  [AccountKey.USER_ID]: string
+  [AccountKey.NAME]: string
+  [AccountKey.USERNAME]: string
+  [AccountKey.EMAIL]: string
+  [AccountKey.PASSWORD]: string
+  [AccountKey.ROLE]: string
+}
+
+export interface AccountPayLoad {
+  [AccountKey.USER_ID]?: string
+  [AccountKey.NAME]: string
+  [AccountKey.USERNAME]: string
+  [AccountKey.EMAIL]: string
+  [AccountKey.ROLE]: string
+  [AccountKey.PASSWORD]: string
+}
+export interface ApiResponse<T> {
+  userDtos?: T[]
+  pageNumber?: number
+  pageSize?: number
+  totalElements?: number
+  totalPages?: number
+  isLast?: boolean
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  [key: string]: any // Add other parameters as needed
 }

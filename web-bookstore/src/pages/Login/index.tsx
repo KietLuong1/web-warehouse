@@ -9,11 +9,13 @@ import { useAuth } from '../../context/AuthContext'
 import { loginApi } from '../../queries/Login/api'
 import ForgotPassword from './ForgotPassword'
 import './styles.scss'
+import { Toastify } from '../../components/Toastify'
+import { axiosAccount } from '../../configs/services/http'
 
 export type FieldType = {
   email: string
   password: string
-  // remember?: string;
+  remember: boolean
 }
 
 const Login: React.FC = () => {
@@ -22,17 +24,40 @@ const Login: React.FC = () => {
   const navigate = useNavigate()
   const [open, setOpen] = React.useState(false)
 
-  const { handleSubmit, control } = useForm<FieldType>()
+  const {
+    handleSubmit,
+    control,
+    formState: { errors }
+  } = useForm<FieldType>({
+    defaultValues: {
+      email: '',
+      password: '',
+      remember: false
+    }
+  })
 
   // Handle form submission
   const onSubmit: SubmitHandler<FieldType> = async (data) => {
-    const token = await loginApi(data)
-    if (token) {
-      login(token)
-      localStorage.setItem('authToken', token)
-      navigate('/dashboard')
-    } else {
-      alert('Invalid credentials')
+    try {
+      const response = await loginApi(data)
+      const { accessToken, userRole } = response
+      if (accessToken) {
+        login(accessToken)
+        const storage = data.remember ? localStorage : sessionStorage
+        storage.setItem('accessToken', accessToken)
+        storage.setItem('userRole', userRole)
+
+        // Set default Authorization header for Axios
+        axiosAccount.defaults.headers.Authorization = `Bearer ${accessToken}`
+
+        Toastify('success', 'Login successfully')
+        navigate('/dashboard')
+      } else {
+        Toastify('error', 'Invalid credentials')
+      }
+    } catch (error) {
+      Toastify('error', 'An error occurred during login')
+      console.error('Login error:', error)
     }
   }
 
@@ -76,60 +101,60 @@ const Login: React.FC = () => {
         </Typography>
 
         <Form layout='vertical' initialValues={{ remember: true }} onFinish={handleSubmit(onSubmit)} autoComplete='off'>
-          <Controller
-            name={'email'}
-            control={control}
-            render={({ field }) => (
-              <Form.Item<FieldType>
-                label='Email'
-                {...field}
-                rules={[{ required: true, message: 'Please input your email!' }]}
-              >
-                <Input placeholder='Email' />
-              </Form.Item>
-            )}
-          />
-
-          <Controller
-            name={'password'}
-            control={control}
-            render={({ field }) => (
-              <Form.Item<FieldType>
-                label='Password'
-                {...field}
-                rules={[{ required: true, message: 'Invalid password! Please try again' }]}
-              >
-                <Input placeholder='Password' />
-              </Form.Item>
-            )}
-          />
-
-          <Form.Item<FieldType>
-            // name="remember"
-            valuePropName='checked'
-            label={null}
-          >
-            <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
-              <Checkbox>Remember me</Checkbox>
-
-              <Link
-                href='#'
-                variant='body2'
-                color='textSecondary'
-                sx={{
-                  fontWeight: 500,
-                  '&:hover': {
-                    color: '#006882'
-                  }
-                }}
-                onClick={handleClickOpen}
-              >
-                Forgot password?
-              </Link>
-              <ForgotPassword open={open} handleClose={handleClose} />
-            </Stack>
+          <Form.Item required label='Email' validateStatus={errors.email ? 'error' : ''} help={errors.email?.message}>
+            <Controller
+              name='email'
+              control={control}
+              rules={{ required: 'Please input your email!' }}
+              render={({ field }) => <Input {...field} placeholder='Email' />}
+            />
           </Form.Item>
 
+          {/* Password Field */}
+          <Form.Item
+            required
+            label='Password'
+            validateStatus={errors.password ? 'error' : ''}
+            help={errors.password?.message}
+          >
+            <Controller
+              name='password'
+              control={control}
+              rules={{ required: 'Please input your password!' }}
+              render={({ field }) => <Input.Password {...field} placeholder='Password' />}
+            />
+          </Form.Item>
+
+          {/* Checkbox */}
+          <Form.Item>
+            <Controller
+              name='remember'
+              control={control}
+              render={({ field }) => (
+                <Stack direction='row' justifyContent='space-between' alignItems='center' sx={{ width: '100%' }}>
+                  <Checkbox {...field} checked={field.value}>
+                    Remember me
+                  </Checkbox>
+
+                  <Link
+                    href='#'
+                    variant='body2'
+                    color='textSecondary'
+                    sx={{
+                      fontWeight: 500,
+                      '&:hover': {
+                        color: '#006882'
+                      }
+                    }}
+                    onClick={handleClickOpen}
+                  >
+                    Forgot password?
+                  </Link>
+                  <ForgotPassword open={open} handleClose={handleClose} />
+                </Stack>
+              )}
+            />
+          </Form.Item>
           <Form.Item label={null}>
             <Button type='primary' htmlType='submit'>
               Submit

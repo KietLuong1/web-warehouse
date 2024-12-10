@@ -62,7 +62,7 @@ function App() {
               <Route path='/report' element={<Report />} />
               <Route path='/supplier' element={<Supplier />} />
               <Route path='/location' element={<Location />} />
-              <Route path='/account' element={<Account />} />
+              <Route path='/users' element={<Account />} />
 
               <Route path='/faqs' element={<FAQs />} />
               <Route path='/container' element={<Container />} />

@@ -1,24 +1,22 @@
-import { useMutation, UseMutationOptions } from '@tanstack/react-query';
-import { Toastify } from '../../components/Toastify';
-import { updateAccount } from './api';
-import { AccountTypes } from './types';
+import { useMutation, UseMutationOptions } from '@tanstack/react-query'
+import { updateAccount } from './api'
+import { AccountPayLoad } from './types'
 
 export function useUpdateAccount(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  options?: UseMutationOptions<any, unknown, { data: AccountTypes; id: string }>
+  options?: UseMutationOptions<any, Error, AccountPayLoad>
 ) {
   const {
     mutate: onUpdateAccount,
     isPending,
     isSuccess,
     error
-  } = useMutation<Error, unknown, { data: AccountTypes; id: string }>({
-    mutationFn: ({ data, id }) => {
-      return updateAccount(data, id)
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  } = useMutation<any, Error, AccountPayLoad>({
+    mutationFn: (data: AccountPayLoad) => {
+      return updateAccount(data)
     },
-    onError: () => {
-      Toastify('error', 'Something went wrong. Please try again')
-    },
+
     ...options
   })
 

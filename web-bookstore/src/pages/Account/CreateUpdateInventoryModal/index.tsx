@@ -1,10 +1,9 @@
 import { Button, Grid2, Stack } from '@mui/material'
 import { Form, Input } from 'antd'
-import dayjs from 'dayjs'
 import React, { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Toastify } from '../../../components/Toastify'
-import { AccountKey, AccountTypes } from '../../../queries/Account'
+import { AccountKey, AccountPayLoad } from '../../../queries/Account'
 import { useCreateAccount } from '../../../queries/Account/useCreateAccount'
 import { useGetAccountDetail } from '../../../queries/Account/useGetAccountDetail'
 import { useGetListAccount } from '../../../queries/Account/useGetListAccount'
@@ -12,11 +11,11 @@ import { useUpdateAccount } from '../../../queries/Account/useUpdateAccount'
 import { AccountInitValues } from './helpers'
 
 type Props = {
-  accountId?: string
+  userId?: string
   isEdit?: boolean
   onCloseModal: () => void
 }
-export const CreateUpdateAccountModal: React.FC<Props> = ({ accountId, onCloseModal, isEdit = false }) => {
+export const CreateUpdateAccountModal: React.FC<Props> = ({ userId, onCloseModal, isEdit = false }) => {
   const { handleInvalidateListAccount } = useGetListAccount()
   const { onCreateAccount, isPending: isCreatingLoading } = useCreateAccount({
     onSuccess: () => {
@@ -36,9 +35,9 @@ export const CreateUpdateAccountModal: React.FC<Props> = ({ accountId, onCloseMo
   })
 
   const { data: detailData, handleInvalidateDetail } = useGetAccountDetail({
-    id: accountId ?? ''
+    userId: userId ?? ''
   })
-  const { handleSubmit, control, reset } = useForm<AccountTypes>({
+  const { handleSubmit, control, reset } = useForm<AccountPayLoad>({
     defaultValues: {},
     mode: 'onChange',
     shouldFocusError: true,
@@ -60,19 +59,17 @@ export const CreateUpdateAccountModal: React.FC<Props> = ({ accountId, onCloseMo
     }
   }
 
-  const onSubmit = (data: AccountTypes) => {
+  const onSubmit = (data: AccountPayLoad) => {
     if (isEdit) {
-      if (!accountId) {
+      if (!userId) {
         Toastify('error', 'An ID is missing for update operation.')
         return
       }
-      onUpdateAccount({ data, id: accountId })
+      onUpdateAccount(data)
     } else {
-      const result = {
-        ...data,
-        [AccountKey.CREATED_AT]: dayjs(data.createdAt).format('YYYY-MM-DD')
-      }
-      onCreateAccount(result)
+      // eslint-disable-next-line @typescript-eslint/no-unused-vars
+      const { userId: _, ...rest } = data // Exclude `userId`
+      onCreateAccount(rest)
     }
   }
   return (
@@ -80,33 +77,62 @@ export const CreateUpdateAccountModal: React.FC<Props> = ({ accountId, onCloseMo
       <Grid2 container>
         <Grid2 size={12}>
           <Controller
-            name={AccountKey.FULL_NAME}
+            name={AccountKey.NAME}
             control={control}
             render={({ field, fieldState: { error } }) => (
               <Form.Item label={'Full Name'} required>
-                <Input {...field} placeholder='Enter Name' aria-errormessage={error?.message} />
+                <Input {...field} placeholder='Enter Full Name' aria-errormessage={error?.message} />
               </Form.Item>
             )}
           />
         </Grid2>
         <Grid2 size={12}>
           <Controller
-            name={AccountKey.ADDRESS}
+            name={AccountKey.USERNAME}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Address'} required>
-                <Input {...field} placeholder='Enter Address' aria-errormessage={error?.message} />
+              <Form.Item label={'Username'} required>
+                <Input {...field} placeholder='Enter Username' aria-errormessage={error?.message} />
               </Form.Item>
             )}
           />
         </Grid2>
         <Grid2 size={12}>
           <Controller
-            name={AccountKey.PHONE_NUMBER}
+            name={AccountKey.EMAIL}
+            control={control}
+            rules={{
+              required: 'Email is required',
+              pattern: {
+                value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+                message: 'Invalid email format'
+              }
+            }}
+            render={({ field, fieldState: { error } }) => (
+              <Form.Item label={'Email'} required>
+                <Input {...field} placeholder='Enter Email' aria-errormessage={error?.message} />
+              </Form.Item>
+            )}
+          />
+        </Grid2>
+        <Grid2 size={12}>
+          <Controller
+            name={AccountKey.ROLE}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Batch Number'} required>
-                <Input {...field} placeholder='Enter Batch Number' aria-errormessage={error?.message} />
+              <Form.Item label={'Role'} required>
+                <Input {...field} placeholder='Enter Role' aria-errormessage={error?.message} />
+              </Form.Item>
+            )}
+          />
+        </Grid2>
+        <Grid2 size={12}>
+          <Controller
+            name={AccountKey.PASSWORD}
+            control={control}
+            render={({ field, fieldState: { error } }) => (
+              <Form.Item label={'Password'} required>
+                <Input {...field} placeholder='Enter Password' aria-errormessage={error?.message} />
               </Form.Item>
             )}
           />

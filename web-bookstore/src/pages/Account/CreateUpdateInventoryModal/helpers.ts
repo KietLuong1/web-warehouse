@@ -1,9 +1,10 @@
 import { AccountKey, AccountTypes } from '../../../queries/Account'
 
 export const AccountInitValues: AccountTypes = {
-  [AccountKey.ACCOUNT_ID]: '',
-  [AccountKey.ADDRESS]: '',
-  [AccountKey.FULL_NAME]: '',
-  [AccountKey.PHONE_NUMBER]: '',
-  [AccountKey.CREATED_AT]: ''
+  [AccountKey.USER_ID]: '',
+  [AccountKey.USERNAME]: '',
+  [AccountKey.EMAIL]: '',
+  [AccountKey.ROLE]: '',
+  [AccountKey.NAME]: '',
+  [AccountKey.PASSWORD]: ''
 }

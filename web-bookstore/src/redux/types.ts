@@ -2,7 +2,7 @@ export type Callback = (..._args: unknown[]) => void
 
 export type TableParamsNet = {
   skip?: number
-  pageNo?: number
+  pageNumber?: number
   pageSize?: number
   order?: string
   search?: string

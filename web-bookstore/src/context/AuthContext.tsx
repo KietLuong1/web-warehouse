@@ -10,23 +10,23 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined)
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return !!localStorage.getItem('auth_token') // Check if token exists in localStorage
+    return !!localStorage.getItem('accessToken') // Check if token exists in localStorage
   })
 
   const login = (token: string) => {
-    localStorage.setItem('auth_token', token) // Store token in localStorage
+    localStorage.setItem('accessToken', token) // Store token in localStorage
     setIsAuthenticated(true)
   }
 
   const logout = () => {
-    localStorage.removeItem('auth_token') // Remove token from localStorage
+    localStorage.removeItem('accessToken') // Remove token from localStorage
     setIsAuthenticated(false)
   }
 
   useEffect(() => {
     // Sync state with localStorage in case it changes from another tab/window
     const handleStorageChange = () => {
-      setIsAuthenticated(!!localStorage.getItem('auth_token'))
+      setIsAuthenticated(!!localStorage.getItem('accessToken'))
     }
     window.addEventListener('storage', handleStorageChange)
     return () => {

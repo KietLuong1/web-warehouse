@@ -35,7 +35,7 @@ interface Props<TData extends MRT_RowData> extends MRT_TableOptions<TData> {
 
   isLayoutGridMode?: boolean
   paginationParams?: {
-    pageNo: string
+    pageNumber: string
     pageSize: string
   }
 }
@@ -115,7 +115,7 @@ export const CustomTable = <TData extends MRT_RowData>({
   isColumnPinning = false,
   nameColumnPinning = '',
   isLayoutGridMode,
-  paginationParams = { pageNo: 'pageNo', pageSize: 'pageSize' },
+  paginationParams = { pageNumber: 'pageNumber', pageSize: 'pageSize' },
 
   ...props
 }: Props<TData>) => {
@@ -151,8 +151,10 @@ export const CustomTable = <TData extends MRT_RowData>({
     return {
       ...getAdditionalParams(additionalFilterParams, searchParams),
       keywords: isLocalState ? search?.toString() || '' : searchParamsValue,
-      [paginationParams.pageNo]:
-        paginationParams.pageNo === 'pageNo' ? pagination.pageIndex + 1 : pagination.pageSize * pagination.pageIndex,
+      [paginationParams.pageNumber]:
+        paginationParams.pageNumber === 'pageNumber'
+          ? pagination.pageIndex + 1
+          : pagination.pageSize * pagination.pageIndex,
       [paginationParams.pageSize]: pagination.pageSize || 0,
       order: getSortOrderParamsUrlFromState(sorting) || getSortOrderParamsUrlFromState(initialStates.sorting ?? [])
     }
