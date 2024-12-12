@@ -1,0 +1,43 @@
+.forgot-password-dialog {
+  padding: 20px;
+  overflow: hidden;
+  max-height: 400px;
+  width: 500px;
+}
+
+.forgot-password-content {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+  width: 100%;
+}
+
+.text-field-input {
+  width: 470px;
+}
+
+.forgot-password-actions {
+  padding-left: 20px;
+  padding-right: 20px;
+}
+
+.cancel-button {
+  color: #006882;
+}
+
+.submit-button {
+  margin-top: 1rem;
+  background-color: #009dc3;
+  color: #fff;
+  text-transform: none;
+  font-weight: 700;
+  font-size: 16px;
+  padding: 1.5rem;
+  box-shadow: none;
+
+  &:hover {
+    background-color: #006882;
+    color: #fff;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+  }
+}
