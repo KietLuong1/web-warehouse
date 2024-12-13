@@ -5,28 +5,25 @@ export const allColumns: MRT_ColumnDef<ProductTypes>[] = [
   {
     accessorKey: 'productId',
     header: 'Product ID',
-    enableHiding: true,
+    enableHiding: false,
     size: 150,
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>
   },
   {
     accessorKey: 'name',
     header: 'Product Name',
-    enableHiding: false,
     size: 150,
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>
   },
   {
     accessorKey: 'category',
     header: 'Category',
-    enableHiding: false,
     size: 150,
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>
   },
   {
     accessorKey: 'description',
     header: 'Description',
-    enableHiding: false,
     size: 150,
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>
   },
