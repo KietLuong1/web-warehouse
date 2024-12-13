@@ -19,7 +19,7 @@ export const allColumns: MRT_ColumnDef<AccountTypes>[] = [
     accessorKey: 'username',
     header: 'User Name',
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
-    size: 150
+    size: 200
   },
   {
     accessorKey: 'email',
@@ -32,6 +32,6 @@ export const allColumns: MRT_ColumnDef<AccountTypes>[] = [
     accessorKey: 'role',
     header: 'Role',
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
-    size: 200
+    size: 150
   }
 ]

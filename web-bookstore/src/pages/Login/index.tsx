@@ -101,7 +101,14 @@ const Login: React.FC = () => {
         </Typography>
 
         <Form layout='vertical' initialValues={{ remember: true }} onFinish={handleSubmit(onSubmit)} autoComplete='off'>
-          <Form.Item required label='Email' validateStatus={errors.email ? 'error' : ''} help={errors.email?.message}>
+          <Form.Item
+            required
+            label='Email'
+            validateStatus={errors.email ? 'error' : ''}
+            help={
+              errors.email ? <span style={{ textAlign: 'left', display: 'block' }}>{errors.email.message}</span> : null
+            }
+          >
             <Controller
               name='email'
               control={control}
@@ -115,7 +122,9 @@ const Login: React.FC = () => {
             required
             label='Password'
             validateStatus={errors.password ? 'error' : ''}
-            help={errors.password?.message}
+            help={
+              errors.email ? <span style={{ textAlign: 'left', display: 'block' }}>{errors.email.message}</span> : null
+            }
           >
             <Controller
               name='password'

@@ -10,7 +10,7 @@ import { allColumns } from './allColumns'
 import { CreateUpdateAccountModal } from './CreateUpdateInventoryModal'
 
 function Account() {
-  const { userDtos, isFetching, setParams, pageNumber, pageSize, totalPages } = useGetListAccount()
+  const { userDtos, isFetching, setParams, pageNumber, pageSize, totalElements } = useGetListAccount()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedRow, setSelectedRow] = useState<AccountTypes>()
   // Remove unnecessary query parameters
@@ -57,7 +57,7 @@ function Account() {
         initialState={{ columnPinning: { right: ['mrt-row-actions'] } }}
         renderToolbarInternalActions={({ table }) => <AccountToolbar table={table} />}
         renderTopToolbarCustomActions={({ table }) => <CustomTableSearch table={table} placeholder='Search by Name' />}
-        rowCount={totalPages}
+        rowCount={totalElements}
       />
       <Modal
         title='Edit Account'

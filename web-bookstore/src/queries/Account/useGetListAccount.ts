@@ -24,7 +24,7 @@ export function useGetListAccount(options?: UseQueryOptions<ApiResponse<AccountT
 
   const handleInvalidateListAccount = () => queryClient.invalidateQueries({ queryKey: ['users'] })
 
-  const { userDtos = [], pageSize, pageNumber, totalPages } = data || {}
+  const { userDtos = [], pageSize, pageNumber, totalPages, totalElements } = data || {}
 
   return {
     error,
@@ -35,6 +35,7 @@ export function useGetListAccount(options?: UseQueryOptions<ApiResponse<AccountT
     userDtos,
     pageNumber,
     totalPages,
-    pageSize
+    pageSize,
+    totalElements
   }
 }

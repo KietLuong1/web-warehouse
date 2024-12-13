@@ -12,7 +12,6 @@ export const allColumns: MRT_ColumnDef<TransactionTypes>[] = [
   {
     accessorKey: 'batchId',
     header: 'Batch ID',
-    enableHiding: false,
     size: 150,
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>
   },
