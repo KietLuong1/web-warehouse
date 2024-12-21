@@ -4,7 +4,7 @@ import dayjs from 'dayjs'
 import React, { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Toastify } from '../../../components/Toastify'
-import { ProductKey, ProductTypes } from '../../../queries'
+import { SupplierKey, SupplierTypes } from '../../../queries'
 import { useGetListSuppliers } from '../../../queries/Supplier/useGetListSuppliers'
 import { useSupplierDetail } from '../../../queries/Supplier/useSupplierDetail'
 import { useUpdateSupplier } from '../../../queries/Supplier/useUpdateSupplier'
@@ -16,6 +16,7 @@ type Props = {
   isEdit?: boolean
   onCloseModal: () => void
 }
+
 export const CreateUpdateSupplierModal: React.FC<Props> = ({ supplierId, onCloseModal, isEdit = false }) => {
   const { handleInvalidateListSuppliers } = useGetListSuppliers()
   const { onCreateSupplier, isPending: isCreatingLoading } = useCreateSupplier({
@@ -26,6 +27,7 @@ export const CreateUpdateSupplierModal: React.FC<Props> = ({ supplierId, onClose
       onCloseModal()
     }
   })
+
   const { onUpdateSupplier, isPending: isUpdating } = useUpdateSupplier({
     onSuccess: () => {
       Toastify(`success`, `Supplier has been updated successfully.`)
@@ -38,7 +40,8 @@ export const CreateUpdateSupplierModal: React.FC<Props> = ({ supplierId, onClose
   const { data: detailData, handleInvalidateDetail } = useSupplierDetail({
     id: supplierId ?? ''
   })
-  const { handleSubmit, control, reset } = useForm<ProductTypes>({
+
+  const { handleSubmit, control, reset } = useForm<SupplierTypes>({
     defaultValues: {},
     mode: 'onChange',
     shouldFocusError: true,
@@ -60,7 +63,7 @@ export const CreateUpdateSupplierModal: React.FC<Props> = ({ supplierId, onClose
     }
   }
 
-  const onSubmit = (data: ProductTypes) => {
+  const onSubmit = (data: SupplierTypes) => {
     if (isEdit) {
       if (!supplierId) {
         Toastify('error', 'An ID is missing for update operation.')
@@ -70,17 +73,18 @@ export const CreateUpdateSupplierModal: React.FC<Props> = ({ supplierId, onClose
     } else {
       const result = {
         ...data,
-        [ProductKey.CREATE_AT]: dayjs(data.created_at).format('YYYY-MM-DD')
+        [SupplierKey.CREATE_AT]: dayjs(data.created_at).format('YYYY-MM-DD')
       }
       onCreateSupplier(result)
     }
   }
+
   return (
     <Form layout='vertical' onFinish={handleSubmit(onSubmit)}>
       <Grid2 container>
         <Grid2 size={12}>
           <Controller
-            name={ProductKey.SUPPLIER_ID}
+            name={SupplierKey.SUPPLIER_ID}
             control={control}
             render={({ field, fieldState: { error } }) => (
               <Form.Item label={'ID'} required>
@@ -92,7 +96,7 @@ export const CreateUpdateSupplierModal: React.FC<Props> = ({ supplierId, onClose
 
         <Grid2 size={12}>
           <Controller
-            name={ProductKey.NAME}
+            name={SupplierKey.NAME}
             control={control}
             render={({ field, fieldState: { error } }) => (
               <Form.Item label={'Name'} required>
@@ -104,7 +108,7 @@ export const CreateUpdateSupplierModal: React.FC<Props> = ({ supplierId, onClose
 
         <Grid2 size={12}>
           <Controller
-            name={ProductKey.EMAIL}
+            name={SupplierKey.EMAIL}
             control={control}
             render={({ field, fieldState: { error } }) => (
               <Form.Item label={'Email'} required>
@@ -114,10 +118,11 @@ export const CreateUpdateSupplierModal: React.FC<Props> = ({ supplierId, onClose
           />
         </Grid2>
       </Grid2>
+
       <Grid2 container spacing={2} size={12}>
-      <Grid2 size={8}>
+        <Grid2 size={8}>
           <Controller
-            name={ProductKey.PHONE}
+            name={SupplierKey.PHONE}
             control={control}
             render={({ field, fieldState: { error } }) => (
               <Form.Item label={'Phone'} required>
@@ -128,7 +133,7 @@ export const CreateUpdateSupplierModal: React.FC<Props> = ({ supplierId, onClose
         </Grid2>
         <Grid2 size={4}>
           <Controller
-            name={ProductKey.CREATE_AT}
+            name={SupplierKey.CREATE_AT}
             control={control}
             render={({ field, fieldState: { error } }) => (
               <Form.Item label='Create Date' validateStatus={error ? 'error' : ''} help={error?.message} required>
@@ -143,19 +148,19 @@ export const CreateUpdateSupplierModal: React.FC<Props> = ({ supplierId, onClose
             )}
           />
         </Grid2>
-
       </Grid2>
+
       <Grid2 size={12}>
-          <Controller
-            name={ProductKey.ADDRESS}
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Address'} required>
-                <Input {...field} placeholder='Enter Supplier Address' aria-errormessage={error?.message} />
-              </Form.Item>
-            )}
-          />
-        </Grid2>
+        <Controller
+          name={SupplierKey.ADDRESS}
+          control={control}
+          render={({ field, fieldState: { error } }) => (
+            <Form.Item label={'Address'} required>
+              <Input {...field} placeholder='Enter Supplier Address' aria-errormessage={error?.message} />
+            </Form.Item>
+          )}
+        />
+      </Grid2>
       <Grid2 size={12}>
         <Stack display={'flex'} justifyContent={'flex-end'} direction={'row'}>
           <Button disabled={isCreatingLoading || isUpdating} variant='outlined' color='error' onClick={handleCancel}>

@@ -1,7 +1,7 @@
 import { MRT_ColumnDef } from 'material-react-table'
-import { ProductTypes } from '../../queries'
+import { SupplierTypes } from '../../queries'
 
-export const allColumns: MRT_ColumnDef<ProductTypes>[] = [
+export const allColumns: MRT_ColumnDef<SupplierTypes>[] = [
   {
     accessorKey: 'supplierId',
     header: 'Supplier ID',
@@ -39,5 +39,5 @@ export const allColumns: MRT_ColumnDef<ProductTypes>[] = [
     header: 'Address',
     size: 250,
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>
-  },
+  }
 ]

@@ -47,33 +47,33 @@ export const MenuItems = [
     icon: <People />,
     link: '/supplier'
   },
-  {
-    title: 'Location',
-    icon: <LocationOn />,
-    link: '/location'
-  },
+  // {
+  //   title: 'Location',
+  //   icon: <LocationOn />,
+  //   link: '/location'
+  // },
   {
     title: 'Account',
     icon: <AccountBox />,
     link: '/users'
   },
-  {
-    title: 'Settings',
-    icon: <Settings />,
-    link: '/setting',
-    submenus: [
-      {
-        title: 'FAQs',
-        icon: <QuestionAnswer />,
-        link: '/faqs'
-      }
-      // {
-      //   title: 'Containers',
-      //   icon: <HomeRepairService />,
-      //   link: '/container'
-      // }
-    ]
-  },
+  // {
+  //   title: 'Settings',
+  //   icon: <Settings />,
+  //   link: '/setting',
+  //   submenus: [
+  //     {
+  //       title: 'FAQs',
+  //       icon: <QuestionAnswer />,
+  //       link: '/faqs'
+  //     }
+  //     // {
+  //     //   title: 'Containers',
+  //     //   icon: <HomeRepairService />,
+  //     //   link: '/container'
+  //     // }
+  //   ]
+  // },
   {
     title: 'Logout',
     icon: <ArrowBack />,

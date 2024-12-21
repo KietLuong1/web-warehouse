@@ -8,7 +8,7 @@ import CustomTableColumnOptions from '../../../components/TableColumnOptions'
 import CustomTableColumnOptionsModal from '../../../components/TableColumnOptions/CustomTableColumnOptionModal'
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
-import { ProductTypes } from '../../../queries'
+import { SupplierTypes } from '../../../queries'
 import { CreateUpdateSupplierModal } from '../CreateUpdateSupplierModal'
 import SupplierFilter from '../SupplierFillter'
 import { useGetListSuppliers } from '../../../queries/Supplier/useGetListSuppliers'
@@ -52,7 +52,7 @@ export const SupplierToolbar: React.FC<Props> = ({ table }) => {
           </Tooltip>
           <CustomTableColumnOptions>
             <Tooltip title='Column Options' arrow placement='top'>
-              <CustomTableColumnOptionsModal<ProductTypes> table={table} />
+              <CustomTableColumnOptionsModal<SupplierTypes> table={table} />
             </Tooltip>
           </CustomTableColumnOptions>
           <Button type='primary' size='large' onClick={openCreateModal} icon={<PlusOutlined />}>
@@ -76,7 +76,7 @@ export const SupplierToolbar: React.FC<Props> = ({ table }) => {
 }
 
 type Props = {
-  table: MRT_TableInstance<ProductTypes>
+  table: MRT_TableInstance<SupplierTypes>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSetParams?: (params: any) => void
 }

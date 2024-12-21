@@ -1,10 +1,10 @@
-import { ProductKey, ProductTypes } from '../../../queries'
+import { SupplierKey, SupplierTypes } from '../../../queries'
 
-export const SupplierInitValues: ProductTypes = {
-  [ProductKey.SUPPLIER_ID]: '',
-  [ProductKey.NAME]: '',
-  [ProductKey.PHONE]: 0,
-  [ProductKey.EMAIL]: '',
-  [ProductKey.ADDRESS]: '',
-  [ProductKey.CREATE_AT]: ''
+export const SupplierInitValues: SupplierTypes = {
+  [SupplierKey.SUPPLIER_ID]: '',
+  [SupplierKey.NAME]: '',
+  [SupplierKey.PHONE]: 0,
+  [SupplierKey.EMAIL]: '',
+  [SupplierKey.ADDRESS]: '',
+  [SupplierKey.CREATE_AT]: ''
 }

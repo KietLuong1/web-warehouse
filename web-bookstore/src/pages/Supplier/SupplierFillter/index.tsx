@@ -19,6 +19,7 @@ const SupplierFilter: React.FC<Props> = () => {
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value as string)
   }
+
   const [searchParams, setSearchParams] = useSearchParams()
 
   const currentSearchParams = Object.fromEntries([...searchParams])
