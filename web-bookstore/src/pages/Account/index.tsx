@@ -1,16 +1,16 @@
 import { EditOutlined } from '@mui/icons-material'
 import { Modal, Tooltip } from 'antd'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useState } from 'react'
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
-import { AccountTypes } from '../../queries/Account'
-import { useGetListAccount } from '../../queries/Account/useGetListAccount'
+import { AccountTypes } from '../../queries/Account_MockData'
+import { useGetListAccount } from '../../queries/Account_MockData/useGetListAccounts'
 import { AccountToolbar } from './AccountToolbar'
 import { allColumns } from './allColumns'
 import { CreateUpdateAccountModal } from './CreateUpdateInventoryModal'
 
 function Account() {
-  const { userDtos, isFetching, setParams, pageNumber, pageSize, totalElements } = useGetListAccount()
+  const { isFetching, data } = useGetListAccount()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedRow, setSelectedRow] = useState<AccountTypes>()
   // Remove unnecessary query parameters
@@ -20,12 +20,12 @@ function Account() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalVisible])
 
-  useEffect(() => {
-    setParams({
-      pageNumber: 0,
-      pageSize: 10
-    })
-  }, [pageNumber, pageSize, setParams])
+  // useEffect(() => {
+  //   setParams({
+  //     pageNumber: 0,
+  //     pageSize: 10
+  //   })
+  // }, [pageNumber, pageSize, setParams])
 
   const renderRowActions = (row: AccountTypes) => (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
@@ -44,7 +44,7 @@ function Account() {
   return (
     <>
       <CustomTable
-        data={userDtos}
+        data={data || []}
         isLoading={isFetching}
         columns={allColumns}
         isLayoutGridMode
@@ -57,7 +57,6 @@ function Account() {
         initialState={{ columnPinning: { right: ['mrt-row-actions'] } }}
         renderToolbarInternalActions={({ table }) => <AccountToolbar table={table} />}
         renderTopToolbarCustomActions={({ table }) => <CustomTableSearch table={table} placeholder='Search by Name' />}
-        rowCount={totalElements}
       />
       <Modal
         title='Edit Account'

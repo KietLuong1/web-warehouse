@@ -8,10 +8,10 @@ import CustomTableColumnOptions from '../../../components/TableColumnOptions'
 import CustomTableColumnOptionsModal from '../../../components/TableColumnOptions/CustomTableColumnOptionModal'
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
-import { AccountTypes } from '../../../queries/Account'
-import { useGetListAccount } from '../../../queries/Account/useGetListAccount'
 import { CreateUpdateAccountModal } from '../CreateUpdateInventoryModal'
 import AccountFilter from '../AccountFilter'
+import { useGetListAccount } from '../../../queries/Account_MockData/useGetListAccounts'
+import { AccountTypes } from '../../../queries/Account_MockData'
 
 export const AccountToolbar: React.FC<Props> = ({ table }) => {
   const { handleInvalidateListAccount } = useGetListAccount()
