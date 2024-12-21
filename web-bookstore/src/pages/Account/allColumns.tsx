@@ -1,5 +1,5 @@
 import { MRT_ColumnDef } from 'material-react-table'
-import { AccountTypes } from '../../queries/Account'
+import { AccountTypes } from '../../queries/Account_MockData'
 
 export const allColumns: MRT_ColumnDef<AccountTypes>[] = [
   {

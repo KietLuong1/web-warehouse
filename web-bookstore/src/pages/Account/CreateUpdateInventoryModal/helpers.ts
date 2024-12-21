@@ -1,4 +1,4 @@
-import { AccountKey, AccountTypes } from '../../../queries/Account'
+import { AccountKey, AccountTypes } from '../../../queries/Account_MockData'
 
 export const AccountInitValues: AccountTypes = {
   [AccountKey.USER_ID]: '',

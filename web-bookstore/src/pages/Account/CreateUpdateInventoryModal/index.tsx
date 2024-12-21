@@ -3,12 +3,12 @@ import { Form, Input } from 'antd'
 import React, { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Toastify } from '../../../components/Toastify'
-import { AccountKey, AccountPayLoad } from '../../../queries/Account'
-import { useCreateAccount } from '../../../queries/Account/useCreateAccount'
-import { useGetAccountDetail } from '../../../queries/Account/useGetAccountDetail'
-import { useGetListAccount } from '../../../queries/Account/useGetListAccount'
-import { useUpdateAccount } from '../../../queries/Account/useUpdateAccount'
+import { AccountKey, AccountTypes } from '../../../queries/Account_MockData'
+import { useGetAccountDetail } from '../../../queries/Account_MockData/useAccountDetail'
+import { useGetListAccount } from '../../../queries/Account_MockData/useGetListAccounts'
+import { useUpdateAccount } from '../../../queries/Account_MockData/useUpdateAccount'
 import { AccountInitValues } from './helpers'
+import { useCreateAccount } from '../../../queries/Account_MockData/useCreateAccount'
 
 type Props = {
   userId?: string
@@ -37,7 +37,7 @@ export const CreateUpdateAccountModal: React.FC<Props> = ({ userId, onCloseModal
   const { data: detailData, handleInvalidateDetail } = useGetAccountDetail({
     userId: userId ?? ''
   })
-  const { handleSubmit, control, reset } = useForm<AccountPayLoad>({
+  const { handleSubmit, control, reset } = useForm<AccountTypes>({
     defaultValues: {},
     mode: 'onChange',
     shouldFocusError: true,
@@ -59,17 +59,32 @@ export const CreateUpdateAccountModal: React.FC<Props> = ({ userId, onCloseModal
     }
   }
 
-  const onSubmit = (data: AccountPayLoad) => {
+  // const onSubmit = (data: AccountPayLoad) => {
+  //   if (isEdit) {
+  //     if (!userId) {
+  //       Toastify('error', 'An ID is missing for update operation.')
+  //       return
+  //     }
+  //     onUpdateAccount(data)
+  //   } else {
+  //     // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  //     const { userId: _, ...rest } = data // Exclude `userId`
+  //     onCreateAccount(rest)
+  //   }
+  // }
+
+  const onSubmit = (data: AccountTypes) => {
     if (isEdit) {
       if (!userId) {
         Toastify('error', 'An ID is missing for update operation.')
         return
       }
-      onUpdateAccount(data)
+      onUpdateAccount({ data, id: userId })
     } else {
-      // eslint-disable-next-line @typescript-eslint/no-unused-vars
-      const { userId: _, ...rest } = data // Exclude `userId`
-      onCreateAccount(rest)
+      const result = {
+        ...data
+      }
+      onCreateAccount(result)
     }
   }
   return (
