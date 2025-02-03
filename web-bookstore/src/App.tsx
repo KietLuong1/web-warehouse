@@ -17,6 +17,7 @@ import Supplier from './pages/Supplier'
 import Transaction from './pages/Transaction'
 import Login from './pages/Login'
 import { AuthProvider, useAuth } from './context/AuthContext'
+import AccountInformation from './pages/AccountInformation'
 
 // Create a query client instance
 const queryClient = new QueryClient({
@@ -63,6 +64,7 @@ function App() {
               <Route path='/supplier' element={<Supplier />} />
               <Route path='/location' element={<Location />} />
               <Route path='/users' element={<Account />} />
+              <Route path='/account-details' element={<AccountInformation />} />
 
               <Route path='/faqs' element={<FAQs />} />
               <Route path='/container' element={<Container />} />
