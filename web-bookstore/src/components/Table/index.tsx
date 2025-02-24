@@ -380,9 +380,9 @@ export const CustomTable = <TData extends MRT_RowData>({
     muiTableBodyCellProps: {
       sx: {
         '& span': {
-          overflow: 'hidden', // Change from 'hidden' to 'visible'
-          whiteSpace: 'nowrap', // Change from 'nowrap' to 'normal'
-          textOverflow: 'ellipsis' // Remove ellipsis
+          overflow: 'hidden',
+          whiteSpace: 'nowrap',
+          textOverflow: 'ellipsis'
         }
       }
     },
