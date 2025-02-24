@@ -9,6 +9,7 @@ import {
   People,
   QuestionAnswer,
   Settings,
+  Summarize,
   Warehouse
 } from '@mui/icons-material'
 
@@ -38,11 +39,11 @@ export const MenuItems = [
   //   icon: <Calculate />,
   //   link: '/expense-tracking'
   // },
-  // {
-  //   title: 'Report',
-  //   icon: <Summarize />,
-  //   link: '/report'
-  // },
+  {
+    title: 'Report',
+    icon: <Summarize />,
+    link: '/report'
+  },
   {
     title: 'Suppliers',
     icon: <People />,

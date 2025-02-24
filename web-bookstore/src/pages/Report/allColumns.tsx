@@ -1,48 +1,57 @@
 import { MRT_ColumnDef } from 'material-react-table'
-import { InventoryTypes } from '../../queries/Inventory'
+import { ReportTypes } from '../../queries/Reports'
+import { Tooltip } from 'antd'
 
-export const allColumns: MRT_ColumnDef<InventoryTypes>[] = [
+export const allColumns: MRT_ColumnDef<ReportTypes>[] = [
   {
-    accessorKey: 'inventory_id',
-    header: 'Inventory ID',
+    accessorKey: 'id',
+    header: 'Report ID',
     enableHiding: false,
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
-    size: 150,
+    size: 150
   },
   {
-    accessorKey: 'product_id',
-    header: 'Product ID',
+    accessorKey: 'name',
+    header: 'Product Name',
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
     size: 150
   },
   {
-    accessorKey: 'location_id',
-    header: 'Location ID',
-    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
-    size: 150
-  },
-  {
-    accessorKey: 'quantity',
-    header: 'Quantity',
+    accessorKey: 'inventory',
+    header: 'Stock Available',
     Cell: ({ cell }) => <div>{cell.getValue<number>()}</div>,
-    size: 200
+    size: 150
   },
   {
-    accessorKey: 'batch_number',
-    header: 'Batch Number',
+    accessorKey: 'price',
+    header: 'Total Price',
+    Cell: ({ cell }) => <div>{cell.getValue<number>()}</div>,
+    size: 150
+  },
+  {
+    accessorKey: 'category',
+    header: 'Category',
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
     size: 200
   },
   {
-    accessorKey: 'import_date',
-    header: 'Import Date',
+    accessorKey: 'supplier',
+    header: 'Supplier',
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
     size: 200
   },
   {
-    accessorKey: 'expiry_date',
-    header: 'Expiry Date',
-    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
+    accessorKey: 'description',
+    header: 'Description',
+    Cell: ({ cell }) => (
+      <div style={{ width: 150 }}>
+        <Tooltip title={cell.getValue<string>()}>
+          <div style={{ textOverflow: 'ellipsis', overflow: 'hidden', whiteSpace: 'nowrap' }}>
+            {cell.getValue<string>()}
+          </div>
+        </Tooltip>
+      </div>
+    ),
     size: 200
   }
 ]
