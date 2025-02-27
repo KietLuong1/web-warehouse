@@ -18,6 +18,7 @@ import Transaction from './pages/Transaction'
 import Login from './pages/Login'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import AccountInformation from './pages/AccountInformation'
+import ChatBot from './components/ChatBot'
 
 // Create a query client instance
 const queryClient = new QueryClient({
@@ -71,6 +72,8 @@ function App() {
 
               {/* Add other routes */}
             </Routes>
+
+            <ChatBot/>
           </Layout>
           <ToastifyContainer />
         </BrowserRouter>
