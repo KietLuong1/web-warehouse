@@ -1,21 +1,21 @@
-import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { ReportTypes } from './types'
 import { fetchListReport } from './api'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useGetListReport(options?: UseMutationOptions<any, Error, ReportTypes>) {
+export function useGetListReport() {
+  const queryClient = useQueryClient()
+
   const {
-    data,
+    data = [],
     error,
     isFetching,
     refetch: onGetAllListReport
-  } = useQuery({
+  } = useQuery<ReportTypes[]>({
     queryKey: ['reports'],
-    queryFn: fetchListReport,
-    ...options
+    queryFn: fetchListReport
   })
-  const queryClient = useQueryClient()
 
   const handleInvalidateListReport = () => queryClient.invalidateQueries({ queryKey: ['reports'] })
-  return { data, error, isFetching, onGetAllListReport, handleInvalidateListReport }
+
+  return { reportList: data, error, isFetching, onGetAllListReport, handleInvalidateListReport }
 }

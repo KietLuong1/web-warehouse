@@ -45,18 +45,18 @@ export const CreateUpdateReportModal: React.FC<Props> = ({ id, onCloseModal, isE
   })
 
   useEffect(() => {
-    if (isEdit && detailData) {
-      reset(detailData)
+    if (isEdit) {
+      if (detailData && !Array.isArray(detailData)) {
+        reset(detailData)
+      }
     }
   }, [detailData, isEdit, reset])
 
   const handleCancel = () => {
     if (!isEdit) {
       reset(ReportInitValues)
-      onCloseModal()
-    } else {
-      onCloseModal()
     }
+    onCloseModal()
   }
 
   const onSubmit = (data: ReportTypes) => {

@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DeleteOutlined, EditOutlined } from '@mui/icons-material'
+import { Stack } from '@mui/material'
 import { Modal, Tooltip } from 'antd'
 import { useCallback, useState } from 'react'
 import { CustomTable } from '../../components/Table'
@@ -7,21 +8,26 @@ import { Toastify } from '../../components/Toastify'
 import { ReportTypes } from '../../queries/Reports'
 import { useDeleteReport } from '../../queries/Reports/useDeleteReport'
 import { useGetListReport } from '../../queries/Reports/useGetListReports'
-import { CreateUpdateReportModal } from './CreateUpdateReportModal'
 import { allColumns } from './allColumns'
+import { CreateUpdateReportModal } from './CreateUpdateReportModal'
 import ExportFile from './ExportFile'
-import { Stack } from '@mui/material'
-// import { CreateUpdateInventoryModal } from './CreateUpdateInventoryModal'
+import { ReportDetailModal } from './ReportDetailModal'
 
 function Report() {
-  const { data, isFetching, handleInvalidateListReport } = useGetListReport()
+  const { reportList, isFetching, handleInvalidateListReport } = useGetListReport()
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
   const [selectedRow, setSelectedRow] = useState<ReportTypes | undefined>(undefined)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalVisible])
+
+  const closeDetailModal = useCallback(() => {
+    setIsDetailModalVisible(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDetailModalVisible])
 
   const { onDeleteReport } = useDeleteReport({
     onSuccess() {
@@ -44,12 +50,19 @@ function Report() {
     [onDeleteReport]
   )
 
+  const handleRowClick = useCallback((row: ReportTypes) => {
+    setSelectedRow(row)
+    setIsDetailModalVisible(true)
+  }, [])
+
   const renderRowActions = (row: ReportTypes) => (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
       <Tooltip title='Edit'>
         <EditOutlined
           style={{ fontSize: '16px', color: 'blue', cursor: 'pointer' }}
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation()
+            console.log('Selected row for edit:', row)
             setIsModalVisible(true)
             setSelectedRow(row)
           }}
@@ -59,7 +72,10 @@ function Report() {
       <Tooltip title='Delete'>
         <DeleteOutlined
           style={{ fontSize: '16px', color: 'red', cursor: 'pointer' }}
-          onClick={() => handleDeleteRecord(row)}
+          onClick={(e) => {
+            e.stopPropagation()
+            handleDeleteRecord(row)
+          }}
         />
       </Tooltip>
     </div>
@@ -67,8 +83,8 @@ function Report() {
 
   return (
     <>
-      <CustomTable<ReportTypes>
-        data={data || []}
+      <CustomTable
+        data={reportList}
         isLoading={isFetching}
         columns={allColumns}
         isLayoutGridMode
@@ -83,17 +99,19 @@ function Report() {
         renderToolbarInternalActions={({ table }) => (
           <Stack marginTop={1.5}>
             <ExportFile
-              data={data || []}
+              data={reportList || []}
               columns={allColumns}
               selectedRows={table.getSelectedRowModel().rows.map((row: { original: any }) => row.original)}
               filename='Warehouse Report'
             />
           </Stack>
         )}
-        rowCount={5}
-        // renderTopToolbarCustomActions={({ table }) => (
-        //   <CustomTableSearch table={table} placeholder='Search by Inventory ID' />
-        // )}
+        rowCount={10}
+        pageCount={2}
+        muiTableBodyRowProps={({ row }) => ({
+          onClick: () => handleRowClick(row.original),
+          sx: { cursor: 'pointer' }
+        })}
       />
       <Modal
         title='Edit Report'
@@ -105,6 +123,8 @@ function Report() {
       >
         <CreateUpdateReportModal onCloseModal={closeModal} isEdit id={selectedRow?.id} />
       </Modal>
+
+      <ReportDetailModal isVisible={isDetailModalVisible} onClose={closeDetailModal} reportData={selectedRow} />
     </>
   )
 }

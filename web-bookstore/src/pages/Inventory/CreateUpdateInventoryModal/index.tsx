@@ -54,10 +54,8 @@ export const CreateUpdateInventoryModal: React.FC<Props> = ({ inventoryId, onClo
   const handleCancel = () => {
     if (!isEdit) {
       reset(InventoryInitValues)
-      onCloseModal()
-    } else {
-      onCloseModal()
     }
+    onCloseModal()
   }
 
   const onSubmit = (data: InventoryTypes) => {

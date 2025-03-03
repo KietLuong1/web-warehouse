@@ -10,16 +10,24 @@ import { useGetListInventory } from '../../queries/Inventory/useGetListInventory
 import { allColumns } from './allColumns'
 import { CreateUpdateInventoryModal } from './CreateUpdateInventoryModal'
 import { InventoryToolbar } from './InventoryToolbar'
+import { InventoryDetailModal } from './InventoryDetailModel'
 
 function Inventory() {
   const { data, isFetching, handleInvalidateListInventory } = useGetListInventory()
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
+
   const [selectedRow, setSelectedRow] = useState<InventoryTypes | undefined>(undefined)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalVisible])
+
+  const closeDetailModal = useCallback(() => {
+    setIsDetailModalVisible(false)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [isDetailModalVisible])
 
   const { onDeleteInventory } = useDeleteInventory({
     onSuccess() {
@@ -63,6 +71,11 @@ function Inventory() {
     </div>
   )
 
+  const handleRowClick = useCallback((row: InventoryTypes) => {
+    setSelectedRow(row)
+    setIsDetailModalVisible(true)
+  }, [])
+
   return (
     <>
       <CustomTable<InventoryTypes>
@@ -81,6 +94,10 @@ function Inventory() {
         renderTopToolbarCustomActions={({ table }) => (
           <CustomTableSearch table={table} placeholder='Search by Inventory ID' />
         )}
+        muiTableBodyRowProps={({ row }) => ({
+          onClick: () => handleRowClick(row.original),
+          sx: { cursor: 'pointer' }
+        })}
       />
       <Modal
         title='Edit Inventory'
@@ -92,6 +109,8 @@ function Inventory() {
       >
         <CreateUpdateInventoryModal onCloseModal={closeModal} isEdit inventoryId={selectedRow?.inventory_id} />
       </Modal>
+
+      <InventoryDetailModal isVisible={isDetailModalVisible} onClose={closeDetailModal} inventoryData={selectedRow} />
     </>
   )
 }

@@ -10,13 +10,15 @@ export function useGetReportDetail(options: UseMutationOptions<ReportTypes> & { 
     error,
     refetch: getReportDetail
   } = useQuery<ReportTypes>({
-    queryKey: ['reports', { ...options }],
+    queryKey: ['reports', options.id],
     queryFn: () => getReportById({ id: options.id }),
     ...options
   })
+
   const queryClient = useQueryClient()
 
-  const handleInvalidateDetail = () => queryClient.invalidateQueries({ queryKey: ['reports', { id: options.id }] })
+  const handleInvalidateDetail = () => queryClient.invalidateQueries({ queryKey: ['reports', options.id] })
+
   return {
     data,
     isLoadingDetail,
