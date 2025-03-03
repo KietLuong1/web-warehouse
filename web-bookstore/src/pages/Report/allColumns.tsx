@@ -1,6 +1,6 @@
+import { Tooltip } from 'antd'
 import { MRT_ColumnDef } from 'material-react-table'
 import { ReportTypes } from '../../queries/Reports'
-import { Tooltip } from 'antd'
 
 export const allColumns: MRT_ColumnDef<ReportTypes>[] = [
   {

@@ -10,3 +10,13 @@ export type TableParamsNet = {
   sort?: string
   [key: string]: number | boolean | string | string[] | undefined
 }
+
+export interface PaginationResponseType<T> {
+  data: T[]
+  payloadSize?: number
+  hasNext?: boolean
+  skippedRecords?: number
+  totalRecords?: number
+  skip?: number
+  take?: number
+}

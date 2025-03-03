@@ -41,3 +41,10 @@ export const axiosInstance4 = axios.create({
     'Content-Type': 'application/json'
   }
 })
+
+export const reportsApi = axios.create({
+  baseURL: 'https://67becd5cb2320ee050116828.mockapi.io/api/v1',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+})
