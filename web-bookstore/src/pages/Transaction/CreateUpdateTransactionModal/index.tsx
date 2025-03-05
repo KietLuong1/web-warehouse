@@ -55,10 +55,8 @@ export const CreateUpdateTransactionModal: React.FC<Props> = ({ importId, onClos
   const handleCancel = () => {
     if (!isEdit) {
       reset(TransactionInitValues)
-      onCloseModal()
-    } else {
-      onCloseModal()
     }
+    onCloseModal()
   }
 
   const onSubmit = (data: TransactionTypes) => {
