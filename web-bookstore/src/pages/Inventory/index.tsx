@@ -26,7 +26,6 @@ function Inventory() {
 
   const closeDetailModal = useCallback(() => {
     setIsDetailModalVisible(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDetailModalVisible])
 
   const { onDeleteInventory } = useDeleteInventory({
@@ -103,6 +102,7 @@ function Inventory() {
           sx: { cursor: 'pointer' }
         })}
       />
+
       <Modal
         title='Edit Inventory'
         open={isModalVisible}
