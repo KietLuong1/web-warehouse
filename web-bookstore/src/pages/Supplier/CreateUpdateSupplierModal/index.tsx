@@ -57,10 +57,8 @@ export const CreateUpdateSupplierModal: React.FC<Props> = ({ supplierId, onClose
   const handleCancel = () => {
     if (!isEdit) {
       reset(SupplierInitValues)
-      onCloseModal()
-    } else {
-      onCloseModal()
     }
+    onCloseModal()
   }
 
   const onSubmit = (data: SupplierTypes) => {
