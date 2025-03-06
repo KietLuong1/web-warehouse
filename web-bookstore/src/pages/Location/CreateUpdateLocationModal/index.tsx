@@ -58,10 +58,8 @@ export const CreateUpdateLocationModal: React.FC<Props> = ({
   const handleCancel = () => {
     if (!isEdit) {
       reset(LocationInitValues)
-      onCloseModal()
-    } else {
-      onCloseModal()
     }
+    onCloseModal()
   }
 
   const onSubmit = (data: LocationTypes) => {
@@ -144,20 +142,20 @@ export const CreateUpdateLocationModal: React.FC<Props> = ({
             control={control}
             render={({ field, fieldState: { error } }) => (
               <Form.Item label={'Status'} required>
-              <Select
-                {...field}
-                placeholder="Select Status"
-                error={!!error}
-                displayEmpty
-                style={{ width: '100%' }}
-              >
-                <MenuItem value="In progress">In Progress</MenuItem>
-                <MenuItem value="Active">Active</MenuItem>
-                <MenuItem value="Inactive">Inactive</MenuItem>
-                <MenuItem value="Closed">Closed</MenuItem>
-              </Select>
-              {error && <p style={{ color: 'red' }}>{error.message}</p>}
-            </Form.Item>
+                <Select
+                  {...field}
+                  placeholder="Select Status"
+                  error={!!error}
+                  displayEmpty
+                  style={{ width: '100%' }}
+                >
+                  <MenuItem value="In progress">In Progress</MenuItem>
+                  <MenuItem value="Active">Active</MenuItem>
+                  <MenuItem value="Inactive">Inactive</MenuItem>
+                  <MenuItem value="Closed">Closed</MenuItem>
+                </Select>
+                {error && <p style={{ color: 'red' }}>{error.message}</p>}
+              </Form.Item>
             )}
           />
         </Grid2>
