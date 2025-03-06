@@ -8,10 +8,13 @@ import { useGetListAccount } from '../../queries/Account_MockData/useGetListAcco
 import { AccountToolbar } from './AccountToolbar'
 import { allColumns } from './allColumns'
 import { CreateUpdateAccountModal } from './CreateUpdateInventoryModal'
+import { AccountDetailModal } from './AccountDetailModel'
 
 function Account() {
   const { isFetching, data } = useGetListAccount()
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
+
   const [selectedRow, setSelectedRow] = useState<AccountTypes>()
   // Remove unnecessary query parameters
 
@@ -19,6 +22,10 @@ function Account() {
     setIsModalVisible(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalVisible])
+
+  const closeDetailModal = useCallback(() => {
+    setIsDetailModalVisible(false)
+  }, [isDetailModalVisible])
 
   // useEffect(() => {
   //   setParams({
@@ -32,7 +39,8 @@ function Account() {
       <Tooltip title='Edit'>
         <EditOutlined
           style={{ fontSize: '16px', color: 'blue', cursor: 'pointer' }}
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation()
             setIsModalVisible(true)
             setSelectedRow(row)
           }}
@@ -40,6 +48,11 @@ function Account() {
       </Tooltip>
     </div>
   )
+
+  const handleRowClick = useCallback((row: AccountTypes) => {
+    setSelectedRow(row)
+    setIsDetailModalVisible(true)
+  }, [])
 
   return (
     <>
@@ -57,6 +70,10 @@ function Account() {
         initialState={{ columnPinning: { right: ['mrt-row-actions'] } }}
         renderToolbarInternalActions={({ table }) => <AccountToolbar table={table} />}
         renderTopToolbarCustomActions={({ table }) => <CustomTableSearch table={table} placeholder='Search by Name' />}
+        muiTableBodyRowProps={({ row }) => ({
+          onClick: () => handleRowClick(row.original),
+          sx: { cursor: 'pointer' }
+        })}
       />
       <Modal
         title='Edit Account'
@@ -68,6 +85,8 @@ function Account() {
       >
         <CreateUpdateAccountModal onCloseModal={closeModal} isEdit userId={selectedRow?.userId} />
       </Modal>
+
+      <AccountDetailModal isVisible={isDetailModalVisible} onClose={closeDetailModal} accountData={selectedRow} />
     </>
   )
 }
