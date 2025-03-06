@@ -54,10 +54,8 @@ export const CreateUpdateProductModal: React.FC<Props> = ({ productId, onCloseMo
   const handleCancel = () => {
     if (!isEdit) {
       reset(ProductInitValues)
-      onCloseModal()
-    } else {
-      onCloseModal()
     }
+    onCloseModal()
   }
 
   const onSubmit = (data: ProductTypes) => {
