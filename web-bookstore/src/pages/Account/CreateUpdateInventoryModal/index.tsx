@@ -53,10 +53,8 @@ export const CreateUpdateAccountModal: React.FC<Props> = ({ userId, onCloseModal
   const handleCancel = () => {
     if (!isEdit) {
       reset(AccountInitValues)
-      onCloseModal()
-    } else {
-      onCloseModal()
     }
+    onCloseModal()
   }
 
   // const onSubmit = (data: AccountPayLoad) => {
