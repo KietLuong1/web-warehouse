@@ -1,7 +1,7 @@
 import { MRT_ColumnDef } from 'material-react-table'
-import { AccountTypes } from '../../queries/Account_MockData'
+import { AccountResponse } from '../../queries/Account_MockData'
 
-export const allColumns: MRT_ColumnDef<AccountTypes>[] = [
+export const allColumns: MRT_ColumnDef<AccountResponse>[] = [
   {
     accessorKey: 'userId',
     header: 'User ID',

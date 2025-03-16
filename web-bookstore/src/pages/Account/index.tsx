@@ -3,7 +3,7 @@ import { Modal, Tooltip } from 'antd'
 import { useCallback, useState } from 'react'
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
-import { AccountTypes } from '../../queries/Account_MockData'
+import { AccountResponse } from '../../queries/Account_MockData'
 import { useGetListAccount } from '../../queries/Account_MockData/useGetListAccounts'
 import { AccountToolbar } from './AccountToolbar'
 import { allColumns } from './allColumns'
@@ -12,7 +12,7 @@ import { CreateUpdateAccountModal } from './CreateUpdateInventoryModal'
 function Account() {
   const { isFetching, data } = useGetListAccount()
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const [selectedRow, setSelectedRow] = useState<AccountTypes>()
+  const [selectedRow, setSelectedRow] = useState<AccountResponse>()
   // Remove unnecessary query parameters
 
   const closeModal = useCallback(() => {
@@ -27,7 +27,7 @@ function Account() {
   //   })
   // }, [pageNumber, pageSize, setParams])
 
-  const renderRowActions = (row: AccountTypes) => (
+  const renderRowActions = (row: AccountResponse) => (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
       <Tooltip title='Edit'>
         <EditOutlined

@@ -1,15 +1,15 @@
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getAccountById } from './api'
-import { AccountTypes } from './types'
+import { AccountResponse } from './types'
 
-export function useGetAccountDetail(options: UseMutationOptions<AccountTypes> & { userId: string }) {
+export function useGetAccountDetail(options: UseMutationOptions<AccountResponse> & { userId: string }) {
   const {
     data,
     isPending: isLoadingDetail,
     isSuccess,
     error,
     refetch: getAccountDetail
-  } = useQuery<AccountTypes>({
+  } = useQuery<AccountResponse>({
     queryKey: ['account', { ...options }],
     queryFn: () => getAccountById({ userId: options.userId }),
     ...options

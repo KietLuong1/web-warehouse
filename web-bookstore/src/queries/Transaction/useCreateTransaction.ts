@@ -1,10 +1,10 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query'
 import { Toastify } from '../../components/Toastify'
 import { createTransaction } from './api'
-import { TransactionTypes } from './types'
+import { TransactionPayload } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useCreateTransaction(options?: UseMutationOptions<any, Error, TransactionTypes>) {
+export function useCreateTransaction(options?: UseMutationOptions<any, Error, TransactionPayload>) {
   const {
     mutate: onCreateTransaction,
     isPending,

@@ -1,10 +1,10 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query'
 import { Toastify } from '../../components/Toastify'
 import { createReport } from './api'
-import { ReportTypes } from './types'
+import { ReportPayload } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useCreateReport(options?: UseMutationOptions<any, Error, ReportTypes>) {
+export function useCreateReport(options?: UseMutationOptions<any, Error, ReportPayload>) {
   const {
     mutate: onCreateReport,
     isPending,

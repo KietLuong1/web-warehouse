@@ -5,7 +5,7 @@ import { Modal, Tooltip } from 'antd'
 import { useCallback, useState } from 'react'
 import { CustomTable } from '../../components/Table'
 import { Toastify } from '../../components/Toastify'
-import { ReportTypes } from '../../queries/Reports'
+import { ReportResponse } from '../../queries/Reports'
 import { useDeleteReport } from '../../queries/Reports/useDeleteReport'
 import { useGetListReport } from '../../queries/Reports/useGetListReports'
 import { allColumns } from './allColumns'
@@ -17,7 +17,7 @@ function Report() {
   const { reportList, isFetching, handleInvalidateListReport } = useGetListReport()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
-  const [selectedRow, setSelectedRow] = useState<ReportTypes | undefined>(undefined)
+  const [selectedRow, setSelectedRow] = useState<ReportResponse | undefined>(undefined)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
@@ -37,7 +37,7 @@ function Report() {
   })
 
   const handleDeleteRecord = useCallback(
-    (rowData: ReportTypes) => {
+    (rowData: ReportResponse) => {
       Modal.confirm({
         title: 'Are you sure?',
         content: 'This action cannot be undone.',
@@ -50,12 +50,12 @@ function Report() {
     [onDeleteReport]
   )
 
-  const handleRowClick = useCallback((row: ReportTypes) => {
+  const handleRowClick = useCallback((row: ReportResponse) => {
     setSelectedRow(row)
     setIsDetailModalVisible(true)
   }, [])
 
-  const renderRowActions = (row: ReportTypes) => (
+  const renderRowActions = (row: ReportResponse) => (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
       <Tooltip title='Edit'>
         <EditOutlined

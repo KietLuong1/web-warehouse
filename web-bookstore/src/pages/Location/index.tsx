@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react'
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
 import { Toastify } from '../../components/Toastify'
-import { LocationTypes } from '../../queries'
+import { LocationResponse } from '../../queries'
 import { useDeleteLocation } from '../../queries/Location/useDeleteLocation'
 import { useGetListLocation } from '../../queries/Location/useGetListLocation'
 import { allColumns } from './allColumns'
@@ -14,7 +14,7 @@ import { LocationToolbar } from './LocationToolbar'
 function Location() {
   const { data, isFetching, handleInvalidateListLocation } = useGetListLocation()
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const [selectedRow, setSelectedRow] = useState<LocationTypes | undefined>(undefined)
+  const [selectedRow, setSelectedRow] = useState<LocationResponse | undefined>(undefined)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
@@ -29,7 +29,7 @@ function Location() {
   })
 
   const handleDeleteRecord = useCallback(
-    (rowData: LocationTypes) => {
+    (rowData: LocationResponse) => {
       Modal.confirm({
         title: 'Are you sure?',
         content: 'This action cannot be undone.',
@@ -42,7 +42,7 @@ function Location() {
     [onDeleteLocation]
   )
 
-  const renderRowActions = (row: LocationTypes) => (
+  const renderRowActions = (row: LocationResponse) => (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
       <Tooltip title='Edit'>
         <EditOutlined
@@ -65,7 +65,7 @@ function Location() {
 
   return (
     <>
-      <CustomTable<LocationTypes>
+      <CustomTable<LocationResponse>
         data={data || []}
         isLoading={isFetching}
         columns={allColumns}

@@ -1,9 +1,10 @@
 import { axiosInstance4 } from '../../configs/services/http/index'
-import { AccountTypes } from './types'
+import { AccountPayLoad } from '../Account/types'
+import { AccountResponse, AccountTypes } from './types'
 
-export const fetchListAccount = async (): Promise<AccountTypes[]> => {
+export const fetchListAccount = async (): Promise<AccountResponse[]> => {
   try {
-    const response = await axiosInstance4.get<AccountTypes[]>('/account')
+    const response = await axiosInstance4.get<AccountResponse[]>('/account')
     return response.data
   } catch (error) {
     console.error('Failed to fetch list of account:', error)
@@ -11,9 +12,9 @@ export const fetchListAccount = async (): Promise<AccountTypes[]> => {
   }
 }
 
-export const getAccountById = async ({ userId }: { userId: string }): Promise<AccountTypes> => {
+export const getAccountById = async ({ userId }: { userId: string }): Promise<AccountResponse> => {
   try {
-    const response = await axiosInstance4.get<AccountTypes>(`/account/${userId}`)
+    const response = await axiosInstance4.get<AccountResponse>(`/account/${userId}`)
     return response.data
   } catch (error) {
     console.error('Failed to get record:', error)
@@ -21,9 +22,9 @@ export const getAccountById = async ({ userId }: { userId: string }): Promise<Ac
   }
 }
 
-export const createAccount = async (body: AccountTypes): Promise<AccountTypes> => {
+export const createAccount = async (body: AccountPayLoad): Promise<AccountPayLoad> => {
   try {
-    const response = await axiosInstance4.post<AccountTypes>(`/account`, body)
+    const response = await axiosInstance4.post<AccountPayLoad>(`/account`, body)
     return response.data
   } catch (error) {
     console.error('Failed to create record:', error)
@@ -31,7 +32,7 @@ export const createAccount = async (body: AccountTypes): Promise<AccountTypes> =
   }
 }
 
-export const updateAccount = async (body: AccountTypes, id: string): Promise<AccountTypes> => {
+export const updateAccount = async (body: AccountPayLoad, id: string): Promise<AccountPayLoad> => {
   try {
     const response = await axiosInstance4.put<AccountTypes>(`/account/${id}`, body)
     return response.data

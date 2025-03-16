@@ -1,10 +1,10 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query'
 import { Toastify } from '../../components/Toastify'
 import { createAccount } from './api'
-import { AccountTypes } from './types'
+import { AccountPayload } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useCreateAccount(options?: UseMutationOptions<any, Error, AccountTypes>) {
+export function useCreateAccount(options?: UseMutationOptions<any, Error, AccountPayload>) {
   const {
     mutate: onCreateAccount,
     isPending,

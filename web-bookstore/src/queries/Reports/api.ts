@@ -1,12 +1,12 @@
 import { reportsApi } from '../../configs/services/http/index'
-import { ReportTypes } from './types'
+import { ReportPayload, ReportResponse } from './types'
 
-export const fetchListReport = async (): Promise<ReportTypes[]> => {
+export const fetchListReport = async (): Promise<ReportResponse[]> => {
   const response = await reportsApi.get('/reports')
   return response.data?.[0]?.data ?? []
 }
 
-export const getReportById = async ({ id }: { id: string }): Promise<ReportTypes> => {
+export const getReportById = async ({ id }: { id: string }): Promise<ReportResponse> => {
   try {
     const response = await reportsApi.get(`/reports`)
 
@@ -21,7 +21,7 @@ export const getReportById = async ({ id }: { id: string }): Promise<ReportTypes
 }
 
 // create, update, delete chưa xài được tại mock api hông support
-export const createReport = async (body: ReportTypes): Promise<ReportTypes> => {
+export const createReport = async (body: ReportPayload): Promise<ReportPayload> => {
   try {
     const response = await reportsApi.post(`/reports`, body)
     return response.data?.data
@@ -30,7 +30,7 @@ export const createReport = async (body: ReportTypes): Promise<ReportTypes> => {
     throw error
   }
 }
-export const updateReport = async (body: ReportTypes, id: string): Promise<ReportTypes> => {
+export const updateReport = async (body: ReportPayload, id: string): Promise<ReportPayload> => {
   try {
     const response = await reportsApi.get('/reports')
     const allReports = response.data?.[0]?.data || []
@@ -40,7 +40,7 @@ export const updateReport = async (body: ReportTypes, id: string): Promise<Repor
       throw new Error(`Report with ID ${id} not found.`)
     }
 
-    const updatedReports = allReports.map((item: ReportTypes) => (item.id === id ? { ...item, ...body } : item))
+    const updatedReports = allReports.map((item: ReportPayload) => (item.id === id ? { ...item, ...body } : item))
 
     const updateResponse = await reportsApi.put('/reports', [
       {
@@ -50,14 +50,14 @@ export const updateReport = async (body: ReportTypes, id: string): Promise<Repor
       }
     ])
 
-    return updateResponse.data?.[0]?.data.find((item: ReportTypes) => item.id === id)
+    return updateResponse.data?.[0]?.data.find((item: ReportPayload) => item.id === id)
   } catch (error) {
     console.error('Failed to update record:', error)
     throw error
   }
 }
 
-export const deleteReport = async (body: ReportTypes): Promise<ReportTypes> => {
+export const deleteReport = async (body: ReportPayload): Promise<ReportPayload> => {
   const { id } = body
   try {
     const response = await reportsApi.delete(`/reports/${id}`, {})

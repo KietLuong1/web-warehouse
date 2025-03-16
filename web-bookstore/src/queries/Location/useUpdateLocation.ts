@@ -1,18 +1,18 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query'
 import { Toastify } from '../../components/Toastify'
 import { updateLocation } from './api'
-import { LocationTypes } from './types'
+import { LocationPayload } from './types'
 
 export function useUpdateLocation(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  options?: UseMutationOptions<any, unknown, { data: LocationTypes; id: string }>
+  options?: UseMutationOptions<any, unknown, { data: LocationPayload; id: string }>
 ) {
   const {
     mutate: onUpdateLocation,
     isPending,
     isSuccess,
     error
-  } = useMutation<Error, unknown, { data: LocationTypes; id: string }>({
+  } = useMutation<Error, unknown, { data: LocationPayload; id: string }>({
     mutationFn: ({ data, id }) => {
       return updateLocation(data, id)
     },

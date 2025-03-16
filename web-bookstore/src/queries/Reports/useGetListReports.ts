@@ -1,6 +1,6 @@
 import { useQuery, useQueryClient } from '@tanstack/react-query'
-import { ReportTypes } from './types'
 import { fetchListReport } from './api'
+import { ReportResponse } from './types'
 
 export function useGetListReport() {
   const queryClient = useQueryClient()
@@ -10,7 +10,7 @@ export function useGetListReport() {
     error,
     isFetching,
     refetch: onGetAllListReport
-  } = useQuery<ReportTypes[]>({
+  } = useQuery<ReportResponse[]>({
     queryKey: ['reports'],
     queryFn: fetchListReport
   })

@@ -1,8 +1,8 @@
 import { Tooltip } from 'antd'
 import { MRT_ColumnDef } from 'material-react-table'
-import { ReportTypes } from '../../queries/Reports'
+import { ReportResponse } from '../../queries/Reports'
 
-export const allColumns: MRT_ColumnDef<ReportTypes>[] = [
+export const allColumns: MRT_ColumnDef<ReportResponse>[] = [
   {
     accessorKey: 'id',
     header: 'Report ID',

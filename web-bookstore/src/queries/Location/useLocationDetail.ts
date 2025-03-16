@@ -1,15 +1,15 @@
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
-import { LocationTypes } from './types'
 import { getLocationById } from './api'
+import { LocationResponse } from './types'
 
-export function useLocationDetail(options: UseMutationOptions<LocationTypes> & { id: string }) {
+export function useLocationDetail(options: UseMutationOptions<LocationResponse> & { id: string }) {
   const {
     data,
     isPending: isLoadingDetail,
     isSuccess,
     error,
     refetch: getLocationDetail
-  } = useQuery<LocationTypes>({
+  } = useQuery<LocationResponse>({
     queryKey: ['location', { ...options }],
     queryFn: () => getLocationById({ id: options.id }),
     ...options

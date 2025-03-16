@@ -1,8 +1,8 @@
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
-import { TransactionTypes } from './types'
+import { TransactionResponse, TransactionTypes } from './types'
 import { getTransactionById } from './api'
 
-export function useTransactionDetail(options: UseMutationOptions<TransactionTypes> & { id: string }) {
+export function useTransactionDetail(options: UseMutationOptions<TransactionResponse> & { id: string }) {
   const {
     data,
     isPending: isLoadingDetail,

@@ -8,10 +8,10 @@ import CustomTableColumnOptions from '../../../components/TableColumnOptions'
 import CustomTableColumnOptionsModal from '../../../components/TableColumnOptions/CustomTableColumnOptionModal'
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
-import { CreateUpdateAccountModal } from '../CreateUpdateInventoryModal'
-import AccountFilter from '../AccountFilter'
+import { AccountResponse } from '../../../queries/Account_MockData'
 import { useGetListAccount } from '../../../queries/Account_MockData/useGetListAccounts'
-import { AccountTypes } from '../../../queries/Account_MockData'
+import AccountFilter from '../AccountFilter'
+import { CreateUpdateAccountModal } from '../CreateUpdateInventoryModal'
 
 export const AccountToolbar: React.FC<Props> = ({ table }) => {
   const { handleInvalidateListAccount } = useGetListAccount()
@@ -52,7 +52,7 @@ export const AccountToolbar: React.FC<Props> = ({ table }) => {
           </Tooltip>
           <CustomTableColumnOptions>
             <Tooltip title='Column Options' arrow placement='top'>
-              <CustomTableColumnOptionsModal<AccountTypes> table={table} />
+              <CustomTableColumnOptionsModal<AccountResponse> table={table} />
             </Tooltip>
           </CustomTableColumnOptions>
           <Button type='primary' size='large' onClick={openCreateModal} icon={<PlusOutlined />}>
@@ -76,7 +76,7 @@ export const AccountToolbar: React.FC<Props> = ({ table }) => {
 }
 
 type Props = {
-  table: MRT_TableInstance<AccountTypes>
+  table: MRT_TableInstance<AccountResponse>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSetParams?: (params: any) => void
 }

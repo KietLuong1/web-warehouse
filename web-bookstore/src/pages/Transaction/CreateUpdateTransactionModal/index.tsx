@@ -1,15 +1,16 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, Grid2, Stack } from '@mui/material'
 import { DatePicker, Form, Input } from 'antd'
 import dayjs from 'dayjs'
 import React, { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Toastify } from '../../../components/Toastify'
-import { TransactionKey, TransactionTypes } from '../../../queries'
+import { TransactionKey, TransactionPayload } from '../../../queries'
+import { useCreateTransaction } from '../../../queries/Transaction/useCreateTransaction'
 import { useGetListTransactions } from '../../../queries/Transaction/useGetListTransactions'
 import { useTransactionDetail } from '../../../queries/Transaction/useTransactionDetail'
 import { useUpdateTransaction } from '../../../queries/Transaction/useUpdateTransaction'
-import { TransactionInitValues } from './helpers'
-import { useCreateTransaction } from '../../../queries/Transaction/useCreateTransaction'
+import { TransactionInitValues, TransactionValidationSchema } from './helpers'
 
 type Props = {
   importId?: string
@@ -39,16 +40,22 @@ export const CreateUpdateTransactionModal: React.FC<Props> = ({ importId, onClos
   const { data: detailData, handleInvalidateDetail } = useTransactionDetail({
     id: importId ?? ''
   })
-  const { handleSubmit, control, reset } = useForm<TransactionTypes>({
-    defaultValues: {},
-    mode: 'onChange',
+  const { handleSubmit, control, reset } = useForm<TransactionPayload>({
+    defaultValues: TransactionInitValues,
+    mode: 'onBlur',
     shouldFocusError: true,
-    reValidateMode: 'onChange'
+    reValidateMode: 'onChange',
+    resolver: yupResolver(TransactionValidationSchema)
   })
 
   useEffect(() => {
     if (isEdit && detailData) {
-      reset(detailData)
+      reset({
+        ...detailData,
+        [TransactionKey.EXPIRED_DATE]: detailData.expiredDate
+          ? dayjs(detailData.expiredDate).format('YYYY-MM-DD')
+          : undefined
+      })
     }
   }, [detailData, isEdit, reset])
 
@@ -61,17 +68,27 @@ export const CreateUpdateTransactionModal: React.FC<Props> = ({ importId, onClos
     }
   }
 
-  const onSubmit = (data: TransactionTypes) => {
+  const onSubmit = (data: TransactionPayload) => {
     if (isEdit) {
       if (!importId) {
         Toastify('error', 'An ID is missing for update operation.')
         return
       }
-      onUpdateTransaction({ data, id: importId })
+      onUpdateTransaction({
+        data: {
+          ...data,
+          [TransactionKey.EXPIRED_DATE]: data[TransactionKey.EXPIRED_DATE]
+            ? dayjs(data[TransactionKey.EXPIRED_DATE]).format('YYYY-MM-DD')
+            : ''
+        },
+        id: importId
+      })
     } else {
       const result = {
         ...data,
-        [TransactionKey.EXPIRED_DATE]: dayjs(data.expiredDate).format('YYYY-MM-DD')
+        [TransactionKey.EXPIRED_DATE]: data[TransactionKey.EXPIRED_DATE]
+          ? dayjs(data[TransactionKey.EXPIRED_DATE]).format('YYYY-MM-DD')
+          : ''
       }
       onCreateTransaction(result)
     }
@@ -84,8 +101,8 @@ export const CreateUpdateTransactionModal: React.FC<Props> = ({ importId, onClos
             name={TransactionKey.BATCH_ID}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Batch ID'} required>
-                <Input {...field} placeholder='Enter Batch ID' aria-errormessage={error?.message} />
+              <Form.Item label={'Batch ID'} required validateStatus={error ? 'error' : undefined} help={error?.message}>
+                <Input {...field} placeholder='Enter Batch ID' />
               </Form.Item>
             )}
           />
@@ -96,8 +113,13 @@ export const CreateUpdateTransactionModal: React.FC<Props> = ({ importId, onClos
             name={TransactionKey.PRODUCT}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Product Name'} required>
-                <Input {...field} placeholder='Enter Product Name' aria-errormessage={error?.message} />
+              <Form.Item
+                label={'Product Name'}
+                required
+                validateStatus={error ? 'error' : undefined}
+                help={error?.message}
+              >
+                <Input {...field} placeholder='Enter Product Name' />
               </Form.Item>
             )}
           />
@@ -108,8 +130,8 @@ export const CreateUpdateTransactionModal: React.FC<Props> = ({ importId, onClos
             name={TransactionKey.LOCATION}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Location'} required>
-                <Input {...field} placeholder='Enter Location' aria-errormessage={error?.message} />
+              <Form.Item label={'Location'} required validateStatus={error ? 'error' : undefined} help={error?.message}>
+                <Input {...field} placeholder='Enter Location' />
               </Form.Item>
             )}
           />
@@ -124,9 +146,10 @@ export const CreateUpdateTransactionModal: React.FC<Props> = ({ importId, onClos
                   <DatePicker
                     {...field}
                     value={field.value ? dayjs(field.value) : null}
-                    onChange={(date) => field.onChange(date)}
+                    onChange={(date) => field.onChange(date ? date.toString() : '')}
                     format='YYYY-MM-DD'
                     placeholder='Enter Expired Date'
+                    onBlur={field.onBlur}
                   />
                 </Form.Item>
               )}
@@ -137,8 +160,13 @@ export const CreateUpdateTransactionModal: React.FC<Props> = ({ importId, onClos
               name={TransactionKey.QUANTITY}
               control={control}
               render={({ field, fieldState: { error } }) => (
-                <Form.Item label={'Quantity'}>
-                  <Input {...field} type='number' placeholder='Enter Quantity' aria-errormessage={error?.message} />
+                <Form.Item
+                  label={'Quantity'}
+                  required
+                  validateStatus={error ? 'error' : undefined}
+                  help={error?.message}
+                >
+                  <Input {...field} type='number' placeholder='Enter Quantity' min={1} />
                 </Form.Item>
               )}
             />

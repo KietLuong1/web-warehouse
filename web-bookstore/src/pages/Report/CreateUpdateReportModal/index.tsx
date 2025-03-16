@@ -3,7 +3,7 @@ import { Form, Input } from 'antd'
 import React, { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Toastify } from '../../../components/Toastify'
-import { ReportKey, ReportTypes } from '../../../queries/Reports'
+import { ReportKey, ReportPayload } from '../../../queries/Reports'
 import { useCreateReport } from '../../../queries/Reports/useCreateReport'
 import { useGetListReport } from '../../../queries/Reports/useGetListReports'
 import { useGetReportDetail } from '../../../queries/Reports/useReportDetail'
@@ -37,7 +37,7 @@ export const CreateUpdateReportModal: React.FC<Props> = ({ id, onCloseModal, isE
   const { data: detailData, handleInvalidateDetail } = useGetReportDetail({
     id: id ?? ''
   })
-  const { handleSubmit, control, reset } = useForm<ReportTypes>({
+  const { handleSubmit, control, reset } = useForm<ReportPayload>({
     defaultValues: {},
     mode: 'onChange',
     shouldFocusError: true,
@@ -59,7 +59,7 @@ export const CreateUpdateReportModal: React.FC<Props> = ({ id, onCloseModal, isE
     onCloseModal()
   }
 
-  const onSubmit = (data: ReportTypes) => {
+  const onSubmit = (data: ReportPayload) => {
     if (isEdit) {
       if (!id) {
         Toastify('error', 'An ID is missing for update operation.')

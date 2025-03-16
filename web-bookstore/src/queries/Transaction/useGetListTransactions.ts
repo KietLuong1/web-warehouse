@@ -1,9 +1,9 @@
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchListTransactions } from './api'
-import { TransactionTypes } from './types'
+import { TransactionResponse } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useGetListTransactions(options?: UseMutationOptions<any, Error, TransactionTypes>) {
+export function useGetListTransactions(options?: UseMutationOptions<any, Error, TransactionResponse>) {
   const {
     data,
     error,

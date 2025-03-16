@@ -1,7 +1,7 @@
 import { MRT_ColumnDef } from 'material-react-table'
-import { TransactionTypes } from '../../queries'
+import { TransactionResponse } from '../../queries'
 
-export const allColumns: MRT_ColumnDef<TransactionTypes>[] = [
+export const allColumns: MRT_ColumnDef<TransactionResponse>[] = [
   {
     accessorKey: 'id',
     header: 'Transaction ID',

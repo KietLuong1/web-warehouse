@@ -1,9 +1,9 @@
 import { axiosInstance } from '../../configs/services/http/index'
-import { TransactionTypes } from './types'
+import { TransactionPayload, TransactionResponse } from './types'
 
-export const fetchListTransactions = async (): Promise<TransactionTypes[]> => {
+export const fetchListTransactions = async (): Promise<TransactionResponse[]> => {
   try {
-    const response = await axiosInstance.get<TransactionTypes[]>(`/imports`)
+    const response = await axiosInstance.get<TransactionResponse[]>(`/imports`)
     return response.data
   } catch (error) {
     console.error('Failed to fetch list imports:', error)
@@ -11,9 +11,9 @@ export const fetchListTransactions = async (): Promise<TransactionTypes[]> => {
   }
 }
 
-export const getTransactionById = async ({ id }: { id: string }): Promise<TransactionTypes> => {
+export const getTransactionById = async ({ id }: { id: string }): Promise<TransactionResponse> => {
   try {
-    const response = await axiosInstance.get<TransactionTypes>(`/imports/${id}`)
+    const response = await axiosInstance.get<TransactionResponse>(`/imports/${id}`)
     return response.data
   } catch (error) {
     console.error('Failed to get record:', error)
@@ -21,9 +21,9 @@ export const getTransactionById = async ({ id }: { id: string }): Promise<Transa
   }
 }
 
-export const createTransaction = async (body: TransactionTypes): Promise<TransactionTypes> => {
+export const createTransaction = async (body: TransactionPayload): Promise<TransactionPayload> => {
   try {
-    const response = await axiosInstance.post<TransactionTypes>(`/imports`, body)
+    const response = await axiosInstance.post<TransactionPayload>(`/imports`, body)
     return response.data
   } catch (error) {
     console.error('Failed to create record:', error)
@@ -31,9 +31,9 @@ export const createTransaction = async (body: TransactionTypes): Promise<Transac
   }
 }
 
-export const updateTransaction = async (body: TransactionTypes, id: string): Promise<TransactionTypes> => {
+export const updateTransaction = async (body: TransactionPayload, id: string): Promise<TransactionPayload> => {
   try {
-    const response = await axiosInstance.put<TransactionTypes>(`/imports/${id}`, body)
+    const response = await axiosInstance.put<TransactionPayload>(`/imports/${id}`, body)
     return response.data
   } catch (error) {
     console.error('Failed to update record:', error)
@@ -41,10 +41,10 @@ export const updateTransaction = async (body: TransactionTypes, id: string): Pro
   }
 }
 
-export const deleteTransaction = async (body: TransactionTypes): Promise<TransactionTypes> => {
+export const deleteTransaction = async (body: TransactionPayload): Promise<TransactionPayload> => {
   const { id } = body
   try {
-    const response = await axiosInstance.delete<TransactionTypes>(`/imports/${id}`, {})
+    const response = await axiosInstance.delete<TransactionResponse>(`/imports/${id}`, {})
     return response.data
   } catch (error) {
     console.error('Failed to delete record:', error)

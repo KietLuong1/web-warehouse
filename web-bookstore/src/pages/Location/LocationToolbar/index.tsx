@@ -8,10 +8,10 @@ import CustomTableColumnOptions from '../../../components/TableColumnOptions'
 import CustomTableColumnOptionsModal from '../../../components/TableColumnOptions/CustomTableColumnOptionModal'
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
-import { LocationTypes } from '../../../queries'
+import { LocationResponse } from '../../../queries'
+import { useGetListLocation } from '../../../queries/Location/useGetListLocation'
 import { CreateUpdateLocationModal } from '../CreateUpdateLocationModal'
 import LocationFilter from '../LocationFilter'
-import { useGetListLocation } from '../../../queries/Location/useGetListLocation'
 
 export const LocationToolbar: React.FC<Props> = ({ table }) => {
   const { handleInvalidateListLocation } = useGetListLocation()
@@ -52,7 +52,7 @@ export const LocationToolbar: React.FC<Props> = ({ table }) => {
           </Tooltip>
           <CustomTableColumnOptions>
             <Tooltip title='Column Options' arrow placement='top'>
-              <CustomTableColumnOptionsModal<LocationTypes> table={table} />
+              <CustomTableColumnOptionsModal<LocationResponse> table={table} />
             </Tooltip>
           </CustomTableColumnOptions>
           <Button type='primary' size='large' onClick={openCreateModal} icon={<PlusOutlined />}>
@@ -76,7 +76,7 @@ export const LocationToolbar: React.FC<Props> = ({ table }) => {
 }
 
 type Props = {
-  table: MRT_TableInstance<LocationTypes>
+  table: MRT_TableInstance<LocationResponse>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSetParams?: (params: any) => void
 }

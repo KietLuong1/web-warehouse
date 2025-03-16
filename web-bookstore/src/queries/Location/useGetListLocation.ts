@@ -1,9 +1,9 @@
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchListLocation } from './api'
-import { LocationTypes } from './types'
+import { LocationResponse } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useGetListLocation(options?: UseMutationOptions<any, Error, LocationTypes>) {
+export function useGetListLocation(options?: UseMutationOptions<any, Error, LocationResponse>) {
   const {
     data,
     error,

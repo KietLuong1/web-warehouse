@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react'
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
 import { Toastify } from '../../components/Toastify'
-import { TransactionTypes } from '../../queries'
+import { TransactionResponse, TransactionTypes } from '../../queries'
 import { useDeleteTransaction } from '../../queries/Transaction/useDeleteTransactiont'
 import { useGetListTransactions } from '../../queries/Transaction/useGetListTransactions'
 import { allColumns } from './allColumns'
@@ -14,7 +14,7 @@ import { TransactionToolbar } from './TransactionToolbar'
 function Transaction() {
   const { data, isFetching, handleInvalidateListTransactions } = useGetListTransactions()
   const [isModalVisible, setIsModalVisible] = useState(false)
-  const [selectedRow, setSelectedRow] = useState<TransactionTypes | undefined>(undefined)
+  const [selectedRow, setSelectedRow] = useState<TransactionResponse | undefined>(undefined)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
@@ -42,7 +42,7 @@ function Transaction() {
     [onDeleteTransaction]
   )
 
-  const renderRowActions = (row: TransactionTypes) => (
+  const renderRowActions = (row: TransactionResponse) => (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
       <Tooltip title='Edit'>
         <EditOutlined
@@ -65,7 +65,7 @@ function Transaction() {
 
   return (
     <>
-      <CustomTable<TransactionTypes>
+      <CustomTable<TransactionResponse>
         data={data || []}
         isLoading={isFetching}
         columns={allColumns}

@@ -1,10 +1,10 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query'
 import { Toastify } from '../../components/Toastify'
 import { createLocation } from './api'
-import { LocationTypes } from './types'
+import { LocationPayload } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useCreateLocation(options?: UseMutationOptions<any, Error, LocationTypes>) {
+export function useCreateLocation(options?: UseMutationOptions<any, Error, LocationPayload>) {
   const {
     mutate: onCreateLocation,
     isPending,

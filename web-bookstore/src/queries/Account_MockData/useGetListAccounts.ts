@@ -1,9 +1,9 @@
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchListAccount } from './api'
-import { AccountTypes } from './types'
+import { AccountResponse } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useGetListAccount(options?: UseMutationOptions<any, Error, AccountTypes>) {
+export function useGetListAccount(options?: UseMutationOptions<any, Error, AccountResponse>) {
   const {
     data,
     error,

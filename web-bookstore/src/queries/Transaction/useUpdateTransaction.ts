@@ -1,11 +1,11 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query'
 import { Toastify } from '../../components/Toastify'
 import { updateTransaction } from './api'
-import { TransactionTypes } from './types'
+import { TransactionPayload, TransactionTypes } from './types'
 
 export function useUpdateTransaction(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  options?: UseMutationOptions<any, unknown, { data: TransactionTypes; id: string }>
+  options?: UseMutationOptions<any, unknown, { data: TransactionPayload; id: string }>
 ) {
   const {
     mutate: onUpdateTransaction,

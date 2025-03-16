@@ -8,10 +8,10 @@ import CustomTableColumnOptions from '../../../components/TableColumnOptions'
 import CustomTableColumnOptionsModal from '../../../components/TableColumnOptions/CustomTableColumnOptionModal'
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
-import { TransactionTypes } from '../../../queries'
+import { TransactionResponse } from '../../../queries'
+import { useGetListTransactions } from '../../../queries/Transaction/useGetListTransactions'
 import { CreateUpdateTransactionModal } from '../CreateUpdateTransactionModal'
 import TransactionFilter from '../TransactionFillter'
-import { useGetListTransactions } from '../../../queries/Transaction/useGetListTransactions'
 
 export const TransactionToolbar: React.FC<Props> = ({ table }) => {
   const { handleInvalidateListTransactions } = useGetListTransactions()
@@ -52,7 +52,7 @@ export const TransactionToolbar: React.FC<Props> = ({ table }) => {
           </Tooltip>
           <CustomTableColumnOptions>
             <Tooltip title='Column Options' arrow placement='top'>
-              <CustomTableColumnOptionsModal<TransactionTypes> table={table} />
+              <CustomTableColumnOptionsModal<TransactionResponse> table={table} />
             </Tooltip>
           </CustomTableColumnOptions>
           <Button type='primary' size='large' onClick={openCreateModal} icon={<PlusOutlined />}>
@@ -76,7 +76,7 @@ export const TransactionToolbar: React.FC<Props> = ({ table }) => {
 }
 
 type Props = {
-  table: MRT_TableInstance<TransactionTypes>
+  table: MRT_TableInstance<TransactionResponse>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSetParams?: (params: any) => void
 }

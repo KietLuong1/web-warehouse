@@ -1,15 +1,15 @@
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ReportTypes } from './types'
 import { getReportById } from './api'
+import { ReportResponse } from './types'
 
-export function useGetReportDetail(options: UseMutationOptions<ReportTypes> & { id: string }) {
+export function useGetReportDetail(options: UseMutationOptions<ReportResponse> & { id: string }) {
   const {
     data,
     isPending: isLoadingDetail,
     isSuccess,
     error,
     refetch: getReportDetail
-  } = useQuery<ReportTypes>({
+  } = useQuery<ReportResponse>({
     queryKey: ['reports', options.id],
     queryFn: () => getReportById({ id: options.id }),
     ...options
