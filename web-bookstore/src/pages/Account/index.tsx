@@ -5,6 +5,7 @@ import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
 import { AccountResponse } from '../../queries/Account_MockData'
 import { useGetListAccount } from '../../queries/Account_MockData/useGetListAccounts'
+import { AccountDetailModal } from './AccountDetailModel'
 import { AccountToolbar } from './AccountToolbar'
 import { allColumns } from './allColumns'
 import { CreateUpdateAccountModal } from './CreateUpdateInventoryModal'
@@ -13,12 +14,16 @@ function Account() {
   const { isFetching, data } = useGetListAccount()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [selectedRow, setSelectedRow] = useState<AccountResponse>()
-  // Remove unnecessary query parameters
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalVisible])
+
+  const closeDetailModal = useCallback(() => {
+    setIsDetailModalVisible(false)
+  }, [isDetailModalVisible])
 
   // useEffect(() => {
   //   setParams({
@@ -32,7 +37,8 @@ function Account() {
       <Tooltip title='Edit'>
         <EditOutlined
           style={{ fontSize: '16px', color: 'blue', cursor: 'pointer' }}
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation()
             setIsModalVisible(true)
             setSelectedRow(row)
           }}
@@ -40,6 +46,11 @@ function Account() {
       </Tooltip>
     </div>
   )
+
+  const handleRowClick = useCallback((row: AccountResponse) => {
+    setSelectedRow(row)
+    setIsDetailModalVisible(true)
+  }, [])
 
   return (
     <>
@@ -57,6 +68,10 @@ function Account() {
         initialState={{ columnPinning: { right: ['mrt-row-actions'] } }}
         renderToolbarInternalActions={({ table }) => <AccountToolbar table={table} />}
         renderTopToolbarCustomActions={({ table }) => <CustomTableSearch table={table} placeholder='Search by Name' />}
+        muiTableBodyRowProps={({ row }) => ({
+          onClick: () => handleRowClick(row.original),
+          sx: { cursor: 'pointer' }
+        })}
       />
       <Modal
         title='Edit Account'
@@ -68,6 +83,8 @@ function Account() {
       >
         <CreateUpdateAccountModal onCloseModal={closeModal} isEdit userId={selectedRow?.userId} />
       </Modal>
+
+      <AccountDetailModal isVisible={isDetailModalVisible} onClose={closeDetailModal} accountData={selectedRow} />
     </>
   )
 }

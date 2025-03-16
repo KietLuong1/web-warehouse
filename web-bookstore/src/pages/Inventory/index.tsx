@@ -26,7 +26,6 @@ function Inventory() {
 
   const closeDetailModal = useCallback(() => {
     setIsDetailModalVisible(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isDetailModalVisible])
 
   const { onDeleteInventory } = useDeleteInventory({
@@ -55,7 +54,8 @@ function Inventory() {
       <Tooltip title='Edit'>
         <EditOutlined
           style={{ fontSize: '16px', color: 'blue', cursor: 'pointer' }}
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation()
             setIsModalVisible(true)
             setSelectedRow(row)
           }}
@@ -65,7 +65,10 @@ function Inventory() {
       <Tooltip title='Delete'>
         <DeleteOutlined
           style={{ fontSize: '16px', color: 'red', cursor: 'pointer' }}
-          onClick={() => handleDeleteRecord(row)}
+          onClick={(e) => {
+            e.stopPropagation()
+            handleDeleteRecord(row)
+          }}
         />
       </Tooltip>
     </div>
@@ -99,6 +102,7 @@ function Inventory() {
           sx: { cursor: 'pointer' }
         })}
       />
+
       <Modal
         title='Edit Inventory'
         open={isModalVisible}

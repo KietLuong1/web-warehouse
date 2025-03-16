@@ -10,16 +10,23 @@ import { useGetListProducts } from '../../queries/Product/useGetListProducts'
 import { allColumns } from './allColumns'
 import { CreateUpdateProductModal } from './CreateUpdateProductModal'
 import { ProductToolbar } from './ProductToolbar'
+import { ProductDetailModal } from './ProductDetailModel'
 
 function Product() {
   const { data, isFetching, handleInvalidateListProducts } = useGetListProducts()
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
+
   const [selectedRow, setSelectedRow] = useState<ProductTypes | undefined>(undefined)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalVisible])
+
+  const closeDetailModal = useCallback(() => {
+    setIsDetailModalVisible(false)
+  }, [isDetailModalVisible])
 
   const { onDeleteProduct } = useDeleteProduct({
     onSuccess() {
@@ -47,7 +54,8 @@ function Product() {
       <Tooltip title='Edit'>
         <EditOutlined
           style={{ fontSize: '16px', color: 'blue', cursor: 'pointer' }}
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation()
             setIsModalVisible(true)
             setSelectedRow(row)
           }}
@@ -57,11 +65,18 @@ function Product() {
       <Tooltip title='Delete'>
         <DeleteOutlined
           style={{ fontSize: '16px', color: 'red', cursor: 'pointer' }}
-          onClick={() => handleDeleteRecord(row)}
-        />
+          onClick={(e) => {
+            e.stopPropagation()
+            handleDeleteRecord(row)
+          }} />
       </Tooltip>
     </div>
   )
+
+  const handleRowClick = useCallback((row: ProductTypes) => {
+    setSelectedRow(row)
+    setIsDetailModalVisible(true)
+  }, [])
 
   return (
     <>
@@ -81,6 +96,10 @@ function Product() {
         renderTopToolbarCustomActions={({ table }) => (
           <CustomTableSearch table={table} placeholder='Search by Name or Email' />
         )}
+        muiTableBodyRowProps={({ row }) => ({
+          onClick: () => handleRowClick(row.original),
+          sx: { cursor: 'pointer' }
+        })}
       />
       <Modal
         title='Edit Record'
@@ -92,6 +111,9 @@ function Product() {
       >
         <CreateUpdateProductModal onCloseModal={closeModal} isEdit productId={selectedRow?.productId} />
       </Modal>
+
+      <ProductDetailModal isVisible={isDetailModalVisible} onClose={closeDetailModal} productData={selectedRow} />
+
     </>
   )
 }

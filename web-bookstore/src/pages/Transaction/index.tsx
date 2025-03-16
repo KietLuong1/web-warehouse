@@ -10,16 +10,23 @@ import { useGetListTransactions } from '../../queries/Transaction/useGetListTran
 import { allColumns } from './allColumns'
 import { CreateUpdateTransactionModal } from './CreateUpdateTransactionModal'
 import { TransactionToolbar } from './TransactionToolbar'
+import { TransactionDetailModal } from './TransactionDetailModel'
 
 function Transaction() {
   const { data, isFetching, handleInvalidateListTransactions } = useGetListTransactions()
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
+
   const [selectedRow, setSelectedRow] = useState<TransactionResponse | undefined>(undefined)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalVisible])
+
+  const closeDetailModal = useCallback(() => {
+    setIsDetailModalVisible(false)
+  }, [isDetailModalVisible])
 
   const { onDeleteTransaction } = useDeleteTransaction({
     onSuccess() {
@@ -47,7 +54,8 @@ function Transaction() {
       <Tooltip title='Edit'>
         <EditOutlined
           style={{ fontSize: '16px', color: 'blue', cursor: 'pointer' }}
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation()
             setIsModalVisible(true)
             setSelectedRow(row)
           }}
@@ -57,11 +65,19 @@ function Transaction() {
       <Tooltip title='Delete'>
         <DeleteOutlined
           style={{ fontSize: '16px', color: 'red', cursor: 'pointer' }}
-          onClick={() => handleDeleteRecord(row)}
+          onClick={(e) => {
+            e.stopPropagation()
+            handleDeleteRecord(row)
+          }}
         />
       </Tooltip>
     </div>
   )
+
+  const handleRowClick = useCallback((row: TransactionResponse) => {
+    setSelectedRow(row)
+    setIsDetailModalVisible(true)
+  }, [])
 
   return (
     <>
@@ -81,7 +97,12 @@ function Transaction() {
         renderTopToolbarCustomActions={({ table }) => (
           <CustomTableSearch table={table} placeholder='Search by Name or Email' />
         )}
+        muiTableBodyRowProps={({ row }) => ({
+          onClick: () => handleRowClick(row.original),
+          sx: { cursor: 'pointer' }
+        })}
       />
+
       <Modal
         title='Edit Record'
         open={isModalVisible}
@@ -92,6 +113,12 @@ function Transaction() {
       >
         <CreateUpdateTransactionModal onCloseModal={closeModal} isEdit importId={selectedRow?.id} />
       </Modal>
+
+      <TransactionDetailModal
+        isVisible={isDetailModalVisible}
+        onClose={closeDetailModal}
+        transactionData={selectedRow}
+      />
     </>
   )
 }

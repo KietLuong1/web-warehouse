@@ -10,16 +10,23 @@ import { useGetListSuppliers } from '../../queries/Supplier/useGetListSuppliers'
 import { allColumns } from './allColumns'
 import { CreateUpdateSupplierModal } from './CreateUpdateSupplierModal'
 import { SupplierToolbar } from './SupplierToolbar'
+import { SupplierDetailModal } from './SupplierDetailModel'
 
 function Supplier() {
   const { data, isFetching, handleInvalidateListSuppliers } = useGetListSuppliers()
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
+
   const [selectedRow, setSelectedRow] = useState<SupplierTypes | undefined>(undefined)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalVisible])
+
+  const closeDetailModal = useCallback(() => {
+    setIsDetailModalVisible(false)
+  }, [isDetailModalVisible])
 
   const { onDeleteSupplier } = useDeleteSupplier({
     onSuccess() {
@@ -47,7 +54,8 @@ function Supplier() {
       <Tooltip title='Edit'>
         <EditOutlined
           style={{ fontSize: '16px', color: 'blue', cursor: 'pointer' }}
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation()
             setIsModalVisible(true)
             setSelectedRow(row)
           }}
@@ -56,11 +64,19 @@ function Supplier() {
       <Tooltip title='Delete'>
         <DeleteOutlined
           style={{ fontSize: '16px', color: 'red', cursor: 'pointer' }}
-          onClick={() => handleDeleteRecord(row)}
+          onClick={(e) => {
+            e.stopPropagation()
+            handleDeleteRecord(row)
+          }}
         />
       </Tooltip>
     </div>
   )
+
+  const handleRowClick = useCallback((row: SupplierTypes) => {
+    setSelectedRow(row)
+    setIsDetailModalVisible(true)
+  }, [])
 
   return (
     <>
@@ -80,10 +96,14 @@ function Supplier() {
         renderTopToolbarCustomActions={({ table }) => (
           <CustomTableSearch table={table} placeholder='Search by Name or Email' />
         )}
+        muiTableBodyRowProps={({ row }) => ({
+          onClick: () => handleRowClick(row.original),
+          sx: { cursor: 'pointer' }
+        })}
       />
 
       <Modal
-        title='Edit Record'
+        title='Edit Supplier'
         open={isModalVisible}
         onCancel={closeModal}
         footer={null}
@@ -92,6 +112,8 @@ function Supplier() {
       >
         <CreateUpdateSupplierModal onCloseModal={closeModal} isEdit supplierId={selectedRow?.supplierId} />
       </Modal>
+
+      <SupplierDetailModal isVisible={isDetailModalVisible} onClose={closeDetailModal} supplierData={selectedRow} />
     </>
   )
 }

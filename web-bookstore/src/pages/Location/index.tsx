@@ -10,16 +10,23 @@ import { useGetListLocation } from '../../queries/Location/useGetListLocation'
 import { allColumns } from './allColumns'
 import { CreateUpdateLocationModal } from './CreateUpdateLocationModal'
 import { LocationToolbar } from './LocationToolbar'
+import { LocationDetailModal } from './LocationDetailModel'
 
 function Location() {
   const { data, isFetching, handleInvalidateListLocation } = useGetListLocation()
   const [isModalVisible, setIsModalVisible] = useState(false)
+  const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
+
   const [selectedRow, setSelectedRow] = useState<LocationResponse | undefined>(undefined)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalVisible])
+
+  const closeDetailModal = useCallback(() => {
+    setIsDetailModalVisible(false)
+  }, [isDetailModalVisible])
 
   const { onDeleteLocation } = useDeleteLocation({
     onSuccess() {
@@ -47,7 +54,8 @@ function Location() {
       <Tooltip title='Edit'>
         <EditOutlined
           style={{ fontSize: '16px', color: 'blue', cursor: 'pointer' }}
-          onClick={() => {
+          onClick={(e) => {
+            e.stopPropagation()
             setIsModalVisible(true)
             setSelectedRow(row)
           }}
@@ -57,11 +65,18 @@ function Location() {
       <Tooltip title='Delete'>
         <DeleteOutlined
           style={{ fontSize: '16px', color: 'red', cursor: 'pointer' }}
-          onClick={() => handleDeleteRecord(row)}
-        />
+          onClick={(e) => {
+            e.stopPropagation()
+            handleDeleteRecord(row)
+          }} />
       </Tooltip>
     </div>
   )
+
+  const handleRowClick = useCallback((row: LocationResponse) => {
+    setSelectedRow(row)
+    setIsDetailModalVisible(true)
+  }, [])
 
   return (
     <>
@@ -81,6 +96,10 @@ function Location() {
         renderTopToolbarCustomActions={({ table }) => (
           <CustomTableSearch table={table} placeholder='Search by Code Number or Zone Name' />
         )}
+        muiTableBodyRowProps={({ row }) => ({
+          onClick: () => handleRowClick(row.original),
+          sx: { cursor: 'pointer' }
+        })}
       />
       <Modal
         title='Edit Record'
@@ -92,6 +111,9 @@ function Location() {
       >
         <CreateUpdateLocationModal onCloseModal={closeModal} isEdit locationId={selectedRow?.location_id} />
       </Modal>
+
+      <LocationDetailModal isVisible={isDetailModalVisible} onClose={closeDetailModal} locationData={selectedRow} />
+
     </>
   )
 }
