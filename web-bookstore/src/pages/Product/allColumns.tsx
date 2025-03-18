@@ -1,7 +1,7 @@
 import { MRT_ColumnDef } from 'material-react-table'
-import { ProductTypes } from '../../queries'
+import { ProductResponse } from '../../queries'
 
-export const allColumns: MRT_ColumnDef<ProductTypes>[] = [
+export const allColumns: MRT_ColumnDef<ProductResponse>[] = [
   {
     accessorKey: 'productId',
     header: 'Product ID',

@@ -1,10 +1,10 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query'
 import { Toastify } from '../../components/Toastify'
 import { createSupplier } from './api'
-import { SupplierTypes } from './types'
+import { SupplierPayload } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useCreateSupplier(options?: UseMutationOptions<any, Error, SupplierTypes>) {
+export function useCreateSupplier(options?: UseMutationOptions<any, Error, SupplierPayload>) {
   const {
     mutate: onCreateSupplier,
     isPending,

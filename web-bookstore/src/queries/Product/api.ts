@@ -1,9 +1,9 @@
 import { axiosInstance3 } from '../../configs/services/http/index'
-import { ProductTypes } from './types'
+import { ProductPayload, ProductResponse } from './types'
 
-export const fetchListProducts = async (): Promise<ProductTypes[]> => {
+export const fetchListProducts = async (): Promise<ProductResponse[]> => {
   try {
-    const response = await axiosInstance3.get<ProductTypes[]>(`/products`)
+    const response = await axiosInstance3.get<ProductResponse[]>(`/products`)
     return response.data
   } catch (error) {
     console.error('Failed to fetch list products:', error)
@@ -11,9 +11,9 @@ export const fetchListProducts = async (): Promise<ProductTypes[]> => {
   }
 }
 
-export const getProductById = async ({ id }: { id: string }): Promise<ProductTypes> => {
+export const getProductById = async ({ id }: { id: string }): Promise<ProductResponse> => {
   try {
-    const response = await axiosInstance3.get<ProductTypes>(`/products/${id}`)
+    const response = await axiosInstance3.get<ProductResponse>(`/products/${id}`)
     return response.data
   } catch (error) {
     console.error('Failed to get product:', error)
@@ -21,9 +21,9 @@ export const getProductById = async ({ id }: { id: string }): Promise<ProductTyp
   }
 }
 
-export const createProduct = async (body: ProductTypes): Promise<ProductTypes> => {
+export const createProduct = async (body: ProductPayload): Promise<ProductPayload> => {
   try {
-    const response = await axiosInstance3.post<ProductTypes>(`/products`, body)
+    const response = await axiosInstance3.post<ProductPayload>(`/products`, body)
     return response.data
   } catch (error) {
     console.error('Failed to create product:', error)
@@ -31,9 +31,9 @@ export const createProduct = async (body: ProductTypes): Promise<ProductTypes> =
   }
 }
 
-export const updateProduct = async (body: ProductTypes, id: string): Promise<ProductTypes> => {
+export const updateProduct = async (body: ProductPayload, id: string): Promise<ProductPayload> => {
   try {
-    const response = await axiosInstance3.put<ProductTypes>(`/products/${id}`, body)
+    const response = await axiosInstance3.put<ProductPayload>(`/products/${id}`, body)
     return response.data
   } catch (error) {
     console.error('Failed to update product:', error)
@@ -41,10 +41,10 @@ export const updateProduct = async (body: ProductTypes, id: string): Promise<Pro
   }
 }
 
-export const deleteProduct = async (body: ProductTypes): Promise<ProductTypes> => {
-  const { productId } = body
+export const deleteProduct = async (body: ProductPayload): Promise<ProductPayload> => {
+  const { product_id } = body
   try {
-    const response = await axiosInstance3.delete<ProductTypes>(`/products/${productId}`, {})
+    const response = await axiosInstance3.delete<ProductPayload>(`/products/${product_id}`, {})
     return response.data
   } catch (error) {
     console.error('Failed to delete product:', error)

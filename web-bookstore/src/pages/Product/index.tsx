@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react'
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
 import { Toastify } from '../../components/Toastify'
-import { ProductTypes } from '../../queries'
+import { ProductResponse } from '../../queries'
 import { useDeleteProduct } from '../../queries/Product/useDeleteProduct'
 import { useGetListProducts } from '../../queries/Product/useGetListProducts'
 import { allColumns } from './allColumns'
@@ -17,7 +17,7 @@ function Product() {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 
-  const [selectedRow, setSelectedRow] = useState<ProductTypes | undefined>(undefined)
+  const [selectedRow, setSelectedRow] = useState<ProductResponse | undefined>(undefined)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
@@ -36,7 +36,7 @@ function Product() {
   })
 
   const handleDeleteRecord = useCallback(
-    (rowData: ProductTypes) => {
+    (rowData: ProductResponse) => {
       Modal.confirm({
         title: 'Are you sure?',
         content: 'This action cannot be undone.',
@@ -49,7 +49,7 @@ function Product() {
     [onDeleteProduct]
   )
 
-  const renderRowActions = (row: ProductTypes) => (
+  const renderRowActions = (row: ProductResponse) => (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
       <Tooltip title='Edit'>
         <EditOutlined
@@ -68,19 +68,20 @@ function Product() {
           onClick={(e) => {
             e.stopPropagation()
             handleDeleteRecord(row)
-          }} />
+          }}
+        />
       </Tooltip>
     </div>
   )
 
-  const handleRowClick = useCallback((row: ProductTypes) => {
+  const handleRowClick = useCallback((row: ProductResponse) => {
     setSelectedRow(row)
     setIsDetailModalVisible(true)
   }, [])
 
   return (
     <>
-      <CustomTable<ProductTypes>
+      <CustomTable<ProductResponse>
         data={data || []}
         isLoading={isFetching}
         columns={allColumns}
@@ -109,11 +110,10 @@ function Product() {
         centered
         styles={{ body: { maxHeight: '60vh', overflowY: 'auto', padding: '8px', backgroundColor: 'transparent' } }}
       >
-        <CreateUpdateProductModal onCloseModal={closeModal} isEdit productId={selectedRow?.productId} />
+        <CreateUpdateProductModal onCloseModal={closeModal} isEdit productId={selectedRow?.product_id} />
       </Modal>
 
       <ProductDetailModal isVisible={isDetailModalVisible} onClose={closeDetailModal} productData={selectedRow} />
-
     </>
   )
 }

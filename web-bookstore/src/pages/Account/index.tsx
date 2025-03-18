@@ -8,7 +8,7 @@ import { useGetListAccount } from '../../queries/Account_MockData/useGetListAcco
 import { AccountDetailModal } from './AccountDetailModel'
 import { AccountToolbar } from './AccountToolbar'
 import { allColumns } from './allColumns'
-import { CreateUpdateAccountModal } from './CreateUpdateInventoryModal'
+import { CreateUpdateAccountModal } from './CreateUpdateAccountModal'
 
 function Account() {
   const { isFetching, data } = useGetListAccount()

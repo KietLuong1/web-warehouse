@@ -11,7 +11,7 @@ import { COLOR_CODE } from '../../../configs/color'
 import { AccountResponse } from '../../../queries/Account_MockData'
 import { useGetListAccount } from '../../../queries/Account_MockData/useGetListAccounts'
 import AccountFilter from '../AccountFilter'
-import { CreateUpdateAccountModal } from '../CreateUpdateInventoryModal'
+import { CreateUpdateAccountModal } from '../CreateUpdateAccountModal'
 
 export const AccountToolbar: React.FC<Props> = ({ table }) => {
   const { handleInvalidateListAccount } = useGetListAccount()

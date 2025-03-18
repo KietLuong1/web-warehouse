@@ -1,15 +1,15 @@
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
-import { InventoryTypes } from './types'
+import { InventoryResponse } from './types'
 import { getInventoryById } from './api'
 
-export function useInventoryDetail(options: UseMutationOptions<InventoryTypes> & { id: string }) {
+export function useInventoryDetail(options: UseMutationOptions<InventoryResponse> & { id: string }) {
   const {
     data,
     isPending: isLoadingDetail,
     isSuccess,
     error,
     refetch: getInventoryDetail
-  } = useQuery<InventoryTypes>({
+  } = useQuery<InventoryResponse>({
     queryKey: ['inventory', { ...options }],
     queryFn: () => getInventoryById({ id: options.id }),
     ...options

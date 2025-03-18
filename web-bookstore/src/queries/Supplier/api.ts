@@ -1,9 +1,9 @@
 import { axiosInstance3 } from '../../configs/services/http/index'
-import { SupplierTypes } from './types'
+import { SupplierPayload, SupplierResponse } from './types'
 
-export const fetchListSuppliers = async (): Promise<SupplierTypes[]> => {
+export const fetchListSuppliers = async (): Promise<SupplierResponse[]> => {
   try {
-    const response = await axiosInstance3.get<SupplierTypes[]>(`/suppliers`)
+    const response = await axiosInstance3.get<SupplierResponse[]>(`/suppliers`)
     return response.data
   } catch (error) {
     console.error('Failed to fetch list suppliers:', error)
@@ -11,9 +11,9 @@ export const fetchListSuppliers = async (): Promise<SupplierTypes[]> => {
   }
 }
 
-export const getSupplierById = async ({ id }: { id: string }): Promise<SupplierTypes> => {
+export const getSupplierById = async ({ id }: { id: string }): Promise<SupplierResponse> => {
   try {
-    const response = await axiosInstance3.get<SupplierTypes>(`/suppliers/${id}`)
+    const response = await axiosInstance3.get<SupplierResponse>(`/suppliers/${id}`)
     return response.data
   } catch (error) {
     console.error('Failed to get supplier:', error)
@@ -21,9 +21,9 @@ export const getSupplierById = async ({ id }: { id: string }): Promise<SupplierT
   }
 }
 
-export const createSupplier = async (body: SupplierTypes): Promise<SupplierTypes> => {
+export const createSupplier = async (body: SupplierPayload): Promise<SupplierPayload> => {
   try {
-    const response = await axiosInstance3.post<SupplierTypes>(`/suppliers`, body)
+    const response = await axiosInstance3.post<SupplierPayload>(`/suppliers`, body)
     return response.data
   } catch (error) {
     console.error('Failed to create supplier:', error)
@@ -31,9 +31,9 @@ export const createSupplier = async (body: SupplierTypes): Promise<SupplierTypes
   }
 }
 
-export const updateSupplier = async (body: SupplierTypes, id: string): Promise<SupplierTypes> => {
+export const updateSupplier = async (body: SupplierPayload, id: string): Promise<SupplierPayload> => {
   try {
-    const response = await axiosInstance3.put<SupplierTypes>(`/suppliers/${id}`, body)
+    const response = await axiosInstance3.put<SupplierPayload>(`/suppliers/${id}`, body)
     return response.data
   } catch (error) {
     console.error('Failed to update supplier:', error)
@@ -41,10 +41,10 @@ export const updateSupplier = async (body: SupplierTypes, id: string): Promise<S
   }
 }
 
-export const deleteSupplier = async (body: SupplierTypes): Promise<SupplierTypes> => {
-  const { supplierId } = body
+export const deleteSupplier = async (body: SupplierPayload): Promise<SupplierPayload> => {
+  const { supplier_id } = body
   try {
-    const response = await axiosInstance3.delete<SupplierTypes>(`/suppliers/${supplierId}`, {})
+    const response = await axiosInstance3.delete<SupplierPayload>(`/suppliers/${supplier_id}`, {})
     return response.data
   } catch (error) {
     console.error('Failed to delete supplier:', error)

@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react'
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
 import { Toastify } from '../../components/Toastify'
-import { InventoryTypes } from '../../queries/Inventory'
+import { InventoryResponse } from '../../queries/Inventory'
 import { useDeleteInventory } from '../../queries/Inventory/useDeleteInventory'
 import { useGetListInventory } from '../../queries/Inventory/useGetListInventorys'
 import { allColumns } from './allColumns'
@@ -17,7 +17,7 @@ function Inventory() {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 
-  const [selectedRow, setSelectedRow] = useState<InventoryTypes | undefined>(undefined)
+  const [selectedRow, setSelectedRow] = useState<InventoryResponse | undefined>(undefined)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
@@ -36,7 +36,7 @@ function Inventory() {
   })
 
   const handleDeleteRecord = useCallback(
-    (rowData: InventoryTypes) => {
+    (rowData: InventoryResponse) => {
       Modal.confirm({
         title: 'Are you sure?',
         content: 'This action cannot be undone.',
@@ -49,7 +49,7 @@ function Inventory() {
     [onDeleteInventory]
   )
 
-  const renderRowActions = (row: InventoryTypes) => (
+  const renderRowActions = (row: InventoryResponse) => (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
       <Tooltip title='Edit'>
         <EditOutlined
@@ -74,14 +74,14 @@ function Inventory() {
     </div>
   )
 
-  const handleRowClick = useCallback((row: InventoryTypes) => {
+  const handleRowClick = useCallback((row: InventoryResponse) => {
     setSelectedRow(row)
     setIsDetailModalVisible(true)
   }, [])
 
   return (
     <>
-      <CustomTable<InventoryTypes>
+      <CustomTable<InventoryResponse>
         data={data || []}
         isLoading={isFetching}
         columns={allColumns}

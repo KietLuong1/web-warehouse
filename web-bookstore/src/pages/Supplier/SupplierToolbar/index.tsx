@@ -8,10 +8,10 @@ import CustomTableColumnOptions from '../../../components/TableColumnOptions'
 import CustomTableColumnOptionsModal from '../../../components/TableColumnOptions/CustomTableColumnOptionModal'
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
-import { SupplierTypes } from '../../../queries'
+import { SupplierResponse } from '../../../queries'
+import { useGetListSuppliers } from '../../../queries/Supplier/useGetListSuppliers'
 import { CreateUpdateSupplierModal } from '../CreateUpdateSupplierModal'
 import SupplierFilter from '../SupplierFillter'
-import { useGetListSuppliers } from '../../../queries/Supplier/useGetListSuppliers'
 
 export const SupplierToolbar: React.FC<Props> = ({ table }) => {
   const { handleInvalidateListSuppliers } = useGetListSuppliers()
@@ -52,7 +52,7 @@ export const SupplierToolbar: React.FC<Props> = ({ table }) => {
           </Tooltip>
           <CustomTableColumnOptions>
             <Tooltip title='Column Options' arrow placement='top'>
-              <CustomTableColumnOptionsModal<SupplierTypes> table={table} />
+              <CustomTableColumnOptionsModal<SupplierResponse> table={table} />
             </Tooltip>
           </CustomTableColumnOptions>
           <Button type='primary' size='large' onClick={openCreateModal} icon={<PlusOutlined />}>
@@ -76,7 +76,7 @@ export const SupplierToolbar: React.FC<Props> = ({ table }) => {
 }
 
 type Props = {
-  table: MRT_TableInstance<SupplierTypes>
+  table: MRT_TableInstance<SupplierResponse>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSetParams?: (params: any) => void
 }

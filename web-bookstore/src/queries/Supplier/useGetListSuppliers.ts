@@ -1,9 +1,9 @@
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchListSuppliers } from './api'
-import { SupplierTypes } from './types'
+import { SupplierResponse } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useGetListSuppliers(options?: UseMutationOptions<any, Error, SupplierTypes>) {
+export function useGetListSuppliers(options?: UseMutationOptions<any, Error, SupplierResponse>) {
   const {
     data,
     error,

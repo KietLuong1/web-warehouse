@@ -1,10 +1,10 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query'
 import { Toastify } from '../../components/Toastify'
 import { createProduct } from './api'
-import { ProductTypes } from './types'
+import { ProductPayload } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useCreateProduct(options?: UseMutationOptions<any, Error, ProductTypes>) {
+export function useCreateProduct(options?: UseMutationOptions<any, Error, ProductPayload>) {
   const {
     mutate: onCreateProduct,
     isPending,

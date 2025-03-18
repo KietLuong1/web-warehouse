@@ -1,7 +1,6 @@
 import { ProductKey } from './keys'
 
 export type ProductTypes = {
-  [ProductKey.PRODUCT_ID]: string
   [ProductKey.NAME]: string
   [ProductKey.CATEGORY]: string
   [ProductKey.DESCRIPTION]: string
@@ -11,4 +10,30 @@ export type ProductTypes = {
   [ProductKey.EXPIRED_DATE]: string
   [ProductKey.MINIMUM_QUANTITY]: number
   [ProductKey.LIMIT_QUANTITY]: number
+}
+
+export interface ProductPayload {
+  product_id?: string
+  name: string
+  category: string
+  description: string
+  price: number
+  status: string
+  create_date: string
+  expired_date: string
+  minimum_quantity: number
+  limit_quantity: number
+}
+
+export interface ProductResponse {
+  product_id: string
+  name: string
+  category: string
+  description: string
+  price: number
+  status: string
+  create_date: string
+  expired_date: string
+  minimum_quantity: number
+  limit_quantity: number
 }

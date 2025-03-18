@@ -1,13 +1,13 @@
 import { MRT_ColumnDef } from 'material-react-table'
-import { InventoryTypes } from '../../queries/Inventory'
+import { InventoryResponse } from '../../queries/Inventory'
 
-export const allColumns: MRT_ColumnDef<InventoryTypes>[] = [
+export const allColumns: MRT_ColumnDef<InventoryResponse>[] = [
   {
     accessorKey: 'inventory_id',
     header: 'Inventory ID',
     enableHiding: false,
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
-    size: 150,
+    size: 150
   },
   {
     accessorKey: 'product_id',

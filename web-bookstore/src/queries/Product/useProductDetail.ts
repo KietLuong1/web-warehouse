@@ -1,15 +1,15 @@
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
-import { ProductTypes } from './types'
+import { ProductResponse } from './types'
 import { getProductById } from './api'
 
-export function useProductDetail(options: UseMutationOptions<ProductTypes> & { id: string }) {
+export function useProductDetail(options: UseMutationOptions<ProductResponse> & { id: string }) {
   const {
     data,
     isPending: isLoadingDetail,
     isSuccess,
     error,
     refetch: getProductDetail
-  } = useQuery<ProductTypes>({
+  } = useQuery<ProductResponse>({
     queryKey: ['products', { ...options }],
     queryFn: () => getProductById({ id: options.id }),
     ...options

@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react'
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
 import { Toastify } from '../../components/Toastify'
-import { SupplierTypes } from '../../queries'
+import { SupplierResponse } from '../../queries'
 import { useDeleteSupplier } from '../../queries/Supplier/useDeleteSupplier'
 import { useGetListSuppliers } from '../../queries/Supplier/useGetListSuppliers'
 import { allColumns } from './allColumns'
@@ -17,7 +17,7 @@ function Supplier() {
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 
-  const [selectedRow, setSelectedRow] = useState<SupplierTypes | undefined>(undefined)
+  const [selectedRow, setSelectedRow] = useState<SupplierResponse | undefined>(undefined)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
@@ -36,7 +36,7 @@ function Supplier() {
   })
 
   const handleDeleteRecord = useCallback(
-    (rowData: SupplierTypes) => {
+    (rowData: SupplierResponse) => {
       Modal.confirm({
         title: 'Are you sure?',
         content: 'This action cannot be undone.',
@@ -49,7 +49,7 @@ function Supplier() {
     [onDeleteSupplier]
   )
 
-  const renderRowActions = (row: SupplierTypes) => (
+  const renderRowActions = (row: SupplierResponse) => (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
       <Tooltip title='Edit'>
         <EditOutlined
@@ -73,14 +73,14 @@ function Supplier() {
     </div>
   )
 
-  const handleRowClick = useCallback((row: SupplierTypes) => {
+  const handleRowClick = useCallback((row: SupplierResponse) => {
     setSelectedRow(row)
     setIsDetailModalVisible(true)
   }, [])
 
   return (
     <>
-      <CustomTable<SupplierTypes>
+      <CustomTable<SupplierResponse>
         data={data || []}
         isLoading={isFetching}
         columns={allColumns}
@@ -110,7 +110,7 @@ function Supplier() {
         centered
         styles={{ body: { maxHeight: '60vh', overflowY: 'auto', padding: '8px', backgroundColor: 'transparent' } }}
       >
-        <CreateUpdateSupplierModal onCloseModal={closeModal} isEdit supplierId={selectedRow?.supplierId} />
+        <CreateUpdateSupplierModal onCloseModal={closeModal} isEdit supplierId={selectedRow?.supplier_id} />
       </Modal>
 
       <SupplierDetailModal isVisible={isDetailModalVisible} onClose={closeDetailModal} supplierData={selectedRow} />

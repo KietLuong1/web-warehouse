@@ -1,15 +1,16 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, Grid2, Stack } from '@mui/material'
 import { DatePicker, Form, Input } from 'antd'
 import dayjs from 'dayjs'
 import React, { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Toastify } from '../../../components/Toastify'
-import { InventoryKey, InventoryTypes } from '../../../queries/Inventory'
+import { InventoryKey, InventoryPayload } from '../../../queries/Inventory'
+import { useCreateInventory } from '../../../queries/Inventory/useCreateInventory'
 import { useGetListInventory } from '../../../queries/Inventory/useGetListInventorys'
 import { useInventoryDetail } from '../../../queries/Inventory/useInventoryDetail'
 import { useUpdateInventory } from '../../../queries/Inventory/useUpdateInventory'
-import { InventoryInitValues } from './helpers'
-import { useCreateInventory } from '../../../queries/Inventory/useCreateInventory'
+import { InventoryInitValues, InventoryValidationSchema } from './helpers'
 
 type Props = {
   inventoryId?: string
@@ -38,16 +39,25 @@ export const CreateUpdateInventoryModal: React.FC<Props> = ({ inventoryId, onClo
   const { data: detailData, handleInvalidateDetail } = useInventoryDetail({
     id: inventoryId ?? ''
   })
-  const { handleSubmit, control, reset } = useForm<InventoryTypes>({
-    defaultValues: {},
-    mode: 'onChange',
+  const { handleSubmit, control, reset } = useForm<InventoryPayload>({
+    defaultValues: InventoryInitValues,
+    mode: 'onBlur',
     shouldFocusError: true,
-    reValidateMode: 'onChange'
+    reValidateMode: 'onChange',
+    resolver: yupResolver(InventoryValidationSchema)
   })
 
   useEffect(() => {
     if (isEdit && detailData) {
-      reset(detailData)
+      reset({
+        ...detailData,
+        [InventoryKey.IMPORT_DATE]: detailData.import_date
+          ? dayjs(detailData.import_date).format('YYYY-MM-DD')
+          : undefined,
+        [InventoryKey.EXPIRY_DATE]: detailData.expiry_date
+          ? dayjs(detailData.expiry_date).format('YYYY-MM-DD')
+          : undefined
+      })
     }
   }, [detailData, isEdit, reset])
 
@@ -58,18 +68,33 @@ export const CreateUpdateInventoryModal: React.FC<Props> = ({ inventoryId, onClo
     onCloseModal()
   }
 
-  const onSubmit = (data: InventoryTypes) => {
+  const onSubmit = (data: InventoryPayload) => {
     if (isEdit) {
       if (!inventoryId) {
         Toastify('error', 'An ID is missing for update operation.')
         return
       }
-      onUpdateInventory({ data, id: inventoryId })
+      onUpdateInventory({
+        data: {
+          ...data,
+          [InventoryKey.IMPORT_DATE]: data[InventoryKey.IMPORT_DATE]
+            ? dayjs(data[InventoryKey.IMPORT_DATE]).format('YYYY-MM-DD')
+            : '',
+          [InventoryKey.EXPIRY_DATE]: data[InventoryKey.EXPIRY_DATE]
+            ? dayjs(data[InventoryKey.EXPIRY_DATE]).format('YYYY-MM-DD')
+            : ''
+        },
+        id: inventoryId
+      })
     } else {
       const result = {
         ...data,
-        [InventoryKey.IMPORT_DATE]: dayjs(data.expiry_date).format('YYYY-MM-DD'),
-        [InventoryKey.EXPIRY_DATE]: dayjs(data.expiry_date).format('YYYY-MM-DD')
+        [InventoryKey.IMPORT_DATE]: data[InventoryKey.IMPORT_DATE]
+          ? dayjs(data[InventoryKey.IMPORT_DATE]).format('YYYY-MM-DD')
+          : '',
+        [InventoryKey.EXPIRY_DATE]: data[InventoryKey.EXPIRY_DATE]
+          ? dayjs(data[InventoryKey.EXPIRY_DATE]).format('YYYY-MM-DD')
+          : ''
       }
       onCreateInventory(result)
     }
@@ -82,8 +107,13 @@ export const CreateUpdateInventoryModal: React.FC<Props> = ({ inventoryId, onClo
             name={InventoryKey.PRODUCT_ID}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Product ID'} required>
-                <Input {...field} placeholder='Enter Product ID' aria-errormessage={error?.message} />
+              <Form.Item
+                label={'Product ID'}
+                required
+                validateStatus={error ? 'error' : undefined}
+                help={error?.message}
+              >
+                <Input {...field} placeholder='Enter Product ID' />
               </Form.Item>
             )}
           />
@@ -93,8 +123,13 @@ export const CreateUpdateInventoryModal: React.FC<Props> = ({ inventoryId, onClo
             name={InventoryKey.LOCATION_ID}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Location ID'} required>
-                <Input {...field} placeholder='Enter Location ID' aria-errormessage={error?.message} />
+              <Form.Item
+                label={'Location ID'}
+                required
+                validateStatus={error ? 'error' : undefined}
+                help={error?.message}
+              >
+                <Input {...field} placeholder='Enter Location ID' />
               </Form.Item>
             )}
           />
@@ -104,8 +139,8 @@ export const CreateUpdateInventoryModal: React.FC<Props> = ({ inventoryId, onClo
             name={InventoryKey.QUANTITY}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Quantity'} required>
-                <Input {...field} placeholder='Enter Quantity' aria-errormessage={error?.message} />
+              <Form.Item label={'Quantity'} required validateStatus={error ? 'error' : undefined} help={error?.message}>
+                <Input {...field} placeholder='Enter Quantity' />
               </Form.Item>
             )}
           />
@@ -115,8 +150,13 @@ export const CreateUpdateInventoryModal: React.FC<Props> = ({ inventoryId, onClo
             name={InventoryKey.BATCH_NUMBER}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Batch Number'} required>
-                <Input {...field} placeholder='Enter Batch Number' aria-errormessage={error?.message} />
+              <Form.Item
+                label={'Batch Number'}
+                required
+                validateStatus={error ? 'error' : undefined}
+                help={error?.message}
+              >
+                <Input {...field} placeholder='Enter Batch Number' />
               </Form.Item>
             )}
           />
@@ -131,9 +171,10 @@ export const CreateUpdateInventoryModal: React.FC<Props> = ({ inventoryId, onClo
                   <DatePicker
                     {...field}
                     value={field.value ? dayjs(field.value) : null}
-                    onChange={(date) => field.onChange(date)}
+                    onChange={(date) => field.onChange(date ? date.toString() : '')}
                     format='YYYY-MM-DD'
                     placeholder='Enter Import Date'
+                    onBlur={field.onBlur}
                   />
                 </Form.Item>
               )}
@@ -148,9 +189,10 @@ export const CreateUpdateInventoryModal: React.FC<Props> = ({ inventoryId, onClo
                   <DatePicker
                     {...field}
                     value={field.value ? dayjs(field.value) : null}
-                    onChange={(date) => field.onChange(date)}
+                    onChange={(date) => field.onChange(date ? date.toString() : '')}
                     format='YYYY-MM-DD'
                     placeholder='Enter Expiry Date'
+                    onBlur={field.onBlur}
                   />
                 </Form.Item>
               )}

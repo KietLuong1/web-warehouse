@@ -1,18 +1,18 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query'
 import { Toastify } from '../../components/Toastify'
 import { updateSupplier } from './api'
-import { SupplierTypes } from './types'
+import { SupplierPayload } from './types'
 
 export function useUpdateSupplier(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  options?: UseMutationOptions<any, unknown, { data: SupplierTypes; id: string }>
+  options?: UseMutationOptions<any, unknown, { data: SupplierPayload; id: string }>
 ) {
   const {
     mutate: onUpdateSupplier,
     isPending,
     isSuccess,
     error
-  } = useMutation<Error, unknown, { data: SupplierTypes; id: string }>({
+  } = useMutation<Error, unknown, { data: SupplierPayload; id: string }>({
     mutationFn: ({ data, id }) => {
       return updateSupplier(data, id)
     },

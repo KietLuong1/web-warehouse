@@ -1,15 +1,16 @@
+import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, Grid2, Stack } from '@mui/material'
 import { DatePicker, Form, Input } from 'antd'
 import dayjs from 'dayjs'
 import React, { useEffect } from 'react'
 import { Controller, useForm } from 'react-hook-form'
 import { Toastify } from '../../../components/Toastify'
-import { ProductKey, ProductTypes } from '../../../queries'
+import { ProductKey, ProductPayload } from '../../../queries'
+import { useCreateProduct } from '../../../queries/Product/useCreateProduct'
 import { useGetListProducts } from '../../../queries/Product/useGetListProducts'
 import { useProductDetail } from '../../../queries/Product/useProductDetail'
 import { useUpdateProduct } from '../../../queries/Product/useUpdateProduct'
-import { ProductInitValues } from './helpers'
-import { useCreateProduct } from '../../../queries/Product/useCreateProduct'
+import { ProductInitValues, ProductValidationSchema } from './helpers'
 
 type Props = {
   productId?: string
@@ -38,16 +39,25 @@ export const CreateUpdateProductModal: React.FC<Props> = ({ productId, onCloseMo
   const { data: detailData, handleInvalidateDetail } = useProductDetail({
     id: productId ?? ''
   })
-  const { handleSubmit, control, reset } = useForm<ProductTypes>({
-    defaultValues: {},
-    mode: 'onChange',
+  const { handleSubmit, control, reset } = useForm<ProductPayload>({
+    defaultValues: ProductInitValues,
+    mode: 'onBlur',
     shouldFocusError: true,
-    reValidateMode: 'onChange'
+    reValidateMode: 'onChange',
+    resolver: yupResolver(ProductValidationSchema)
   })
 
   useEffect(() => {
     if (isEdit && detailData) {
-      reset(detailData)
+      reset({
+        ...detailData,
+        [ProductKey.CREATE_DATE]: detailData.create_date
+          ? dayjs(detailData.create_date).format('YYYY-MM-DD')
+          : undefined,
+        [ProductKey.EXPIRED_DATE]: detailData.expired_date
+          ? dayjs(detailData.expired_date).format('YYYY-MM-DD')
+          : undefined
+      })
     }
   }, [detailData, isEdit, reset])
 
@@ -58,18 +68,33 @@ export const CreateUpdateProductModal: React.FC<Props> = ({ productId, onCloseMo
     onCloseModal()
   }
 
-  const onSubmit = (data: ProductTypes) => {
+  const onSubmit = (data: ProductPayload) => {
     if (isEdit) {
       if (!productId) {
         Toastify('error', 'An ID is missing for update operation.')
         return
       }
-      onUpdateProduct({ data, id: productId })
+      onUpdateProduct({
+        data: {
+          ...data,
+          [ProductKey.CREATE_DATE]: data[ProductKey.CREATE_DATE]
+            ? dayjs(data[ProductKey.CREATE_DATE]).format('YYYY-MM-DD')
+            : '',
+          [ProductKey.EXPIRED_DATE]: data[ProductKey.EXPIRED_DATE]
+            ? dayjs(data[ProductKey.EXPIRED_DATE]).format('YYYY-MM-DD')
+            : ''
+        },
+        id: productId
+      })
     } else {
       const result = {
         ...data,
-        [ProductKey.CREATE_DATE]: dayjs(data.createDate).format('YYYY-MM-DD'),
-        [ProductKey.EXPIRED_DATE]: dayjs(data.expiredDate).format('YYYY-MM-DD')
+        [ProductKey.CREATE_DATE]: data[ProductKey.CREATE_DATE]
+          ? dayjs(data[ProductKey.CREATE_DATE]).format('YYYY-MM-DD')
+          : '',
+        [ProductKey.EXPIRED_DATE]: data[ProductKey.EXPIRED_DATE]
+          ? dayjs(data[ProductKey.EXPIRED_DATE]).format('YYYY-MM-DD')
+          : ''
       }
       onCreateProduct(result)
     }
@@ -79,23 +104,11 @@ export const CreateUpdateProductModal: React.FC<Props> = ({ productId, onCloseMo
       <Grid2 container>
         <Grid2 size={12}>
           <Controller
-            name={ProductKey.PRODUCT_ID}
-            control={control}
-            render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'ID'} required>
-                <Input {...field} placeholder='Enter Product ID' aria-errormessage={error?.message} />
-              </Form.Item>
-            )}
-          />
-        </Grid2>
-
-        <Grid2 size={12}>
-          <Controller
             name={ProductKey.NAME}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Name'} required>
-                <Input {...field} placeholder='Enter Product Name' aria-errormessage={error?.message} />
+              <Form.Item label={'Name'} required validateStatus={error ? 'error' : undefined} help={error?.message}>
+                <Input {...field} placeholder='Enter Product Name' />
               </Form.Item>
             )}
           />
@@ -106,8 +119,8 @@ export const CreateUpdateProductModal: React.FC<Props> = ({ productId, onCloseMo
             name={ProductKey.CATEGORY}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Category'} required>
-                <Input {...field} placeholder='Enter Product Category' aria-errormessage={error?.message} />
+              <Form.Item label={'Category'} required validateStatus={error ? 'error' : undefined} help={error?.message}>
+                <Input {...field} placeholder='Enter Product Category' />
               </Form.Item>
             )}
           />
@@ -118,8 +131,13 @@ export const CreateUpdateProductModal: React.FC<Props> = ({ productId, onCloseMo
             name={ProductKey.DESCRIPTION}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Description'}>
-                <Input {...field} placeholder='Enter Description' aria-errormessage={error?.message} />
+              <Form.Item
+                label={'Description'}
+                required
+                validateStatus={error ? 'error' : undefined}
+                help={error?.message}
+              >
+                <Input {...field} placeholder='Enter Description' />
               </Form.Item>
             )}
           />
@@ -132,8 +150,8 @@ export const CreateUpdateProductModal: React.FC<Props> = ({ productId, onCloseMo
             name={ProductKey.PRICE}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Price'} required>
-                <Input {...field} type='number' placeholder='Enter Product Price' aria-errormessage={error?.message} />
+              <Form.Item label={'Price'} required validateStatus={error ? 'error' : undefined} help={error?.message}>
+                <Input {...field} type='number' placeholder='Enter Product Price' />
               </Form.Item>
             )}
           />
@@ -143,8 +161,8 @@ export const CreateUpdateProductModal: React.FC<Props> = ({ productId, onCloseMo
             name={ProductKey.STATUS}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Status'}>
-                <Input {...field} placeholder='Enter Status' aria-errormessage={error?.message} />
+              <Form.Item label={'Status'} required validateStatus={error ? 'error' : undefined} help={error?.message}>
+                <Input {...field} placeholder='Enter Status' />
               </Form.Item>
             )}
           />
@@ -161,9 +179,10 @@ export const CreateUpdateProductModal: React.FC<Props> = ({ productId, onCloseMo
                 <DatePicker
                   {...field}
                   value={field.value ? dayjs(field.value) : null}
-                  onChange={(date) => field.onChange(date)}
+                  onChange={(date) => field.onChange(date ? date.toString() : '')}
                   format='YYYY-MM-DD'
                   placeholder='Enter Create Date'
+                  onBlur={field.onBlur}
                 />
               </Form.Item>
             )}
@@ -178,9 +197,10 @@ export const CreateUpdateProductModal: React.FC<Props> = ({ productId, onCloseMo
                 <DatePicker
                   {...field}
                   value={field.value ? dayjs(field.value) : null}
-                  onChange={(date) => field.onChange(date)}
+                  onChange={(date) => field.onChange(date ? date.toString() : '')}
                   format='YYYY-MM-DD'
                   placeholder='Enter Expired Date'
+                  onBlur={field.onBlur}
                 />
               </Form.Item>
             )}
@@ -194,13 +214,13 @@ export const CreateUpdateProductModal: React.FC<Props> = ({ productId, onCloseMo
             name={ProductKey.MINIMUM_QUANTITY}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Minimum Quantity'} required>
-                <Input
-                  {...field}
-                  type='number'
-                  placeholder='Enter Product Minimum Quantity'
-                  aria-errormessage={error?.message}
-                />
+              <Form.Item
+                label={'Minimum Quantity'}
+                required
+                validateStatus={error ? 'error' : undefined}
+                help={error?.message}
+              >
+                <Input {...field} type='number' placeholder='Enter Product Minimum Quantity' />
               </Form.Item>
             )}
           />
@@ -210,13 +230,13 @@ export const CreateUpdateProductModal: React.FC<Props> = ({ productId, onCloseMo
             name={ProductKey.LIMIT_QUANTITY}
             control={control}
             render={({ field, fieldState: { error } }) => (
-              <Form.Item label={'Limit Quantity'} required>
-                <Input
-                  {...field}
-                  type='number'
-                  placeholder='Enter Product Limit Quantity'
-                  aria-errormessage={error?.message}
-                />
+              <Form.Item
+                label={'Limit Quantity'}
+                required
+                validateStatus={error ? 'error' : undefined}
+                help={error?.message}
+              >
+                <Input {...field} type='number' placeholder='Enter Product Limit Quantity' />
               </Form.Item>
             )}
           />

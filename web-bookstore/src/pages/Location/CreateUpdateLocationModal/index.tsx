@@ -1,4 +1,3 @@
-/* eslint-disable prettier/prettier */
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Button, Grid2, MenuItem, Select, Stack } from '@mui/material'
 import { Form, Input } from 'antd'

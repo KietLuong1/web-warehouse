@@ -8,10 +8,10 @@ import CustomTableColumnOptions from '../../../components/TableColumnOptions'
 import CustomTableColumnOptionsModal from '../../../components/TableColumnOptions/CustomTableColumnOptionModal'
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
-import { InventoryTypes } from '../../../queries/Inventory'
+import { InventoryResponse } from '../../../queries/Inventory'
+import { useGetListInventory } from '../../../queries/Inventory/useGetListInventorys'
 import { CreateUpdateInventoryModal } from '../CreateUpdateInventoryModal'
 import InventoryFilter from '../InventoryFilter'
-import { useGetListInventory } from '../../../queries/Inventory/useGetListInventorys'
 
 export const InventoryToolbar: React.FC<Props> = ({ table }) => {
   const { handleInvalidateListInventory } = useGetListInventory()
@@ -52,7 +52,7 @@ export const InventoryToolbar: React.FC<Props> = ({ table }) => {
           </Tooltip>
           <CustomTableColumnOptions>
             <Tooltip title='Column Options' arrow placement='top'>
-              <CustomTableColumnOptionsModal<InventoryTypes> table={table} />
+              <CustomTableColumnOptionsModal<InventoryResponse> table={table} />
             </Tooltip>
           </CustomTableColumnOptions>
           <Button type='primary' size='large' onClick={openCreateModal} icon={<PlusOutlined />}>
@@ -76,7 +76,7 @@ export const InventoryToolbar: React.FC<Props> = ({ table }) => {
 }
 
 type Props = {
-  table: MRT_TableInstance<InventoryTypes>
+  table: MRT_TableInstance<InventoryResponse>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSetParams?: (params: any) => void
 }

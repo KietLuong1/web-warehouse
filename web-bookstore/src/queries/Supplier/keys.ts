@@ -1,8 +1,8 @@
 export enum SupplierKey {
-  SUPPLIER_ID = 'supplierId',
+  SUPPLIER_ID = 'supplier_id',
   NAME = 'name',
   PHONE = 'phone',
   EMAIL = 'email',
   ADDRESS = 'address',
-  CREATE_AT = 'created_at'
+  CREATE_AT = 'create_at'
 }

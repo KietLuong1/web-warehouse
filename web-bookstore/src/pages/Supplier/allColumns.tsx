@@ -1,7 +1,7 @@
 import { MRT_ColumnDef } from 'material-react-table'
-import { SupplierTypes } from '../../queries'
+import { SupplierResponse } from '../../queries'
 
-export const allColumns: MRT_ColumnDef<SupplierTypes>[] = [
+export const allColumns: MRT_ColumnDef<SupplierResponse>[] = [
   {
     accessorKey: 'supplierId',
     header: 'Supplier ID',

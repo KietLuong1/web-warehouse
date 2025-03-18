@@ -1,12 +1,12 @@
 export enum ProductKey {
-  PRODUCT_ID = 'productId',
+  PRODUCT_ID = 'product_id',
   NAME = 'name',
   CATEGORY = 'category',
   DESCRIPTION = 'description',
   PRICE = 'price',
   STATUS = 'status',
-  CREATE_DATE = 'createDate',
-  EXPIRED_DATE = 'expiredDate',
-  MINIMUM_QUANTITY = 'minimumQuantity',
-  LIMIT_QUANTITY = 'limitQuantity'
+  CREATE_DATE = 'create_date',
+  EXPIRED_DATE = 'expired_date',
+  MINIMUM_QUANTITY = 'minimum_quantity',
+  LIMIT_QUANTITY = 'limit_quantity'
 }

@@ -77,7 +77,7 @@ function App() {
           </Layout>
           <ToastifyContainer />
         </BrowserRouter>
-        <ReactQueryDevtools initialIsOpen={false} />
+        {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
     </AuthProvider>
   )

@@ -1,9 +1,9 @@
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchListProducts } from './api'
-import { ProductTypes } from './types'
+import { ProductResponse } from './types'
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useGetListProducts(options?: UseMutationOptions<any, Error, ProductTypes>) {
+export function useGetListProducts(options?: UseMutationOptions<any, Error, ProductResponse>) {
   const {
     data,
     error,

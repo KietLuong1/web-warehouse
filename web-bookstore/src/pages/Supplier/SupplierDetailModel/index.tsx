@@ -57,12 +57,12 @@ export const SupplierDetailModal: React.FC<SupplierDetailModalProps> = ({ isVisi
                 <Typography variant='body1'>{supplierData.email}</Typography>
               </Grid>
             )}
-            {supplierData.created_at && (
+            {supplierData.create_at && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
                   Create Date
                 </Typography>
-                <Typography variant='body1'>{supplierData.created_at}</Typography>
+                <Typography variant='body1'>{supplierData.create_at}</Typography>
               </Grid>
             )}
             {supplierData.address && (
