@@ -9,7 +9,7 @@ export type SupplierTypes = {
 }
 
 export interface SupplierPayload {
-  supplier_id?: string
+  supplierId?: string
   name: string
   phone: number
   email: string
@@ -18,7 +18,7 @@ export interface SupplierPayload {
 }
 
 export interface SupplierResponse {
-  supplier_id: string
+  supplierId: string
   name: string
   phone: number
   email: string

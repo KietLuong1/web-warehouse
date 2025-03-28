@@ -110,7 +110,7 @@ function Supplier() {
         centered
         styles={{ body: { maxHeight: '60vh', overflowY: 'auto', padding: '8px', backgroundColor: 'transparent' } }}
       >
-        <CreateUpdateSupplierModal onCloseModal={closeModal} isEdit supplierId={selectedRow?.supplier_id} />
+        <CreateUpdateSupplierModal onCloseModal={closeModal} isEdit supplierId={selectedRow?.supplierId} />
       </Modal>
 
       <SupplierDetailModal isVisible={isDetailModalVisible} onClose={closeDetailModal} supplierData={selectedRow} />

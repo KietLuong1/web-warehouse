@@ -13,7 +13,7 @@ export type ProductTypes = {
 }
 
 export interface ProductPayload {
-  product_id?: string
+  productId?: string
   name: string
   category: string
   description: string
@@ -26,7 +26,7 @@ export interface ProductPayload {
 }
 
 export interface ProductResponse {
-  product_id: string
+  productId: string
   name: string
   category: string
   description: string

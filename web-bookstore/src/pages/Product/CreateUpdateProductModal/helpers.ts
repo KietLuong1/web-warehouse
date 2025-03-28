@@ -17,10 +17,7 @@ export const ProductValidationSchema = yup.object().shape({
   [ProductKey.NAME]: yup.string().required('Product Name is required'),
   [ProductKey.CATEGORY]: yup.string().required('Category is required'),
   [ProductKey.DESCRIPTION]: yup.string().required('Description is required'),
-  [ProductKey.PRICE]: yup
-    .number()
-    .required('Price is required')
-    .positive('Price must be positive'),
+  [ProductKey.PRICE]: yup.number().required('Price is required').positive('Price must be positive'),
   [ProductKey.STATUS]: yup.string().required('Status is required'),
   [ProductKey.CREATE_DATE]: yup.string().required('Create Date is required'),
   [ProductKey.EXPIRED_DATE]: yup.string().required('Expired Date is required'),

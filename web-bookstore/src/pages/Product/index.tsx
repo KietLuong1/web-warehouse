@@ -110,7 +110,7 @@ function Product() {
         centered
         styles={{ body: { maxHeight: '60vh', overflowY: 'auto', padding: '8px', backgroundColor: 'transparent' } }}
       >
-        <CreateUpdateProductModal onCloseModal={closeModal} isEdit productId={selectedRow?.product_id} />
+        <CreateUpdateProductModal onCloseModal={closeModal} isEdit productId={selectedRow?.productId} />
       </Modal>
 
       <ProductDetailModal isVisible={isDetailModalVisible} onClose={closeDetailModal} productData={selectedRow} />

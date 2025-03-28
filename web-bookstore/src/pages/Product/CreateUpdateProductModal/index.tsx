@@ -18,6 +18,7 @@ type Props = {
   onCloseModal: () => void
 }
 export const CreateUpdateProductModal: React.FC<Props> = ({ productId, onCloseModal, isEdit = false }) => {
+  console.log('productId:', productId)
   const { handleInvalidateListProducts } = useGetListProducts()
   const { onCreateProduct, isPending: isCreatingLoading } = useCreateProduct({
     onSuccess: () => {
