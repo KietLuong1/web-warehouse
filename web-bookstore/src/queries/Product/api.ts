@@ -42,9 +42,9 @@ export const updateProduct = async (body: ProductPayload, id: string): Promise<P
 }
 
 export const deleteProduct = async (body: ProductPayload): Promise<ProductPayload> => {
-  const { product_id } = body
+  const { productId } = body
   try {
-    const response = await axiosInstance3.delete<ProductPayload>(`/products/${product_id}`, {})
+    const response = await axiosInstance3.delete<ProductPayload>(`/products/${productId}`, {})
     return response.data
   } catch (error) {
     console.error('Failed to delete product:', error)

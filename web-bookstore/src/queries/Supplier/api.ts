@@ -42,9 +42,9 @@ export const updateSupplier = async (body: SupplierPayload, id: string): Promise
 }
 
 export const deleteSupplier = async (body: SupplierPayload): Promise<SupplierPayload> => {
-  const { supplier_id } = body
+  const { supplierId } = body
   try {
-    const response = await axiosInstance3.delete<SupplierPayload>(`/suppliers/${supplier_id}`, {})
+    const response = await axiosInstance3.delete<SupplierPayload>(`/suppliers/${supplierId}`, {})
     return response.data
   } catch (error) {
     console.error('Failed to delete supplier:', error)

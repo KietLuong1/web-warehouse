@@ -1,7 +1,7 @@
 import { useMutation, UseMutationOptions } from '@tanstack/react-query'
 import { Toastify } from '../../components/Toastify'
 import { updateTransaction } from './api'
-import { TransactionPayload, TransactionTypes } from './types'
+import { TransactionPayload } from './types'
 
 export function useUpdateTransaction(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -12,7 +12,7 @@ export function useUpdateTransaction(
     isPending,
     isSuccess,
     error
-  } = useMutation<Error, unknown, { data: TransactionTypes; id: string }>({
+  } = useMutation<Error, unknown, { data: TransactionPayload; id: string }>({
     mutationFn: ({ data, id }) => {
       return updateTransaction(data, id)
     },
