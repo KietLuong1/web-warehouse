@@ -5,5 +5,7 @@ export enum ReportKey {
   PRICE = 'price',
   CATEGORY = 'category',
   SUPPLIER = 'supplier',
-  DESCRIPTION = 'description'
+  DESCRIPTION = 'description',
+  CREATED_AT = 'createdAt',
+  UPDATED_AT = 'updatedAt'
 }

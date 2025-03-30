@@ -1,8 +1,9 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { DeleteOutlined, EditOutlined } from '@mui/icons-material'
-import { Stack } from '@mui/material'
-import { Modal, Tooltip } from 'antd'
-import { useCallback, useState } from 'react'
+import { Box, Grid, Grid2, Stack } from '@mui/material'
+import { message, Modal, Tooltip } from 'antd'
+import { useCallback, useEffect, useState } from 'react'
 import { CustomTable } from '../../components/Table'
 import { Toastify } from '../../components/Toastify'
 import { ReportResponse } from '../../queries/Reports'
@@ -12,12 +13,20 @@ import { allColumns } from './allColumns'
 import { CreateUpdateReportModal } from './CreateUpdateReportModal'
 import ExportFile from './ExportFile'
 import { ReportDetailModal } from './ReportDetailModal'
+import FilterByDate from './ReportFilter'
+import dayjs from 'dayjs'
 
 function Report() {
-  const { reportList, isFetching, handleInvalidateListReport } = useGetListReport()
+  const { reportList: allReports, isFetching, handleInvalidateListReport } = useGetListReport()
+  const [filteredReports, setFilteredReports] = useState<ReportResponse[]>([])
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
   const [selectedRow, setSelectedRow] = useState<ReportResponse | undefined>(undefined)
+  const [dateFilter, setDateFilter] = useState<[dayjs.Dayjs | null, dayjs.Dayjs | null] | null>(null)
+
+  useEffect(() => {
+    setFilteredReports(allReports || [])
+  }, [allReports])
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
@@ -81,10 +90,53 @@ function Report() {
     </div>
   )
 
+  const handleDateFilter = (dateRange: [dayjs.Dayjs | null, dayjs.Dayjs | null] | null) => {
+    setDateFilter(dateRange)
+
+    if (!dateRange || (!dateRange[0] && !dateRange[1])) {
+      setFilteredReports(allReports || [])
+      return
+    }
+
+    const [fromDate, toDate] = dateRange
+
+    if (fromDate && toDate && fromDate.isAfter(toDate)) {
+      message.error('From date cannot be after To date')
+      setFilteredReports(allReports || [])
+      return
+    }
+
+    const filtered = allReports?.filter((report) => {
+      const reportDate = dayjs(report.createdAt)
+
+      // Case 1: Only From date is provided (filter reports from this date onwards)
+      if (fromDate && !toDate) {
+        return reportDate.isAfter(fromDate, 'day') || reportDate.isSame(fromDate, 'day')
+      }
+
+      // Case 2: Only To date is provided (filter reports up to this date)
+      if (!fromDate && toDate) {
+        return reportDate.isBefore(toDate, 'day') || reportDate.isSame(toDate, 'day')
+      }
+
+      // Case 3: Both dates provided (filter reports between these dates)
+      if (fromDate && toDate) {
+        return (
+          (reportDate.isAfter(fromDate, 'day') || reportDate.isSame(fromDate, 'day')) &&
+          (reportDate.isBefore(toDate, 'day') || reportDate.isSame(toDate, 'day'))
+        )
+      }
+
+      return true
+    })
+
+    setFilteredReports(filtered || [])
+  }
+
   return (
     <>
       <CustomTable
-        data={reportList}
+        data={filteredReports}
         isLoading={isFetching}
         columns={allColumns}
         isLayoutGridMode
@@ -97,17 +149,28 @@ function Report() {
         nameColumnPinning='mrt-row-actions'
         initialState={{ columnPinning: { right: ['mrt-row-actions'] } }}
         renderToolbarInternalActions={({ table }) => (
-          <Stack marginTop={1.5}>
+          <Stack
+            className='report-table'
+            flexDirection='row'
+            marginTop={1.5}
+            marginBottom={1.5}
+            direction='row'
+            spacing={2}
+            alignItems='center'
+            justifyContent='space-between'
+          >
+            <FilterByDate onFilter={handleDateFilter} />
+
             <ExportFile
-              data={reportList || []}
+              data={filteredReports || []}
               columns={allColumns}
               selectedRows={table.getSelectedRowModel().rows.map((row: { original: any }) => row.original)}
               filename='Warehouse Report'
             />
           </Stack>
         )}
-        rowCount={10}
-        pageCount={2}
+        rowCount={filteredReports.length}
+        pageCount={Math.ceil(filteredReports.length / 10)}
         muiTableBodyRowProps={({ row }) => ({
           onClick: () => handleRowClick(row.original),
           sx: { cursor: 'pointer' }

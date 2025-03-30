@@ -11,6 +11,18 @@ export const allColumns: MRT_ColumnDef<ReportResponse>[] = [
     size: 150
   },
   {
+    accessorKey: 'createdAt',
+    header: 'Created At',
+    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
+    size: 150
+  },
+  {
+    accessorKey: 'updatedAt',
+    header: 'Updated At',
+    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
+    size: 150
+  },
+  {
     accessorKey: 'name',
     header: 'Product Name',
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
