@@ -8,6 +8,8 @@ export type ReportTypes = {
   [ReportKey.SUPPLIER]: string
   [ReportKey.DESCRIPTION]: string
   [ReportKey.CATEGORY]: string
+  [ReportKey.CREATED_AT]: string
+  [ReportKey.UPDATED_AT]: string
 }
 
 export interface ReportPayload {
@@ -18,6 +20,8 @@ export interface ReportPayload {
   supplier: string
   description: string
   category: string
+  createdAt?: string
+  updatedAt?: string
 }
 
 export interface ReportResponse {
@@ -28,4 +32,6 @@ export interface ReportResponse {
   supplier: string
   description: string
   category: string
+  createdAt: string
+  updatedAt: string
 }
