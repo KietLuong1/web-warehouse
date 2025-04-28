@@ -170,42 +170,6 @@ const Login: React.FC = () => {
             </Button>
           </Form.Item>
         </Form>
-
-        {/* <Typography variant="body2" color="textSecondary" sx={{ mb: 2 }}>
-          Don't have an account?{" "}
-          <Link
-            href="#"
-            variant="body2"
-            sx={{
-              fontWeight: 500,
-              "&:hover": {
-                color: "#006882",
-              },
-            }}
-          >
-            Sign up
-          </Link>
-        </Typography>
-
-        <Divider sx={{ my: 2 }}>or</Divider> */}
-
-        {/* Social Login Buttons */}
-        {/* <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <Button
-              variant="outlined"
-              style={{
-                color: "#000",
-                borderColor: "#ddd",
-                textTransform: "none",
-                fontWeight: 600,
-                fontSize: "14px",
-              }}
-            >
-              Sign in with Google
-            </Button>
-          </Grid>
-        </Grid> */}
       </Box>
     </Container>
   )

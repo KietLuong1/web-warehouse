@@ -59,23 +59,23 @@ export const MenuItems = [
     icon: <AccountBox />,
     link: '/users'
   },
-  {
-    title: 'Settings',
-    icon: <Settings />,
-    link: '/setting',
-    submenus: [
-      {
-        title: 'FAQs',
-        icon: <QuestionAnswer />,
-        link: '/faqs'
-      }
+  // {
+  //   title: 'Settings',
+  //   icon: <Settings />,
+  //   link: '/setting',
+  //   submenus: [
+  //     {
+  //       title: 'FAQs',
+  //       icon: <QuestionAnswer />,
+  //       link: '/faqs'
+  //     }
       // {
       //   title: 'Containers',
       //   icon: <HomeRepairService />,
       //   link: '/container'
       // }
-    ]
-  },
+  //   ]
+  // },
   {
     title: 'User Details',
     icon: <ManageAccounts />,
