@@ -17,6 +17,7 @@ export interface AccountPayLoad {
   [AccountKey.ROLE]: string
   [AccountKey.PASSWORD]: string
 }
+
 export interface ApiResponse<T> {
   userDtos?: T[]
   pageNumber?: number
@@ -24,6 +25,5 @@ export interface ApiResponse<T> {
   totalElements?: number
   totalPages?: number
   isLast?: boolean
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  [key: string]: any // Add other parameters as needed
+  [key: string]: any 
 }

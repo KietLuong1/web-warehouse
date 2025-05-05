@@ -6,7 +6,7 @@ import { SidebarCmp } from './components/Sidebar'
 import ToastifyContainer from './components/Toastify'
 import { AuthProvider, useAuth } from './context/AuthContext'
 import Account from './pages/Account'
-import AccountInformation from './pages/AccountInformation'
+import Profile from './pages/Profile'
 import Container from './pages/Container'
 import Dashboard from './pages/Dashboard'
 import ExpenseTracking from './pages/ExpenseTracking'
@@ -64,7 +64,7 @@ function App() {
               <Route path='/supplier' element={<Supplier />} />
               <Route path='/location' element={<Location />} />
               <Route path='/users' element={<Account />} />
-              <Route path='/account-details' element={<AccountInformation />} />
+              <Route path='/account-details' element={<Profile />} />
 
               <Route path='/faqs' element={<FAQs />} />
               <Route path='/container' element={<Container />} />
