@@ -36,18 +36,18 @@ const Login: React.FC = () => {
     }
   })
 
-  // Handle form submission
   const onSubmit: SubmitHandler<FieldType> = async (data) => {
     try {
       const response = await loginApi(data)
-      const { accessToken, userRole } = response
+      const { accessToken, userRole, userId } = response
+
       if (accessToken) {
         login(accessToken)
         const storage = data.remember ? localStorage : sessionStorage
         storage.setItem('accessToken', accessToken)
         storage.setItem('userRole', userRole)
+        storage.setItem('userId', userId.toString())
 
-        // Set default Authorization header for Axios
         axiosAccount.defaults.headers.Authorization = `Bearer ${accessToken}`
 
         Toastify('success', 'Login successfully')
