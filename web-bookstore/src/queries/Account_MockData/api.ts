@@ -1,5 +1,5 @@
 import { axiosInstance4 } from '../../configs/services/http/index'
-import { AccountPayLoad } from '../Account/types'
+import { UserDto } from '../Account/types'
 import { AccountResponse, AccountTypes } from './types'
 
 export const fetchListAccount = async (): Promise<AccountResponse[]> => {
@@ -22,9 +22,9 @@ export const getAccountById = async ({ userId }: { userId: string }): Promise<Ac
   }
 }
 
-export const createAccount = async (body: AccountPayLoad): Promise<AccountPayLoad> => {
+export const createAccount = async (body: UserDto): Promise<UserDto> => {
   try {
-    const response = await axiosInstance4.post<AccountPayLoad>(`/account`, body)
+    const response = await axiosInstance4.post<UserDto>(`/account`, body)
     return response.data
   } catch (error) {
     console.error('Failed to create record:', error)
@@ -32,7 +32,7 @@ export const createAccount = async (body: AccountPayLoad): Promise<AccountPayLoa
   }
 }
 
-export const updateAccount = async (body: AccountPayLoad, id: string): Promise<AccountPayLoad> => {
+export const updateAccount = async (body: UserDto, id: string): Promise<UserDto> => {
   try {
     const response = await axiosInstance4.put<AccountTypes>(`/account/${id}`, body)
     return response.data

@@ -6,6 +6,7 @@ import { ChangePasswordFieldType } from '../../pages/Login/ForgotPassword/Forgot
 export const loginApi = async (credentials: FieldType) => {
   try {
     const response = await axios.post(`http://localhost:8080/api/v1/auth/login`, credentials)
+    console.log('Login successful api', response.data)
     return response.data
   } catch (error) {
     console.error('Login failed', error)

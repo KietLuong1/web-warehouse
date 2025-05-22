@@ -1,4 +1,4 @@
-import { axiosAccount } from '../../configs/services/http'
+import axiosAccount from '../../configs/services/http'
 
 export const getUserById = async (userId: string) => {
   const response = await axiosAccount.get(`/api/v1/user/${userId}`)

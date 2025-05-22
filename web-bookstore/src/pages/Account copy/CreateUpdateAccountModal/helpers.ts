@@ -1,13 +1,13 @@
 import { AccountKey, UserDto } from '../../../queries/Account'
 import yup from '../../../../yupGlobal'
 
-// Initial form values 
+// Initial form values (password left empty—only needed on create)
 export const AccountInitValues: UserDto = {
   [AccountKey.NAME]: '',
   [AccountKey.USERNAME]: '',
   [AccountKey.EMAIL]: '',
-  [AccountKey.ROLE]: 'STAFF', 
-  [AccountKey.PASSWORD]: '' 
+  [AccountKey.ROLE]: 'STAFF', // sensible default
+  [AccountKey.PASSWORD]: '' // optional on edit
 }
 
 export const AccountValidationSchema = yup.object().shape({

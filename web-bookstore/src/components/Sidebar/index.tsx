@@ -7,13 +7,13 @@ import { useLocation, useNavigate } from 'react-router-dom'
 import { IMAGES } from '../../configs/images'
 import { MenuItems } from './MenuItem'
 import './styles.scss'
-import { useAuth } from '../../context/AuthContext'
+import { useAuthentication } from '../../context/AuthenticationContext'
 
 export const SidebarCmp = () => {
   const navigate = useNavigate()
   const location = useLocation()
   const [collapsed, setCollapsed] = useState(false)
-  const { logout } = useAuth()
+  const { logout } = useAuthentication()
   const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {

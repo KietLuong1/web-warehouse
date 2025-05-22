@@ -1,14 +1,14 @@
-import React, { useEffect } from 'react'
-import { Form, Input, Button } from 'antd'
-import { Grid2, Stack } from '@mui/material'
-import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { Button, Grid2, Stack } from '@mui/material'
+import { Form, Input } from 'antd'
+import React, { useEffect } from 'react'
+import { Controller, useForm } from 'react-hook-form'
 import { Toastify } from '../../../components/Toastify'
-import { AccountKey, UserDto } from '../../../queries/Account'
+import { useGetAccountDetail } from '../../../queries/Account/useGetAccountDetail'
 import { useCreateAccount } from '../../../queries/Account/useCreateAccount'
 import { useUpdateAccount } from '../../../queries/Account/useUpdateAccount'
-import { useGetAccountDetail } from '../../../queries/Account/useGetAccountDetail'
 import { AccountInitValues, AccountValidationSchema } from './helpers'
+import { UserDto, AccountKey } from '../../../queries/Account'
 
 type Props = {
   userId?: string
@@ -22,14 +22,14 @@ export const CreateUpdateAccountModal: React.FC<Props> = ({ userId, isEdit = fal
     enabled: isEdit
   })
 
-  const { mutate: createAccount, isPending: creating } = useCreateAccount({
+  const { mutate: createAccount, status: createStatus } = useCreateAccount({
     onSuccess: () => {
       Toastify('success', 'Account created!')
       onCloseModal()
     }
   })
 
-  const { mutate: updateAccount, isPending: updating } = useUpdateAccount({
+  const { mutate: updateAccount, status: updateStatus } = useUpdateAccount({
     onSuccess: () => {
       Toastify('success', 'Account updated!')
       onCloseModal()
@@ -38,10 +38,10 @@ export const CreateUpdateAccountModal: React.FC<Props> = ({ userId, isEdit = fal
 
   const { handleSubmit, control, reset } = useForm<UserDto>({
     defaultValues: AccountInitValues,
-    resolver: yupResolver(AccountValidationSchema),
-    context: { isEdit },
     mode: 'onBlur',
-    reValidateMode: 'onChange'
+    shouldFocusError: true,
+    reValidateMode: 'onChange',
+    resolver: yupResolver(AccountValidationSchema)
   })
 
   // when editing, load detail into form
@@ -63,6 +63,9 @@ export const CreateUpdateAccountModal: React.FC<Props> = ({ userId, isEdit = fal
     }
   }
 
+  const creating = createStatus === 'pending'
+  const updating = updateStatus === 'pending'
+
   return (
     <Form layout='vertical' onFinish={handleSubmit(onSubmit)}>
       <Grid2 container spacing={2}>
@@ -74,13 +77,17 @@ export const CreateUpdateAccountModal: React.FC<Props> = ({ userId, isEdit = fal
           // only show pwd on create
           ...(!isEdit ? [{ key: AccountKey.PASSWORD, label: 'Password', Password: true }] : [])
         ].map(({ key, label, props, Password }) => (
-          <Grid2 size={12} key={key}>
+          <Grid2 sx={{ gridColumn: 'span 12' }} key={key}>
             <Controller
               name={key as any}
               control={control}
               render={({ field, fieldState: { error } }) => (
                 <Form.Item label={label} required validateStatus={error ? 'error' : undefined} help={error?.message}>
-                  <Input {...field} placeholder={label} {...props} />
+                  {Password ? (
+                    <Input.Password {...field} placeholder={label} />
+                  ) : (
+                    <Input {...field} placeholder={label} {...props} />
+                  )}
                 </Form.Item>
               )}
             />
@@ -88,11 +95,11 @@ export const CreateUpdateAccountModal: React.FC<Props> = ({ userId, isEdit = fal
         ))}
         <Grid2 size={12}>
           <Stack display={'flex'} justifyContent='flex-end' direction={'row'}>
-            <Button disabled={creating || updating} variant='outlined' onClick={onCloseModal}>
+            <Button disabled={creating || updating} variant='outlined' onClick={() => onCloseModal()}>
               Cancel
             </Button>
 
-            <Button htmlType='submit' type='primary' loading={creating || updating}>
+            <Button type='submit' variant='contained' size='large' color='primary' style={{ marginLeft: '16px' }}>
               Save
             </Button>
           </Stack>

@@ -1,6 +1,6 @@
 import { Button, Card, Col, Form, Input, Row, Typography } from 'antd'
 import { useEffect, useState } from 'react'
-import { axiosAccount } from '../../../configs/services/http'
+import axiosAccount from '../../../configs/services/http'
 import { Toastify } from '../../../components/Toastify'
 
 export default function SettingsCard({ userInformation, setUserInformation }: any) {
@@ -75,7 +75,7 @@ export default function SettingsCard({ userInformation, setUserInformation }: an
     if (isEditing) {
       try {
         const values = await form.validateFields()
-  
+
         // Create a FormData object
         const formData = new FormData()
         formData.append('userId', userInformation.userId)
@@ -89,39 +89,39 @@ export default function SettingsCard({ userInformation, setUserInformation }: an
         await axiosAccount.put(`user/${userInformation.userId}`, formData, {
           headers: {
             'Content-Type': 'multipart/form-data',
-            'Authorization': `Bearer ${accessToken}`  
+            Authorization: `Bearer ${accessToken}`
           }
         })
-  
+
         setUserInformation({
           ...userInformation,
           ...values
         })
-  
+
         Toastify('success', 'General information updated successfully')
-  
+
         // Smart Password Change
         if (values.newPassword || values.repeatPassword || values.password) {
           if (!values.password || !values.newPassword || !values.repeatPassword) {
             Toastify('error', 'Please fill all password fields to change password')
             return
           }
-  
+
           if (values.newPassword !== values.repeatPassword) {
             Toastify('error', 'New password and repeat password do not match')
             return
           }
-  
+
           if (values.password !== userInformation.password) {
             Toastify('error', 'Current password is incorrect')
             return
           }
-  
+
           const passwordChangeBody = {
             password: values.newPassword,
             repeatPassword: values.repeatPassword
           }
-  
+
           await axiosAccount.post(`forgotPassword/changePassword/${userInformation.email}`, passwordChangeBody)
           Toastify('success', 'Password changed successfully')
         }
@@ -132,7 +132,6 @@ export default function SettingsCard({ userInformation, setUserInformation }: an
     }
     setIsEditing(!isEditing)
   }
-  
 
   return (
     <Card bordered={true} style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}>
