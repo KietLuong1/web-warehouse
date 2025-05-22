@@ -4,7 +4,7 @@ import './App.css'
 import ChatBot from './components/ChatBot'
 import { SidebarCmp } from './components/Sidebar'
 import ToastifyContainer from './components/Toastify'
-import { AuthProvider, useAuth } from './context/AuthContext'
+import { AuthenticationProvider, useAuthentication } from './context/AuthenticationContext'
 import Account from './pages/Account'
 import Profile from './pages/Profile'
 import Container from './pages/Container'
@@ -32,7 +32,7 @@ const queryClient = new QueryClient({
 })
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation()
-  const { isAuthenticated } = useAuth()
+  const { isAuthenticated } = useAuthentication()
 
   const isLoginPage = location.pathname === '/login'
 
@@ -45,7 +45,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
 }
 function App() {
   return (
-    <AuthProvider>
+    <AuthenticationProvider>
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>
           <Layout>
@@ -78,7 +78,7 @@ function App() {
         </BrowserRouter>
         {/* <ReactQueryDevtools initialIsOpen={false} /> */}
       </QueryClientProvider>
-    </AuthProvider>
+    </AuthenticationProvider>
   )
 }
 

@@ -5,7 +5,8 @@ export enum API_QUERIES {
   LOCATION = '/location',
   INVENTORY = '/inventory',
   SUPPLIER = '/suppliers',
-  PRODUCT = '/products'
+  PRODUCT = '/products',
+  ACCOUNT = '/user',
 }
 
 export type QueryOptions<T> = Omit<UseQueryOptions, 'QueryKey'> & { QueryKey: T }

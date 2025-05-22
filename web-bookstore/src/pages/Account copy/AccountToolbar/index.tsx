@@ -8,7 +8,6 @@ import AccountFilter from '../AccountFilter'
 import CustomTableColumnOptionsModal from '../../../components/TableColumnOptions/CustomTableColumnOptionModal'
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { CreateUpdateAccountModal } from '../CreateUpdateAccountModal'
-import { useGetListAccount } from '../../../queries/Account/useGetListAccount'
 
 interface Props {
   table: MRT_TableInstance<any>

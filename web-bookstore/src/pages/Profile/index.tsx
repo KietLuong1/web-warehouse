@@ -1,7 +1,7 @@
 import Grid from '@mui/material/Grid'
 import { useEffect, useState } from 'react'
 import SettingsCard from './SettingCard'
-import { axiosAccount } from '../../configs/services/http'
+import axiosAccount from '../../configs/services/http'
 
 interface UserInformation {
   userId: string
@@ -32,7 +32,7 @@ const Profile = () => {
   }, [])
 
   if (!userInformation) {
-    return <div>Loading...</div> 
+    return <div>Loading...</div>
   }
 
   return (

@@ -1,29 +1,35 @@
 import { AccountKey } from './keys'
 
 export type AccountTypes = {
-  [AccountKey.USER_ID]: string
+  [AccountKey.USER_ID]: number
   [AccountKey.NAME]: string
   [AccountKey.USERNAME]: string
   [AccountKey.EMAIL]: string
-  [AccountKey.PASSWORD]: string
-  [AccountKey.ROLE]: string
+  [AccountKey.PASSWORD]?: string
+  [AccountKey.ROLE]: 'ADMIN' | 'MANAGER' | 'STAFF'
 }
 
-export interface AccountPayLoad {
-  [AccountKey.USER_ID]?: string
+export interface UserDto {
+  [AccountKey.USER_ID]?: number
   [AccountKey.NAME]: string
   [AccountKey.USERNAME]: string
   [AccountKey.EMAIL]: string
-  [AccountKey.ROLE]: string
-  [AccountKey.PASSWORD]: string
+  [AccountKey.PASSWORD]?: string
+  [AccountKey.ROLE]: 'ADMIN' | 'MANAGER' | 'STAFF'
 }
 
-export interface ApiResponse<T> {
-  userDtos?: T[]
+export interface AccountApiResponse {
+  userDtos: AccountTypes[]
+  pageNumber: number
+  pageSize: number
+  totalElements: number
+  totalPages: number
+  isLast: boolean
+}
+
+export interface QueryParams {
   pageNumber?: number
   pageSize?: number
-  totalElements?: number
-  totalPages?: number
-  isLast?: boolean
-  [key: string]: any 
+  sortBy?: string
+  dir?: 'asc' | 'desc'
 }

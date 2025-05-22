@@ -19,3 +19,4 @@ export function useUpdateAccount(options?: UseMutationOptions<AccountTypes, Erro
   })
 }
 
+

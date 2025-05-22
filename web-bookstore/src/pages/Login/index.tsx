@@ -1,16 +1,16 @@
-import { Box, Container, Link, Stack, Typography } from '@mui/material'
-import { Button, Checkbox, Form, Input } from 'antd'
 import Image from 'material-ui-image'
 import React from 'react'
+import './styles.scss'
+import { Box, Container, Link, Stack, Typography } from '@mui/material'
+import { Button, Checkbox, Form, Input } from 'antd'
 import { Controller, SubmitHandler, useForm } from 'react-hook-form'
 import { useNavigate } from 'react-router-dom'
 import { IMAGES } from '../../configs/images'
-import { useAuth } from '../../context/AuthContext'
-import { loginApi } from '../../queries/Login/api'
-import ForgotPassword from './ForgotPassword/ForgotPassword'
-import './styles.scss'
 import { Toastify } from '../../components/Toastify'
-import { axiosAccount } from '../../configs/services/http'
+import ForgotPassword from './ForgotPassword/ForgotPassword'
+import axiosAccount from '../../configs/services/http'
+import { useAuthentication } from '../../context/AuthenticationContext'
+import { loginApi } from '../../queries/Login/api'
 
 export type FieldType = {
   email: string
@@ -19,8 +19,7 @@ export type FieldType = {
 }
 
 const Login: React.FC = () => {
-  const { login } = useAuth()
-
+  const { login } = useAuthentication()
   const navigate = useNavigate()
   const [open, setOpen] = React.useState(false)
 
@@ -38,17 +37,21 @@ const Login: React.FC = () => {
 
   const onSubmit: SubmitHandler<FieldType> = async (data) => {
     try {
-      const response = await loginApi(data)
-      const { accessToken, userRole, userId } = response
+      const response = await loginApi({
+        email: data.email,
+        password: data.password,
+        remember: data.remember
+      });
 
-      if (accessToken) {
-        login(accessToken)
+      const { accessToken, refreshToken, userRole, userId } = response;
+
+      if (accessToken && refreshToken) {
+        // Store both tokens in localStorage for interceptor + refresh flow
+        login(accessToken, refreshToken);
+
         const storage = data.remember ? localStorage : sessionStorage
-        storage.setItem('accessToken', accessToken)
         storage.setItem('userRole', userRole)
         storage.setItem('userId', userId.toString())
-
-        axiosAccount.defaults.headers.Authorization = `Bearer ${accessToken}`
 
         Toastify('success', 'Login successfully')
         navigate('/dashboard')

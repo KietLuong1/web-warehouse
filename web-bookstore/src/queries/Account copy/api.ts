@@ -24,7 +24,7 @@ export const getAccountById = async (userId: number): Promise<AccountTypes> => {
   const resp = await axiosAccount.get<AccountTypes>(`/user/${userId}`)
   return resp.data
 }
-
+// response
 export const createAccount = async (user: UserDto): Promise<AccountTypes> => {
   const fd = new FormData()
   fd.append('userDto', JSON.stringify(user))
@@ -40,13 +40,11 @@ export const updateAccount = async (user: UserDto): Promise<AccountTypes> => {
   const fd = new FormData()
   fd.append('userDtoObj', JSON.stringify(user))
 
-  const resp = await axiosAccount.put<AccountTypes>(
-    `/user/${user.userId}`,
-    fd
-    //   , {
-    //   headers: { 'Content-Type': 'multipart/form-data' }
-    // }
-  )
+  const resp = await axiosAccount.put<AccountTypes>(`/user/${user.userId}`, fd
+  //   , {
+  //   headers: { 'Content-Type': 'multipart/form-data' }
+  // }
+)
 
   // try {
   //   const resp = await axiosAccount.put<AccountTypes>(`user/${user.userId}`, fd, {
