@@ -17,21 +17,22 @@ export const SidebarCmp = () => {
   const [isAdmin, setIsAdmin] = useState(false)
 
   useEffect(() => {
-    const userRole = localStorage.getItem('userRole') || sessionStorage.getItem('userRole')
-    console.log('Retrieved role:', userRole)
+    const userRole = localStorage.getItem('userRole')
+    console.log('User role:', userRole)
     setIsAdmin(userRole === 'ADMIN')
   }, [])
 
   const filterMenuItem = isAdmin ? MenuItems : MenuItems.filter((item) => item.title !== 'Account')
 
-  const handleMenuClick = (link: string, title: string) => {
-    if (title === 'Logout') {
-      logout() // Call logout function
-      navigate('/login') // Redirect to login page
-    } else {
-      navigate(link) // Navigate to the specified route
+  const handleMenuClick = (item: (typeof MenuItems)[0]) => {
+    if (item.action === 'logout') {
+      logout()
+      navigate('/login', { replace: true })
+    } else if (item.link) {
+      navigate(item.link)
     }
   }
+
   return (
     <Sidebar
       collapsed={collapsed}
@@ -108,43 +109,43 @@ export const SidebarCmp = () => {
           })
         }}
       >
-        {filterMenuItem.map((val) => {
+        {filterMenuItem.map((item) => {
           if (collapsed) {
-            if (val.submenus) {
-              const firstSubmenuLink = val.submenus[0].link
+            if (item.submenus) {
+              const firstSubmenuLink = item.submenus[0].link
               return (
                 <MenuItem
-                  icon={val.icon}
-                  key={val.title}
+                  icon={item.icon}
+                  key={item.title}
                   onClick={() => {
-                    handleMenuClick(firstSubmenuLink, val.title)
+                    handleMenuClick(firstSubmenuLink, item.title)
                   }}
-                  active={location.pathname === val.link}
+                  active={location.pathname === item.link}
                 >
-                  {val.title}
+                  {item.title}
                 </MenuItem>
               )
             }
             // For regular items, render normally
             return (
               <MenuItem
-                icon={val.icon}
-                key={val.link}
+                icon={item.icon}
+                key={item.link}
                 onClick={() => {
-                  handleMenuClick(val.link, val.title)
+                  handleMenuClick(item.link, item.title)
                 }}
-                active={location.pathname === val.link}
+                active={location.pathname === item.link}
               >
-                {val.title}
+                {item.title}
               </MenuItem>
             )
           }
 
           // When expanded, render with submenus
-          if (val.submenus) {
+          if (item.submenus) {
             return (
-              <SubMenu label={val.title} icon={val.icon} key={val.title} active={location.pathname === val.link}>
-                {val.submenus.map((subItem) => (
+              <SubMenu label={item.title} icon={item.icon} key={item.title} active={location.pathname === item.link}>
+                {item.submenus.map((subItem) => (
                   <MenuItem
                     key={subItem.title}
                     icon={subItem.icon}
@@ -160,14 +161,12 @@ export const SidebarCmp = () => {
 
           return (
             <MenuItem
-              icon={val.icon}
-              key={val.title}
-              onClick={() => {
-                handleMenuClick(val.link, val.title)
-              }}
-              active={location.pathname === val.link}
+              key={item.title}
+              icon={item.icon}
+              active={location.pathname === item.link}
+              onClick={() => handleMenuClick(item)}
             >
-              {val.title}
+              {item.title}
             </MenuItem>
           )
         })}

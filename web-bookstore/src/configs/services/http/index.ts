@@ -41,7 +41,7 @@ function processQueue(error: any, token: string | null = null) {
   requestQueue.length = 0
 }
 
-// ▶️ RESPONSE interceptor: catch 401/403 → refresh → retry
+// RESPONSE interceptor: catch 401/403 → refresh → retry
 console.log('Attaching response interceptor')
 axiosAccount.interceptors.response.use(
   (res: AxiosResponse) => {
@@ -104,6 +104,7 @@ axiosAccount.interceptors.response.use(
           Authorization: `Bearer ${accessToken}`
         }
         return axiosAccount(originalReq)
+        
       } catch (refreshError) {
         // Refresh failed → reject all queued, clear tokens, force login
         console.error('❌  Refresh failed, clearing tokens & redirecting:', refreshError)
@@ -112,6 +113,7 @@ axiosAccount.interceptors.response.use(
         localStorage.removeItem('refreshToken')
         window.location.href = '/login'
         return Promise.reject(refreshError)
+
       } finally {
         isRefreshing = false
       }

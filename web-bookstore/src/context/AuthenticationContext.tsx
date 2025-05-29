@@ -1,36 +1,42 @@
-import React, { createContext, useContext, useState, useEffect } from 'react'
+import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react'
+
+interface AuthData {
+  accessToken: string
+  refreshToken: string
+  userId: number
+  userRole: string
+}
 
 interface AuthenticationContextType {
   isAuthenticated: boolean
-  login: (accessToken: string, refreshToken: string) => void
+  login: (data: AuthData) => void
   logout: () => void
 }
 
-const AuthenticationConText = createContext<AuthenticationContextType | undefined>(undefined)
+const AuthenticationContext = createContext<AuthenticationContextType | undefined>(undefined)
 
-export const AuthenticationProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  // consider yourself "authenticated" if *both* tokens are present
-  const [isAuthenticated, setIsAuthenticated] = useState(() => {
-    return !!localStorage.getItem('accessToken') && !!localStorage.getItem('refreshToken')
-  })
+export const AuthenticationProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
+  const [isAuthenticated, setIsAuthenticated] = useState(
+    () => !!localStorage.getItem('accessToken') && !!localStorage.getItem('refreshToken')
+  )
 
-  const login = (accessToken: string, refreshToken: string) => {
+  const login = ({ accessToken, refreshToken, userId, userRole }: AuthData) => {
     localStorage.setItem('accessToken', accessToken)
     localStorage.setItem('refreshToken', refreshToken)
+    localStorage.setItem('userId', String(userId))
+    localStorage.setItem('userRole', userRole)
     setIsAuthenticated(true)
-    console.log('Login successful')
-    console.log('Access Token:', accessToken)
-    console.log('Refresh Token:', refreshToken)
   }
 
   const logout = () => {
     localStorage.removeItem('accessToken')
     localStorage.removeItem('refreshToken')
+    localStorage.removeItem('userId')
+    localStorage.removeItem('userRole')
     setIsAuthenticated(false)
   }
 
   useEffect(() => {
-    // sync across tabs
     const handler = () => {
       setIsAuthenticated(!!localStorage.getItem('accessToken') && !!localStorage.getItem('refreshToken'))
     }
@@ -39,14 +45,14 @@ export const AuthenticationProvider: React.FC<{ children: React.ReactNode }> = (
   }, [])
 
   return (
-    <AuthenticationConText.Provider value={{ isAuthenticated, login, logout }}>
+    <AuthenticationContext.Provider value={{ isAuthenticated, login, logout }}>
       {children}
-    </AuthenticationConText.Provider>
+    </AuthenticationContext.Provider>
   )
 }
 
 export const useAuthentication = () => {
-  const context = useContext(AuthenticationConText)
-  if (!context) throw new Error('useAuth must be inside AuthProvider');
+  const context = useContext(AuthenticationContext)
+  if (!context) throw new Error('useAuthentication must be inside AuthenticationProvider')
   return context
 }

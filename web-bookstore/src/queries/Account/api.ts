@@ -40,13 +40,7 @@ export const updateAccount = async (user: UserDto): Promise<AccountTypes> => {
   const fd = new FormData()
   fd.append('userDtoObj', JSON.stringify(user))
 
-  const resp = await axiosAccount.put<AccountTypes>(
-    `/user/${user.userId}`,
-    fd
-    //   , {
-    //   headers: { 'Content-Type': 'multipart/form-data' }
-    // }
-  )
+  const resp = await axiosAccount.put<AccountTypes>(`/user/${user.userId}`, fd)
 
   // try {
   //   const resp = await axiosAccount.put<AccountTypes>(`user/${user.userId}`, fd, {
@@ -59,4 +53,13 @@ export const updateAccount = async (user: UserDto): Promise<AccountTypes> => {
   // }
 
   return resp.data
+}
+
+export interface ChangePasswordPayload {
+  password: string
+  repeatPassword: string
+}
+
+export const changePassword = async (email: string, payload: ChangePasswordPayload): Promise<void> => {
+  await axiosAccount.post(`/forgotPassword/changePassword/${email}`, payload)
 }

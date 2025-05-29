@@ -1,15 +1,14 @@
-import Image from 'material-ui-image'
 import React from 'react'
 import './styles.scss'
-import { Box, Container, Link, Stack, Typography } from '@mui/material'
-import { Button, Checkbox, Form, Input } from 'antd'
-import { Controller, SubmitHandler, useForm } from 'react-hook-form'
-import { useNavigate } from 'react-router-dom'
+import Image from 'material-ui-image'
 import { IMAGES } from '../../configs/images'
+import { useNavigate } from 'react-router-dom'
+import { Button, Checkbox, Form, Input } from 'antd'
 import { Toastify } from '../../components/Toastify'
-import ForgotPassword from './ForgotPassword/ForgotPassword'
-import axiosAccount from '../../configs/services/http'
+import { Controller, SubmitHandler, useForm } from 'react-hook-form'
+import { Box, Container, Link, Stack, Typography } from '@mui/material'
 import { useAuthentication } from '../../context/AuthenticationContext'
+import ForgotPassword from './ForgotPassword/ForgotPassword'
 import { loginApi } from '../../queries/Login/api'
 
 export type FieldType = {
@@ -41,13 +40,12 @@ const Login: React.FC = () => {
         email: data.email,
         password: data.password,
         remember: data.remember
-      });
+      })
 
-      const { accessToken, refreshToken, userRole, userId } = response;
+      const { accessToken, refreshToken, userRole, userId } = response
 
       if (accessToken && refreshToken) {
-        // Store both tokens in localStorage for interceptor + refresh flow
-        login(accessToken, refreshToken);
+        login({ accessToken, refreshToken, userId, userRole })
 
         const storage = data.remember ? localStorage : sessionStorage
         storage.setItem('userRole', userRole)
@@ -120,13 +118,14 @@ const Login: React.FC = () => {
             />
           </Form.Item>
 
-          {/* Password Field */}
           <Form.Item
             required
             label='Password'
             validateStatus={errors.password ? 'error' : ''}
             help={
-              errors.email ? <span style={{ textAlign: 'left', display: 'block' }}>{errors.email.message}</span> : null
+              errors.password ? (
+                <span style={{ textAlign: 'left', display: 'block' }}>{errors.password.message}</span>
+              ) : null
             }
           >
             <Controller
@@ -137,7 +136,6 @@ const Login: React.FC = () => {
             />
           </Form.Item>
 
-          {/* Checkbox */}
           <Form.Item>
             <Controller
               name='remember'

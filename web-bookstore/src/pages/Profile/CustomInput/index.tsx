@@ -1,5 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
-
 import TextField from '@mui/material/TextField'
 import Box from '@mui/material/Box'
 
