@@ -30,6 +30,7 @@ const queryClient = new QueryClient({
     }
   }
 })
+
 const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const location = useLocation()
   const { isAuthenticated } = useAuthentication()
@@ -40,9 +41,11 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
     <div style={{ display: 'flex' }}>
       {!isLoginPage && isAuthenticated && <SidebarCmp />}
       {children}
+      {!isLoginPage && isAuthenticated && <ChatBot />}
     </div>
   )
 }
+
 function App() {
   return (
     <AuthenticationProvider>
@@ -68,11 +71,7 @@ function App() {
 
               <Route path='/faqs' element={<FAQs />} />
               <Route path='/container' element={<Container />} />
-
-              {/* Add other routes */}
             </Routes>
-
-            <ChatBot/>
           </Layout>
           <ToastifyContainer />
         </BrowserRouter>

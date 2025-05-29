@@ -1,44 +1,28 @@
+import React from 'react'
 import Grid from '@mui/material/Grid'
-import { useEffect, useState } from 'react'
+import { useGetAccountDetail } from '../../queries/Account/useGetAccountDetail'
 import SettingsCard from './SettingCard'
-import axiosAccount from '../../configs/services/http'
+import { Spin } from 'antd'
 
-interface UserInformation {
-  userId: string
-  name: string
-  username: string
-  email: string
-  password: string
-  role: string
-}
+const Profile: React.FC = () => {
+  const userId = Number(localStorage.getItem('userId') || 0)
 
-const Profile = () => {
-  const [userInformation, setUserInformation] = useState<UserInformation | null>(null)
+  const { data: account, isFetching } = useGetAccountDetail(userId, {
+    enabled: !!userId,
+    queryKey: ['user', userId]
+  })
 
-  useEffect(() => {
-    const fetchUserInformation = async () => {
-      try {
-        const userId = sessionStorage.getItem('userId') || localStorage.getItem('userId')
-        if (userId) {
-          const response = await axiosAccount.get(`user/${userId}`)
-          setUserInformation(response.data)
-        }
-      } catch (error) {
-        console.error('Failed to fetch user information', error)
-      }
-    }
-
-    fetchUserInformation()
-  }, [])
-
-  if (!userInformation) {
-    return <div>Loading...</div>
+  if (isFetching) {
+    return <Spin tip='Loading profile…' />
+  }
+  if (!account) {
+    return <div>Unable to load your profile.</div>
   }
 
   return (
     <Grid container spacing={3} sx={{ p: 1, minHeight: '100vh' }}>
       <Grid item xs={12} md={12}>
-        <SettingsCard userInformation={userInformation} setUserInformation={setUserInformation} />
+        <SettingsCard account={account} />
       </Grid>
     </Grid>
   )

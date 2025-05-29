@@ -1,141 +1,74 @@
+import React, { useEffect } from 'react'
 import { Button, Card, Col, Form, Input, Row, Typography } from 'antd'
-import { useEffect, useState } from 'react'
-import axiosAccount from '../../../configs/services/http'
+import { useUpdateAccount } from '../../../queries/Account/useUpdateAccount'
+import { useChangePassword } from '../../../queries/Account/useChangePassword'
+import { AccountTypes, UserDto } from '../../../queries/Account/types'
+import { AccountKey } from '../../../queries'
 import { Toastify } from '../../../components/Toastify'
 
-export default function SettingsCard({ userInformation, setUserInformation }: any) {
-  const [form] = Form.useForm()
-  const [isEditing, setIsEditing] = useState(false)
+interface Props {
+  account: AccountTypes
+}
+
+interface FormValues extends UserDto {
+  newPassword?: string
+  repeatPassword?: string
+}
+
+const SettingsCard: React.FC<Props> = ({ account }) => {
+  const [form] = Form.useForm<FormValues>()
+
+  const { mutateAsync: updateAccount, isPending: updatingProfile } = useUpdateAccount()
+  const { mutateAsync: changePassword, isPending: changingPwd } = useChangePassword()
 
   useEffect(() => {
-    form.setFieldsValue(userInformation)
-  }, [userInformation, form])
+    form.setFieldsValue({
+      [AccountKey.NAME]: account.name,
+      [AccountKey.USERNAME]: account.username,
+      [AccountKey.EMAIL]: account.email,
+      [AccountKey.ROLE]: account.role
+    })
+  }, [account, form])
 
-  // const toggleEdit = async () => {
-  //   if (isEditing) {
-  //     try {
-  //       const values = await form.validateFields()
+  const onFinish = async (values: FormValues) => {
+    try {
+      // 1) Profile update (omit password entirely)
+      await updateAccount({
+        userId: account.userId,
+        name: values.name,
+        username: values.username,
+        email: values.email,
+        role: account.role
+      })
 
-  //       // Update General Information
-  //       const updatedUser = {
-  //         userId: userInformation.userId,
-  //         name: values.name,
-  //         username: values.username,
-  //         email: values.email,
-  //         password: userInformation.password, // Keep the old password
-  //         role: userInformation.role
-  //       }
-
-  //       // Convert updated user to JSON string
-  //       const userDtoObj = JSON.stringify(updatedUser)
-
-  //       // Prepare FormData
-  //       const formData = new FormData()
-  //       formData.append('userDtoObj', userDtoObj) // Append the JSON string as 'userDtoObj'
-
-  //       // Send PUT request with FormData
-  //       await axiosAccount.put(`/user/${userInformation.userId}`, formData)
-  //       setUserInformation(updatedUser)
-  //       Toastify('success', 'General information updated successfully')
-
-  //       // Smart Password Change
-  //       if (values.newPassword || values.repeatPassword || values.password) {
-  //         if (!values.password || !values.newPassword || !values.repeatPassword) {
-  //           Toastify('error', 'Please fill all password fields to change password')
-  //           return
-  //         }
-
-  //         if (values.newPassword !== values.repeatPassword) {
-  //           Toastify('error', 'New password and repeat password do not match')
-  //           return
-  //         }
-
-  //         if (values.password !== userInformation.password) {
-  //           Toastify('error', 'Current password is incorrect')
-  //           return
-  //         }
-
-  //         const passwordChangeBody = {
-  //           password: values.newPassword,
-  //           repeatPassword: values.repeatPassword
-  //         }
-
-  //         await axiosAccount.post(`forgotPassword/changePassword/${userInformation.email}`, passwordChangeBody)
-  //         Toastify('success', 'Password changed successfully')
-  //       }
-  //     } catch (error) {
-  //       console.error('Update failed:', error)
-  //       Toastify('error', 'Failed to update information')
-  //     }
-  //   }
-  //   setIsEditing(!isEditing)
-  // }
-
-  const toggleEdit = async () => {
-    if (isEditing) {
-      try {
-        const values = await form.validateFields()
-
-        // Create a FormData object
-        const formData = new FormData()
-        formData.append('userId', userInformation.userId)
-        formData.append('name', values.name)
-        formData.append('username', values.username)
-        formData.append('email', values.email)
-        formData.append('password', userInformation.password) // old password
-        formData.append('role', userInformation.role)
-
-        const accessToken = localStorage.getItem('accessToken')
-        await axiosAccount.put(`user/${userInformation.userId}`, formData, {
-          headers: {
-            'Content-Type': 'multipart/form-data',
-            Authorization: `Bearer ${accessToken}`
-          }
-        })
-
-        setUserInformation({
-          ...userInformation,
-          ...values
-        })
-
-        Toastify('success', 'General information updated successfully')
-
-        // Smart Password Change
-        if (values.newPassword || values.repeatPassword || values.password) {
-          if (!values.password || !values.newPassword || !values.repeatPassword) {
-            Toastify('error', 'Please fill all password fields to change password')
-            return
-          }
-
-          if (values.newPassword !== values.repeatPassword) {
-            Toastify('error', 'New password and repeat password do not match')
-            return
-          }
-
-          if (values.password !== userInformation.password) {
-            Toastify('error', 'Current password is incorrect')
-            return
-          }
-
-          const passwordChangeBody = {
+      // 2) Change password if they filled it
+      if (values.newPassword || values.repeatPassword) {
+        if (!values.newPassword || !values.repeatPassword) {
+          Toastify('error', 'Please fill both password fields')
+          return
+        }
+        if (values.newPassword !== values.repeatPassword) {
+          Toastify('error', 'Passwords must match')
+          return
+        }
+        await changePassword({
+          email: account.email,
+          payload: {
             password: values.newPassword,
             repeatPassword: values.repeatPassword
           }
-
-          await axiosAccount.post(`forgotPassword/changePassword/${userInformation.email}`, passwordChangeBody)
-          Toastify('success', 'Password changed successfully')
-        }
-      } catch (error) {
-        console.error('Update failed:', error)
-        Toastify('error', 'Failed to update information')
+        })
       }
+    } catch (e) {
+      // Hooks already toastify on error
+      console.error(e)
     }
-    setIsEditing(!isEditing)
   }
 
   return (
     <Card bordered={true} style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}>
-      <Form form={form} layout='vertical' initialValues={userInformation}>
+      <Form<UserDto> form={form} layout='vertical' onFinish={onFinish} initialValues={{}}>
+        {' '}
         {/* Account Information */}
         <Row gutter={16}>
           <Col md={24}>
@@ -143,51 +76,50 @@ export default function SettingsCard({ userInformation, setUserInformation }: an
           </Col>
 
           <Col xs={24} md={8}>
-            <Form.Item name='userId' label='User Id'>
-              <Input disabled />
+            <Form.Item label='User Id'>
+              <Input value={account.userId} disabled />
             </Form.Item>
           </Col>
 
           <Col xs={24} md={8}>
             <Form.Item
-              name='name'
+              name={AccountKey.NAME}
               label='Full Name'
               rules={[{ required: true, message: 'Please input your full name' }]}
             >
-              <Input disabled={!isEditing} placeholder='Enter your full name' />
+              <Input placeholder='Enter your full name' />
             </Form.Item>
           </Col>
 
           <Col xs={24} md={8}>
             <Form.Item
-              name='username'
+              name={AccountKey.USERNAME}
               label='Username'
               rules={[{ required: true, message: 'Please input your username' }]}
             >
-              <Input disabled={!isEditing} placeholder='Enter your username' />
+              <Input placeholder='Enter your username' />
             </Form.Item>
           </Col>
 
           <Col xs={24} md={8}>
-            <Form.Item name='role' label='Role'>
+            <Form.Item name={AccountKey.ROLE} label='Role'>
               <Input disabled />
             </Form.Item>
           </Col>
 
           <Col xs={24} md={16}>
             <Form.Item
-              name='email'
+              name={AccountKey.EMAIL}
               label='Email Address'
               rules={[
                 { required: true, message: 'Please input your email' },
                 { type: 'email', message: 'Please enter a valid email' }
               ]}
             >
-              <Input disabled={!isEditing} placeholder='Enter your email address' />
+              <Input placeholder='Enter your email address' />
             </Form.Item>
           </Col>
         </Row>
-
         {/* Change Password */}
         <Row gutter={16}>
           <Col md={24}>
@@ -195,28 +127,27 @@ export default function SettingsCard({ userInformation, setUserInformation }: an
           </Col>
 
           <Col xs={24} md={24}>
-            <Form.Item name='password' label='Current Password'>
-              <Input.Password disabled={!isEditing} placeholder='Current password' />
+            <Form.Item name='currentPassword' label='Current Password'>
+              <Input.Password placeholder='Enter your current password' />
             </Form.Item>
           </Col>
 
           <Col xs={24} md={24}>
-            <Form.Item name='newPassword' label='New Password'>
-              <Input.Password disabled={!isEditing} placeholder='Enter your new password' />
+            <Form.Item name='newPassword' label='Repeat New Password'>
+              <Input.Password placeholder='Enter your new password' />
             </Form.Item>
           </Col>
 
           <Col xs={24} md={24}>
             <Form.Item name='repeatPassword' label='Repeat Password'>
-              <Input.Password disabled={!isEditing} placeholder='Repeat your new password' />
+              <Input.Password placeholder='Enter your repeat password' />
             </Form.Item>
           </Col>
         </Row>
-
         <Col xs={24} style={{ textAlign: 'right' }}>
           <Form.Item>
-            <Button type='primary' onClick={toggleEdit}>
-              {isEditing ? 'Save All' : 'Edit'}
+            <Button type='primary' htmlType='submit' loading={updatingProfile || changingPwd}>
+              Save Changes
             </Button>
           </Form.Item>
         </Col>
@@ -224,3 +155,4 @@ export default function SettingsCard({ userInformation, setUserInformation }: an
     </Card>
   )
 }
+export default SettingsCard

@@ -84,6 +84,6 @@ export const MenuItems = [
   {
     title: 'Logout',
     icon: <ArrowBack />,
-    link: '/login'
+    action: 'logout'
   }
 ]

@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react'
-import { Form, Input, Button } from 'antd'
-import { Grid2, Stack } from '@mui/material'
+import { Form, Input } from 'antd'
+import { Button, Grid2, Stack } from '@mui/material'
 import { Controller, useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { Toastify } from '../../../components/Toastify'
@@ -71,8 +71,9 @@ export const CreateUpdateAccountModal: React.FC<Props> = ({ userId, isEdit = fal
           { key: AccountKey.USERNAME, label: 'Username' },
           { key: AccountKey.EMAIL, label: 'Email', props: { type: 'email' } },
           { key: AccountKey.ROLE, label: 'Role' },
+          { key: AccountKey.PASSWORD, label: 'Password', props: { type: 'password' }, Password: true },
           // only show pwd on create
-          ...(!isEdit ? [{ key: AccountKey.PASSWORD, label: 'Password', Password: true }] : [])
+          // ...(!isEdit ? [{ key: AccountKey.PASSWORD, label: 'Password', Password: true }] : [])
         ].map(({ key, label, props, Password }) => (
           <Grid2 size={12} key={key}>
             <Controller
@@ -92,7 +93,7 @@ export const CreateUpdateAccountModal: React.FC<Props> = ({ userId, isEdit = fal
               Cancel
             </Button>
 
-            <Button htmlType='submit' type='primary' loading={creating || updating}>
+            <Button type='submit' variant='contained' size='large' color='primary' style={{ marginLeft: '16px' }} loading={creating || updating}>
               Save
             </Button>
           </Stack>
@@ -100,81 +101,4 @@ export const CreateUpdateAccountModal: React.FC<Props> = ({ userId, isEdit = fal
       </Grid2>
     </Form>
   )
-
-  // return (
-  //   <Form layout='vertical' onFinish={handleSubmit(onSubmit)}>
-  //     <Grid2 container>
-  //       <Grid2 size={12}>
-  //         <Controller
-  //           name={AccountKey.NAME}
-  //           control={control}
-  //           render={({ field, fieldState: { error } }) => (
-  //             <Form.Item
-  //               label={'Full Name'}
-  //               required
-  //               validateStatus={error ? 'error' : undefined}
-  //               help={error?.message}
-  //             >
-  //               <Input {...field} placeholder='Enter Full Name' />
-  //             </Form.Item>
-  //           )}
-  //         />
-  //       </Grid2>
-  //       <Grid2 size={12}>
-  //         <Controller
-  //           name={AccountKey.USERNAME}
-  //           control={control}
-  //           render={({ field, fieldState: { error } }) => (
-  //             <Form.Item label={'Username'} required validateStatus={error ? 'error' : undefined} help={error?.message}>
-  //               <Input {...field} placeholder='Enter Username' />
-  //             </Form.Item>
-  //           )}
-  //         />
-  //       </Grid2>
-  //       <Grid2 size={12}>
-  //         <Controller
-  //           name={AccountKey.EMAIL}
-  //           control={control}
-  //           render={({ field, fieldState: { error } }) => (
-  //             <Form.Item label={'Email'} required validateStatus={error ? 'error' : undefined} help={error?.message}>
-  //               <Input {...field} placeholder='Enter Email' />
-  //             </Form.Item>
-  //           )}
-  //         />
-  //       </Grid2>
-  //       <Grid2 size={12}>
-  //         <Controller
-  //           name={AccountKey.ROLE}
-  //           control={control}
-  //           render={({ field, fieldState: { error } }) => (
-  //             <Form.Item label={'Role'} required validateStatus={error ? 'error' : undefined} help={error?.message}>
-  //               <Input {...field} placeholder='Enter Role' />
-  //             </Form.Item>
-  //           )}
-  //         />
-  //       </Grid2>
-  //       <Grid2 size={12}>
-  //         <Controller
-  //           name={AccountKey.PASSWORD}
-  //           control={control}
-  //           render={({ field, fieldState: { error } }) => (
-  //             <Form.Item label={'Password'} required validateStatus={error ? 'error' : undefined} help={error?.message}>
-  //               <Input.Password {...field} placeholder='Enter Password' />
-  //             </Form.Item>
-  //           )}
-  //         />
-  //       </Grid2>
-  //       <Grid2 size={12}>
-  //         <Stack display={'flex'} justifyContent={'flex-end'} direction={'row'}>
-  //           <Button disabled={isCreatingLoading || isUpdating} variant='outlined' color='error' onClick={handleCancel}>
-  //             Cancel
-  //           </Button>
-  //           <Button type='submit' variant='contained' size='large' color='primary' style={{ marginLeft: '16px' }}>
-  //             Save
-  //           </Button>
-  //         </Stack>
-  //       </Grid2>
-  //     </Grid2>
-  //   </Form>
-  // )
 }

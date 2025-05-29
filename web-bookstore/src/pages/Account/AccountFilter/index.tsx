@@ -51,7 +51,7 @@ const AccountFilter: React.FC<Props> = () => {
       </Stack>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <InputLabel id='demo-simple-select-label'>Quantity</InputLabel>
+          <InputLabel id='demo-simple-select-label'>User Id</InputLabel>
           <Select
             labelId='demo-simple-select-label'
             id='demo-simple-select'
@@ -66,7 +66,6 @@ const AccountFilter: React.FC<Props> = () => {
             <MenuItem value={50}>50</MenuItem>
             <MenuItem value={100}>100</MenuItem>
             <MenuItem value={200}>200</MenuItem>
-            <MenuItem value={500}>500</MenuItem>
           </Select>
         </Grid>
       </Grid>
