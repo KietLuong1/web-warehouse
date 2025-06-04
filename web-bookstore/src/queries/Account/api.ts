@@ -15,13 +15,13 @@ export const refreshToken = async (token: string): Promise<JwtAuthenticationResp
 export const fetchListAccount = async (
   params: QueryParams = { pageNumber: 0, pageSize: 10 }
 ): Promise<AccountApiResponse> => {
-  const resp = await axiosAccount.get<AccountApiResponse>('/users', { params })
+  const resp = await axiosAccount.get<AccountApiResponse>('/userManagement/users', { params })
   console.log('fetchListAccount', resp.data)
   return resp.data
 }
 
 export const getAccountById = async (userId: number): Promise<AccountTypes> => {
-  const resp = await axiosAccount.get<AccountTypes>(`/user/${userId}`)
+  const resp = await axiosAccount.get<AccountTypes>(`/userManagement/user/${userId}`)
   return resp.data
 }
 
@@ -29,7 +29,7 @@ export const createAccount = async (user: UserDto): Promise<AccountTypes> => {
   const fd = new FormData()
   fd.append('userDto', JSON.stringify(user))
 
-  const resp = await axiosAccount.post<AccountTypes>('/user', fd, {
+  const resp = await axiosAccount.post<AccountTypes>('/userManagement/user', fd, {
     headers: { 'Content-Type': 'multipart/form-data' }
   })
 
@@ -40,10 +40,10 @@ export const updateAccount = async (user: UserDto): Promise<AccountTypes> => {
   const fd = new FormData()
   fd.append('userDtoObj', JSON.stringify(user))
 
-  const resp = await axiosAccount.put<AccountTypes>(`/user/${user.userId}`, fd)
+  const resp = await axiosAccount.put<AccountTypes>(`/userManagement/user/${user.userId}`, fd)
 
   // try {
-  //   const resp = await axiosAccount.put<AccountTypes>(`user/${user.userId}`, fd, {
+  //   const resp = await axiosAccount.put<AccountTypes>(`/userManagement/user/${user.userId}`, fd, {
   //     headers: { 'Content-Type': 'multipart/form-data' }
   //   })
   //   return resp.data
