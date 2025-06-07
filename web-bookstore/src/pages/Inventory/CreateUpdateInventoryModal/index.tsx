@@ -28,7 +28,7 @@ export const CreateUpdateInventoryModal: React.FC<Props> = ({ inventoryId, onClo
       onCloseModal()
     }
   })
-  
+
   const { onUpdateInventory, isPending: isUpdating } = useUpdateInventory({
     onSuccess: () => {
       Toastify(`success`, `Record has been updated successfully.`)

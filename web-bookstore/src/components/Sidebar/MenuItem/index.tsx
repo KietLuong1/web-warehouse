@@ -7,8 +7,6 @@ import {
   LocationOn,
   ManageAccounts,
   People,
-  QuestionAnswer,
-  Settings,
   Summarize,
   Warehouse
 } from '@mui/icons-material'
@@ -69,18 +67,13 @@ export const MenuItems = [
   //       icon: <QuestionAnswer />,
   //       link: '/faqs'
   //     }
-      // {
-      //   title: 'Containers',
-      //   icon: <HomeRepairService />,
-      //   link: '/container'
-      // }
+  // {
+  //   title: 'Containers',
+  //   icon: <HomeRepairService />,
+  //   link: '/container'
+  // }
   //   ]
   // },
-  {
-    title: 'User Details',
-    icon: <ManageAccounts />,
-    link: '/account-details'
-  },
   {
     title: 'Logout',
     icon: <ArrowBack />,

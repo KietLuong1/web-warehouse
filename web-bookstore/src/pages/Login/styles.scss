@@ -1,21 +1,21 @@
 .login-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
 
-    &_box {
-        width: 100%;
-        padding: 32px;
-        border-radius: 16px;
-        box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
-        text-align: center;
-        background-color: #fff,
-    }
+  &_box {
+    width: 100%;
+    padding: 32px;
+    border-radius: 16px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.3);
+    text-align: center;
+    background-color: #fff;
+  }
 }
 
 .img-container {
-    display: flex;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }

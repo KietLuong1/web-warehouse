@@ -11,10 +11,9 @@ export function useUpdateAccount(options?: UseMutationOptions<AccountTypes, Erro
     onError: () => Toastify('error', 'Failed to update account'),
     onSuccess: (data, variables, context) => {
       Toastify('success', 'Account updated successfully')
-      qc.invalidateQueries({ queryKey: ['users'] }) 
+      qc.invalidateQueries({ queryKey: ['users'] })
       if (options?.onSuccess) options.onSuccess(data, variables, context)
     },
     ...options
   })
 }
-

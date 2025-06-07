@@ -1,4 +1,3 @@
-
 import { PlusOutlined } from '@ant-design/icons'
 import { Refresh } from '@mui/icons-material'
 import { IconButton, Stack, Tooltip } from '@mui/material'
@@ -18,7 +17,6 @@ interface Props {
 }
 
 export const AccountToolbar: React.FC<Props> = ({ table, onRefresh }) => {
-  
   const [isModalVisible, setIsModalVisible] = useState(false)
 
   const openCreate = useCallback(() => setIsModalVisible(true), [])
@@ -44,35 +42,29 @@ export const AccountToolbar: React.FC<Props> = ({ table, onRefresh }) => {
               <Refresh />
             </IconButton>
           </Tooltip>
- <Tooltip title='Filter' arrow placement='top'>
+          <Tooltip title='Filter' arrow placement='top'>
             <CustomTableFilterContainer filterParamsKeys={undefined}>
               <AccountFilter />
             </CustomTableFilterContainer>
           </Tooltip>
-                    <CustomTableColumnOptions>
+          <CustomTableColumnOptions>
             <Tooltip title='Column Options' arrow placement='top'>
               <CustomTableColumnOptionsModal table={table} />
             </Tooltip>
           </CustomTableColumnOptions>
-        <Button
-          type="primary"
-          size="large"
-          icon={<PlusOutlined />}
-          onClick={openCreate}
-        >
-          Create
-        </Button>
-      </Stack>
+          <Button type='primary' size='large' icon={<PlusOutlined />} onClick={openCreate}>
+            Create
+          </Button>
+        </Stack>
       </Stack>
 
       <Modal
-        title="Create Account"
+        title='Create Account'
         open={isModalVisible}
         onCancel={closeCreate}
         footer={null}
         centered
         styles={{ body: { maxHeight: '60vh', overflowY: 'auto', padding: '8px', backgroundColor: 'transparent' } }}
-
       >
         <CreateUpdateAccountModal onCloseModal={closeCreate} />
       </Modal>
