@@ -68,7 +68,8 @@ function Location() {
           onClick={(e) => {
             e.stopPropagation()
             handleDeleteRecord(row)
-          }} />
+          }}
+        />
       </Tooltip>
     </div>
   )
@@ -113,7 +114,6 @@ function Location() {
       </Modal>
 
       <LocationDetailModal isVisible={isDetailModalVisible} onClose={closeDetailModal} locationData={selectedRow} />
-
     </>
   )
 }

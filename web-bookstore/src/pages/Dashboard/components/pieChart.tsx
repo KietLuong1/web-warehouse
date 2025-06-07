@@ -1,13 +1,13 @@
-import React, { useState, useEffect } from 'react';
-import { Pie, PieConfig } from '@ant-design/plots';
+import React, { useState, useEffect } from 'react'
+import { Pie, PieConfig } from '@ant-design/plots'
 
 interface DataType {
-  type: string;
-  value: number;
+  type: string
+  value: number
 }
 
 const PieChart: React.FC = () => {
-  const [data, setData] = useState<DataType[]>([]);
+  const [data, setData] = useState<DataType[]>([])
 
   useEffect(() => {
     setTimeout(() => {
@@ -18,10 +18,10 @@ const PieChart: React.FC = () => {
         { type: 'Test 4', value: 12 },
         { type: 'Test 5', value: 10 },
         { type: 'Test 6', value: 4 },
-        { type: 'Test 7', value: 7 },
-      ]);
-    }, 1000);
-  }, []);
+        { type: 'Test 7', value: 7 }
+      ])
+    }, 1000)
+  }, [])
 
   const config: PieConfig = {
     data,
@@ -30,19 +30,19 @@ const PieChart: React.FC = () => {
     label: {
       text: 'value',
       style: {
-        fontWeight: 'bold',
-      },
+        fontWeight: 'bold'
+      }
     },
     legend: {
       color: {
         title: false,
         position: 'right',
-        rowPadding: 5,
-      },
-    },
-  };
+        rowPadding: 5
+      }
+    }
+  }
 
-  return <Pie {...config} />;
-};
+  return <Pie {...config} />
+}
 
-export default PieChart;
+export default PieChart

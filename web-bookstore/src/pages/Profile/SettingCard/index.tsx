@@ -1,10 +1,10 @@
-import React, { useEffect } from 'react'
 import { Button, Card, Col, Form, Input, Row, Typography } from 'antd'
-import { useUpdateAccount } from '../../../queries/Account/useUpdateAccount'
-import { useChangePassword } from '../../../queries/Account/useChangePassword'
-import { AccountTypes, UserDto } from '../../../queries/Account/types'
-import { AccountKey } from '../../../queries'
+import React, { useEffect } from 'react'
 import { Toastify } from '../../../components/Toastify'
+import { AccountKey } from '../../../queries'
+import { AccountTypes, UserDto } from '../../../queries/Account/types'
+import { useChangePassword } from '../../../queries/Account/useChangePassword'
+import { useUpdateAccount } from '../../../queries/Account/useUpdateAccount'
 
 interface Props {
   account: AccountTypes
@@ -68,10 +68,8 @@ const SettingsCard: React.FC<Props> = ({ account }) => {
   return (
     <Card bordered={true} style={{ boxShadow: '0 4px 12px rgba(0,0,0,0.08)' }}>
       <Form<UserDto> form={form} layout='vertical' onFinish={onFinish} initialValues={{}}>
-        {' '}
-        {/* Account Information */}
         <Row gutter={16}>
-          <Col md={24}>
+          <Col md={24} style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
             <Typography style={{ fontWeight: 'bold', fontSize: 20 }}>General Information</Typography>
           </Col>
 

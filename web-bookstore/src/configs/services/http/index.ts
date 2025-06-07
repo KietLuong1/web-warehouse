@@ -11,7 +11,7 @@ const axiosAccount = axios.create({
 axiosAccount.interceptors.request.use((config) => {
   // Do NOT attach token to any /auth/** endpoints
   if (config.url?.includes('/auth/')) {
-    return config;
+    return config
   }
 
   const token = localStorage.getItem('accessToken')
@@ -104,7 +104,6 @@ axiosAccount.interceptors.response.use(
           Authorization: `Bearer ${accessToken}`
         }
         return axiosAccount(originalReq)
-        
       } catch (refreshError) {
         // Refresh failed → reject all queued, clear tokens, force login
         console.error('❌  Refresh failed, clearing tokens & redirecting:', refreshError)
@@ -113,7 +112,6 @@ axiosAccount.interceptors.response.use(
         localStorage.removeItem('refreshToken')
         window.location.href = '/login'
         return Promise.reject(refreshError)
-
       } finally {
         isRefreshing = false
       }

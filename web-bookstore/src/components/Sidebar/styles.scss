@@ -1,63 +1,61 @@
 .cmp-sidebar {
-    min-width: 0px !important;
-    border: none !important;
-    &__container {
-        padding: 5px;
-        min-height: 60px;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  min-width: 0px !important;
+  border: none !important;
+  &__container {
+    padding: 5px;
+    min-height: 60px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  }
+
+  &__items {
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+  }
+
+  &__heading-text {
+    overflow: hidden;
+    max-height: 100px;
+    transform: scale(1);
+    padding: 10px 16px 16px 16px;
+    transform-origin: top left;
+    transition: 0.4s;
+  }
+
+  &.ps-collapsed {
+    .ps-menu-label {
+      width: 0;
+      opacity: 0;
     }
+  }
 
-    &__items {
-        width: 100%;
-        display: flex;
-        justify-content: flex-end;
+  .ps-menu-button {
+    margin: 0 !important;
+    width: 100% !important;
+
+    & .pro-icon-wrapper {
+      color: 'white';
     }
+  }
 
-    &__heading-text {
-        overflow: hidden;
-        max-height: 100px;
-        transform: scale(1);
-        padding: 10px 16px 16px 16px;
-        transform-origin: top left;
-        transition: 0.4s;
+  .ps-submenu-content {
+    background-color: #1f2937 !important;
+    max-height: none !important;
+
+    // Ensure submenu expands properly
+    &.ps-submenu-content-open {
+      height: auto !important;
+      opacity: 1;
+      position: relative;
     }
+  }
 
-    &.ps-collapsed {
-        .ps-menu-label {
-            width: 0;
-            opacity: 0;
-        }
-    }
-
-    .ps-menu-button {
-        margin: 0 !important;
-        width: 100% !important;
-
-        & .pro-icon-wrapper {
-            color: 'white'
-        }
-    }
-
-    .ps-submenu-content {
-        background-color: #1F2937 !important;
-        max-height: none !important;
-
-        // Ensure submenu expands properly
-        &.ps-submenu-content-open {
-            height: auto !important;
-            opacity: 1;
-            position: relative;
-        }
-    }
-
-    // Ensure menu container grows
-    .ps-menu-root {
-        height: auto !important;
-        min-height: 100%;
-    }
-
-    
+  // Ensure menu container grows
+  .ps-menu-root {
+    height: auto !important;
+    min-height: 100%;
+  }
 }

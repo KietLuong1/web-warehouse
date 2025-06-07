@@ -1,7 +1,7 @@
-import { useMutation, UseMutationOptions } from '@tanstack/react-query';
-import { Toastify } from '../../components/Toastify';
-import { updateReport } from './api';
-import { ReportPayload } from './types';
+import { useMutation, UseMutationOptions } from '@tanstack/react-query'
+import { Toastify } from '../../components/Toastify'
+import { updateReport } from './api'
+import { ReportPayload } from './types'
 
 export function useUpdateReport(
   // eslint-disable-next-line @typescript-eslint/no-explicit-any

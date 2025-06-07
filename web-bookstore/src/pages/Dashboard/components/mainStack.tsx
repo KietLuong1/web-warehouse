@@ -1,7 +1,6 @@
 import { Grid2 } from '@mui/material'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
-import Typography from '@mui/material/Typography'
 import PageViewsBarChart from './pageViewsBarChart'
 import SessionsChart from './sessionsChart'
 import StatCard, { StatCardProps } from './statCard'
@@ -61,13 +60,9 @@ export default function MainStack() {
         paddingX: 2
       }}
     >
-      <Typography component='h2' variant='h5' sx={{ mb: 2 }}>
-        Overview
-      </Typography>
-
       <Grid2 container spacing={2}>
         {data.map((card, index) => (
-          <Grid2 size={4}>
+          <Grid2 size={4} mt={2}>
             <Item key={index} children={<StatCard {...card} />} />
           </Grid2>
         ))}

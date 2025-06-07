@@ -16,10 +16,7 @@ export const SupplierValidationSchema = yup.object().shape({
     .required('Phone number is required')
     .positive('Phone number must be a valid number')
     .integer('Phone number must be a whole number'),
-  [SupplierKey.EMAIL]: yup
-    .string()
-    .email('Invalid email format')
-    .required('Email is required'),
+  [SupplierKey.EMAIL]: yup.string().email('Invalid email format').required('Email is required'),
   [SupplierKey.ADDRESS]: yup.string().required('Address is required'),
   [SupplierKey.CREATE_AT]: yup.string().required('Create Date is required')
 })

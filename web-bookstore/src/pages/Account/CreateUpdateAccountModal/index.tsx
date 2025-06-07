@@ -71,7 +71,7 @@ export const CreateUpdateAccountModal: React.FC<Props> = ({ userId, isEdit = fal
           { key: AccountKey.USERNAME, label: 'Username' },
           { key: AccountKey.EMAIL, label: 'Email', props: { type: 'email' } },
           { key: AccountKey.ROLE, label: 'Role' },
-          { key: AccountKey.PASSWORD, label: 'Password', props: { type: 'password' }, Password: true },
+          { key: AccountKey.PASSWORD, label: 'Password', props: { type: 'password' }, Password: true }
           // only show pwd on create
           // ...(!isEdit ? [{ key: AccountKey.PASSWORD, label: 'Password', Password: true }] : [])
         ].map(({ key, label, props, Password }) => (
@@ -93,7 +93,14 @@ export const CreateUpdateAccountModal: React.FC<Props> = ({ userId, isEdit = fal
               Cancel
             </Button>
 
-            <Button type='submit' variant='contained' size='large' color='primary' style={{ marginLeft: '16px' }} loading={creating || updating}>
+            <Button
+              type='submit'
+              variant='contained'
+              size='large'
+              color='primary'
+              style={{ marginLeft: '16px' }}
+              loading={creating || updating}
+            >
               Save
             </Button>
           </Stack>
