@@ -9,8 +9,8 @@ import { useDeleteLocation } from '../../queries/Location/useDeleteLocation'
 import { useGetListLocation } from '../../queries/Location/useGetListLocation'
 import { allColumns } from './allColumns'
 import { CreateUpdateLocationModal } from './CreateUpdateLocationModal'
-import { LocationToolbar } from './LocationToolbar'
 import { LocationDetailModal } from './LocationDetailModel'
+import { LocationToolbar } from './LocationToolbar'
 
 function Location() {
   const { data, isFetching, handleInvalidateListLocation } = useGetListLocation()

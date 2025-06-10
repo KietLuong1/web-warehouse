@@ -296,7 +296,7 @@ export const CustomTable = <TData extends MRT_RowData>({
         boxShadow: 'none',
         background: 'transparent',
         marginLeft: '20px',
-        marginRight: '20px'
+        marginRight: '20px',
         // width: '100vw'
       }
     },

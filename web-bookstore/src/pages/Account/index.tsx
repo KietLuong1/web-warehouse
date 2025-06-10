@@ -1,15 +1,15 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { EditOutlined } from '@mui/icons-material'
-import { Modal, Tooltip, Spin } from 'antd'
-import { useCallback, useState } from 'react'
+import { Modal, Tooltip } from 'antd'
+import { useState } from 'react'
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
-import { AccountApiResponse } from '../../queries/Account'
+import { useGetAccountDetail } from '../../queries/Account/useGetAccountDetail'
+import { useGetListAccount } from '../../queries/Account/useGetListAccount'
 import { AccountDetailModal } from './AccountDetailModel'
 import { AccountToolbar } from './AccountToolbar'
 import { allColumns } from './allColumns'
 import { CreateUpdateAccountModal } from './CreateUpdateAccountModal'
-import { useGetListAccount } from '../../queries/Account/useGetListAccount'
-import { useGetAccountDetail } from '../../queries/Account/useGetAccountDetail'
 
 function Account() {
   // initialise pagination: page 0, size 10

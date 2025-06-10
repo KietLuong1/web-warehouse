@@ -1,6 +1,7 @@
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
 import { BrowserRouter, Navigate, Route, Routes, useLocation } from 'react-router-dom'
 import './App.css'
+import AppLayout from './components/AppLayout'
 import ChatBot from './components/ChatBot'
 import { SidebarCmp } from './components/Sidebar'
 import ToastifyContainer from './components/Toastify'
@@ -40,7 +41,7 @@ const Layout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   return (
     <div style={{ display: 'flex' }}>
       {!isLoginPage && isAuthenticated && <SidebarCmp />}
-      {children}
+      <AppLayout>{children}</AppLayout>
       {!isLoginPage && isAuthenticated && <ChatBot />}
     </div>
   )

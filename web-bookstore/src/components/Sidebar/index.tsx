@@ -45,8 +45,8 @@ export const SidebarCmp = () => {
           overflowY: 'hidden'
         }
       }}
-      width='230px'
-      collapsedWidth='100px'
+      width='215px'
+      collapsedWidth='90px'
     >
       <Stack className='cmp-sidebar__container'>
         <Box className='cmp-sidebar__items'>

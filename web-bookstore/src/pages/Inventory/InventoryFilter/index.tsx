@@ -29,7 +29,6 @@ const InventoryFilter: React.FC<Props> = () => {
     setSearchParams(restSearchParams)
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   //   const onFilter = (name: string, value: Array<any> = []) => {
   //     if (isEmpty(value)) {
   //       const { [name]: _, ...restParams } = currentSearchParams
