@@ -1,20 +1,22 @@
-import * as React from 'react'
-import { useTheme } from '@mui/material/styles'
 import Box from '@mui/material/Box'
 import Card from '@mui/material/Card'
 import CardContent from '@mui/material/CardContent'
 import Chip from '@mui/material/Chip'
 import Stack from '@mui/material/Stack'
+import { useTheme } from '@mui/material/styles'
 import Typography from '@mui/material/Typography'
-import { SparkLineChart } from '@mui/x-charts/SparkLineChart'
 import { areaElementClasses } from '@mui/x-charts/LineChart'
+import { SparkLineChart } from '@mui/x-charts/SparkLineChart'
 
 export type StatCardProps = {
   title: string
-  value: string
+  value: string | number
   interval: string
   trend: 'up' | 'down' | 'neutral'
   data: number[]
+  realTimeValue?: number
+  isConnected?: boolean
+  isAnimating?: boolean
 }
 
 function getDaysInMonth(month: number, year: number) {
@@ -43,9 +45,21 @@ function AreaGradient({ color, id }: { color: string; id: string }) {
   )
 }
 
-export default function StatCard({ title, value, interval, trend, data }: StatCardProps) {
+export default function StatCard({
+  title,
+  value,
+  interval,
+  trend,
+  data,
+  realTimeValue,
+  isConnected,
+  isAnimating
+}: StatCardProps) {
   const theme = useTheme()
   const daysInWeek = getDaysInMonth(11, 2024)
+
+  // Use real-time value if available, otherwise fallback to static value
+  const displayValue = realTimeValue !== undefined ? realTimeValue.toLocaleString() : value
 
   const trendColors = {
     up: theme.palette.mode === 'light' ? theme.palette.success.main : theme.palette.success.dark,
@@ -72,10 +86,31 @@ export default function StatCard({ title, value, interval, trend, data }: StatCa
         <Stack direction='column' sx={{ justifyContent: 'space-between', flexGrow: '1', gap: 1 }}>
           <Stack sx={{ justifyContent: 'space-between' }}>
             <Stack direction='row' sx={{ justifyContent: 'space-between', alignItems: 'center' }}>
-              <Typography variant='h4' component='p'>
-                {value}
+              <Typography
+                variant='h4'
+                component='p'
+                sx={{
+                  color: !isConnected ? 'text.disabled' : 'inherit',
+                  transition: 'all 0.3s ease',
+                  transform: isAnimating ? 'scale(1.05)' : 'scale(1)'
+                }}
+              >
+                {displayValue}
               </Typography>
-              <Chip size='small' color={color} label={trendValues[trend]} />
+              <Stack direction='row' spacing={1} alignItems='center'>
+                {isConnected && (
+                  <Box
+                    sx={{
+                      width: 8,
+                      height: 8,
+                      borderRadius: '50%',
+                      bgcolor: 'success.main',
+                      animation: 'pulse 2s infinite'
+                    }}
+                  />
+                )}
+                <Chip size='small' color={color} label={trendValues[trend]} />
+              </Stack>
             </Stack>
             <Typography variant='caption' sx={{ color: 'text.secondary' }}>
               {interval}
@@ -90,7 +125,7 @@ export default function StatCard({ title, value, interval, trend, data }: StatCa
               showTooltip
               xAxis={{
                 scaleType: 'band',
-                data: daysInWeek // Use the correct property 'data' for xAxis
+                data: daysInWeek
               }}
               sx={{
                 [`& .${areaElementClasses.root}`]: {
