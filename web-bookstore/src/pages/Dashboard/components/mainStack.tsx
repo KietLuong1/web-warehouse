@@ -3,7 +3,7 @@ import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import { useDashboard } from '../../../queries/Dashboard/useDashboard'
 import '../styles/animations.css'
-import AuthDebugger from './AuthDebugger'
+import DashboardDebugger from './DashboardDebugger'
 import LowStockAlerts from './LowStockAlerts'
 import PageViewsBarChart from './pageViewsBarChart'
 import SessionsChart from './sessionsChart'
@@ -85,8 +85,7 @@ export default function MainStack() {
       sx={{
         paddingX: 2
       }}
-    >
-      <AuthDebugger />
+    >      <DashboardDebugger />
       <Grid2 container spacing={2}>
         {data.map((card, index) => (
           <Grid2 size={4} mt={2} key={index}>

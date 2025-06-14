@@ -99,7 +99,7 @@ export default function ProfileAvatar({ showDropdown = true, onLogout }: Profile
                   color: 'text.primary'
                 }}
               >
-                {isLoading ? 'Loading...' : user?.username || 'User'}
+                {isLoading ? 'Loading...' : user?.name || 'User'}
               </Typography>
               <Typography
                 variant='caption'

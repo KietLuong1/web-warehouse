@@ -3,44 +3,44 @@ import { InventoryResponse } from '../../queries/Inventory'
 
 export const allColumns: MRT_ColumnDef<InventoryResponse>[] = [
   {
-    accessorKey: 'inventory_id',
+    accessorKey: 'id',
     header: 'Inventory ID',
     enableHiding: false,
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
     size: 150
   },
   {
-    accessorKey: 'product_id',
+    accessorKey: 'productId',
     header: 'Product ID',
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
     size: 150
   },
+  // {
+  //   accessorKey: 'warehouseId',
+  //   header: 'Warehouse ID',
+  //   Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
+  //   size: 150
+  // },
   {
-    accessorKey: 'location_id',
-    header: 'Location ID',
-    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
-    size: 150
-  },
-  {
-    accessorKey: 'quantity',
+    accessorKey: 'quantityOnHand',
     header: 'Quantity',
     Cell: ({ cell }) => <div>{cell.getValue<number>()}</div>,
     size: 200
   },
   {
-    accessorKey: 'batch_number',
+    accessorKey: 'batchNumber',
     header: 'Batch Number',
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
     size: 200
   },
   {
-    accessorKey: 'import_date',
-    header: 'Import Date',
-    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
+    accessorKey: 'maxStockLevel',
+    header: 'Max Stock Level',
+    Cell: ({ cell }) => <div>{cell.getValue<number>()}</div>,
     size: 200
   },
   {
-    accessorKey: 'expiry_date',
+    accessorKey: 'expiryDate',
     header: 'Expiry Date',
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
     size: 200

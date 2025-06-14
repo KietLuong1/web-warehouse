@@ -19,16 +19,15 @@ const API_BASE_URL = 'http://localhost:8080/api/v1'
 class WarehouseService {
   private baseURL: string
   private token: string | null
-
   constructor() {
     this.baseURL = API_BASE_URL
-    this.token = localStorage.getItem('authToken')
+    this.token = localStorage.getItem('accessToken') || localStorage.getItem('authToken')
   }
   private async request<T>(endpoint: string, options: RequestInit = {}): Promise<ApiResponse<T>> {
     const url = `${this.baseURL}${endpoint}`
 
     // Refresh token from localStorage on each request
-    this.token = localStorage.getItem('authToken')
+    this.token = localStorage.getItem('accessToken') || localStorage.getItem('authToken')
 
     const config: RequestInit = {
       headers: {

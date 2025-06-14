@@ -1,11 +1,11 @@
 import { Box, Divider, Grid, Stack, Typography } from '@mui/material'
 import { Modal } from 'antd'
-import { InventoryTypes } from '../../../queries'
+import { InventoryResponse } from '../../../queries'
 
 interface InventoryDetailModalProps {
   isVisible: boolean
   onClose: () => void
-  inventoryData?: InventoryTypes
+  inventoryData?: InventoryResponse
 }
 
 export const InventoryDetailModal: React.FC<InventoryDetailModalProps> = ({ isVisible, onClose, inventoryData }) => {
@@ -31,54 +31,54 @@ export const InventoryDetailModal: React.FC<InventoryDetailModalProps> = ({ isVi
               <Typography variant='body2' color='text.secondary'>
                 Inventory ID
               </Typography>
-              <Typography variant='body1'>{inventoryData.inventory_id}</Typography>
+              <Typography variant='body1'>{inventoryData.id}</Typography>
             </Grid>
-            {inventoryData.quantity && (
+            {inventoryData.quantityOnHand && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
                   Quatity
                 </Typography>
-                <Typography variant='body1'>{inventoryData.quantity}</Typography>
+                <Typography variant='body1'>{inventoryData.quantityOnHand}</Typography>
               </Grid>
             )}
-            {inventoryData.import_date && (
+            {inventoryData.maxStockLevel && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
                   Import Date
                 </Typography>
-                <Typography variant='body1'>{inventoryData.import_date}</Typography>
+                <Typography variant='body1'>{inventoryData.maxStockLevel}</Typography>
               </Grid>
             )}
-            {inventoryData.expiry_date && (
+            {inventoryData.expiryDate && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
                   Expire Date
                 </Typography>
-                <Typography variant='body1'>{inventoryData.expiry_date}</Typography>
+                <Typography variant='body1'>{inventoryData.expiryDate}</Typography>
               </Grid>
             )}
-            {inventoryData.batch_number && (
+            {inventoryData.batchNumber && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
                   Batch Number
                 </Typography>
-                <Typography variant='body1'>{inventoryData.batch_number}</Typography>
+                <Typography variant='body1'>{inventoryData.batchNumber}</Typography>
               </Grid>
             )}
-            {inventoryData.location_id && (
+            {inventoryData.reservedQuantity && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
-                  Location ID
+                  Reserved Quantity
                 </Typography>
-                <Typography variant='body1'>{inventoryData.location_id}</Typography>
+                <Typography variant='body1'>{inventoryData.reservedQuantity}</Typography>
               </Grid>
             )}
-            {inventoryData.product_id && (
+            {inventoryData.productId && (
               <Grid item xs={12}>
                 <Typography variant='body2' color='text.secondary'>
                   Product ID
                 </Typography>
-                <Typography variant='body1'>{inventoryData.product_id}</Typography>
+                <Typography variant='body1'>{inventoryData.productId}</Typography>
               </Grid>
             )}
           </Grid>

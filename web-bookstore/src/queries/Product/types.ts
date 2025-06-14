@@ -1,39 +1,62 @@
 import { ProductKey } from './keys'
 
 export type ProductTypes = {
+  [ProductKey.ID]: string
+  [ProductKey.CATEGORY_ID]: string
+  [ProductKey.PRODUCT_ID]: string
+  [ProductKey.SUPPLIER_ID]: string
   [ProductKey.NAME]: string
-  [ProductKey.CATEGORY]: string
-  [ProductKey.DESCRIPTION]: string
+  [ProductKey.SKU]: string
   [ProductKey.PRICE]: number
-  [ProductKey.STATUS]: string
-  [ProductKey.CREATE_DATE]: string
-  [ProductKey.EXPIRED_DATE]: string
-  [ProductKey.MINIMUM_QUANTITY]: number
-  [ProductKey.LIMIT_QUANTITY]: number
+  [ProductKey.STOCK_QUANTITY]: number
+  [ProductKey.DESCRIPTION]: string
+  [ProductKey.EXPIRY_DATE]: string
+  [ProductKey.IMAGE_URL]: string
+  [ProductKey.CREATED_AT]: string
+  [ProductKey.BATCH_NUMBER]: string
+  [ProductKey.WAREHOUSE_ID]: string
+  [ProductKey.BIN_LOCATION]: string
 }
-
 export interface ProductPayload {
-  productId?: string
+  id?: string
   name: string
-  category: string
+  categoryId: string
   description: string
+  sku: string
   price: number
   status: string
-  create_date: string
-  expired_date: string
-  minimum_quantity: number
-  limit_quantity: number
+  createdAt: string
+  expiryDate: string
+  stockQuantity: number
 }
 
-export interface ProductResponse {
+// export interface ProductResponse {
+//   id: string
+//   name: string
+//   category: string
+//   description: string
+//   price: number
+//   status: string
+//   createdAt: string
+//   expiryDate: string
+//   stockQuantity: number
+//   limit_quantity: number
+// }
+
+export interface ProductDTO {
+  id: string
+  categoryId: string
   productId: string
+  supplierId: string
   name: string
-  category: string
-  description: string
+  sku: string
   price: number
-  status: string
-  create_date: string
-  expired_date: string
-  minimum_quantity: number
-  limit_quantity: number
+  stockQuantity: number
+  description: string
+  expiryDate: string
+  imageUrl: string
+  createdAt: string
+  batchNumber: string
+  warehouseId: string
+  binLocation: string
 }

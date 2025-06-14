@@ -1,21 +1,24 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
 import { fetchListProducts } from './api'
-import { ProductResponse } from './types'
+import { ProductDTO } from './types'
+import { ApiListResponse } from '../types'
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export function useGetListProducts(options?: UseMutationOptions<any, Error, ProductResponse>) {
+export function useGetListProducts(options?: UseMutationOptions<any, Error, ApiListResponse<ProductDTO>>) {
   const {
     data,
     error,
     isFetching,
     refetch: onGetAllListProducts
-  } = useQuery({
+  } = useQuery<any, Error, ApiListResponse<ProductDTO>>({
     queryKey: ['products'],
     queryFn: fetchListProducts,
     ...options
   })
   const queryClient = useQueryClient()
 
+  const { products } = data || {}
+
   const handleInvalidateListProducts = () => queryClient.invalidateQueries({ queryKey: ['products'] })
-  return { data, error, isFetching, onGetAllListProducts, handleInvalidateListProducts }
+  return { products, error, isFetching, onGetAllListProducts, handleInvalidateListProducts }
 }
