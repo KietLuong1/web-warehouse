@@ -44,7 +44,6 @@ export const useDashboard = (
     loadDashboardData()
   }, [loadDashboardData])
 
-  // Auto-refresh functionality
   useEffect(() => {
     if (!refreshInterval) return
 

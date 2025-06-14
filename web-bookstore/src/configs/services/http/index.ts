@@ -122,29 +122,34 @@ axiosAccount.interceptors.response.use(
   }
 )
 
+const accessToken = localStorage.getItem('accessToken')
+
 export default axiosAccount
 
 export const axiosInstance = axios.create({
   // For Transaction, Location
   baseURL: import.meta.env.VITE_TRANSACTION_LOCATION_API_URL,
   headers: {
-    'Content-type': 'application/json'
+    'Content-type': 'application/json',
+    Authorization: `Bearer ${accessToken}`
   }
 })
 
-export const axiosInstance2 = axios.create({
+export const inventory = axios.create({
   // For Inventory
   baseURL: import.meta.env.VITE_INVENTORY_API_URL,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${accessToken}`
   }
 })
 
-export const axiosInstance3 = axios.create({
+export const productAxiosInstance = axios.create({
   // For Supplier, Product
   baseURL: import.meta.env.VITE_SUPPLIER_PRODUCT_API_URL,
   headers: {
-    'Content-Type': 'application/json'
+    'Content-Type': 'application/json',
+    Authorization: `Bearer ${accessToken}`
   }
 })
 

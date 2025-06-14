@@ -1,7 +1,7 @@
 import { MRT_ColumnDef } from 'material-react-table'
-import { ProductResponse } from '../../queries'
+import { ProductDTO } from '../../queries'
 
-export const allColumns: MRT_ColumnDef<ProductResponse>[] = [
+export const allColumns: MRT_ColumnDef<ProductDTO>[] = [
   {
     accessorKey: 'productId',
     header: 'Product ID',
@@ -15,12 +15,7 @@ export const allColumns: MRT_ColumnDef<ProductResponse>[] = [
     size: 150,
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>
   },
-  {
-    accessorKey: 'category',
-    header: 'Category',
-    size: 150,
-    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>
-  },
+
   {
     accessorKey: 'description',
     header: 'Description',
@@ -34,34 +29,28 @@ export const allColumns: MRT_ColumnDef<ProductResponse>[] = [
     Cell: ({ cell }) => <div>{cell.getValue<number>()}</div>
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
+    accessorKey: 'sku',
+    header: 'Sku',
     size: 150,
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>
   },
   {
-    accessorKey: 'createDate',
+    accessorKey: 'createdAt',
     header: 'Create Date',
     size: 150,
     sortingFn: 'datetime',
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>
   },
   {
-    accessorKey: 'expiredDate',
+    accessorKey: 'expiryDate',
     header: 'Expired Date',
     size: 150,
     sortingFn: 'datetime',
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>
   },
   {
-    accessorKey: 'minimumQuantity',
-    header: 'Minimum Quantity',
-    size: 150,
-    Cell: ({ cell }) => <div>{cell.getValue<number>()}</div>
-  },
-  {
-    accessorKey: 'limitQuantity',
-    header: 'Limit Quantity',
+    accessorKey: 'stockQuantity',
+    header: 'Stock Quantity',
     size: 150,
     Cell: ({ cell }) => <div>{cell.getValue<number>()}</div>
   }

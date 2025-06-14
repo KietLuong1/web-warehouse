@@ -4,7 +4,7 @@ import { useCallback, useState } from 'react'
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
 import { Toastify } from '../../components/Toastify'
-import { ProductResponse } from '../../queries'
+import { ProductDTO } from '../../queries'
 import { useDeleteProduct } from '../../queries/Product/useDeleteProduct'
 import { useGetListProducts } from '../../queries/Product/useGetListProducts'
 import { allColumns } from './allColumns'
@@ -13,11 +13,11 @@ import { ProductToolbar } from './ProductToolbar'
 import { ProductDetailModal } from './ProductDetailModel'
 
 function Product() {
-  const { data, isFetching, handleInvalidateListProducts } = useGetListProducts()
+  const { products, isFetching, handleInvalidateListProducts } = useGetListProducts()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 
-  const [selectedRow, setSelectedRow] = useState<ProductResponse | undefined>(undefined)
+  const [selectedRow, setSelectedRow] = useState<ProductDTO | undefined>(undefined)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
@@ -36,7 +36,7 @@ function Product() {
   })
 
   const handleDeleteRecord = useCallback(
-    (rowData: ProductResponse) => {
+    (rowData: ProductDTO) => {
       Modal.confirm({
         title: 'Are you sure?',
         content: 'This action cannot be undone.',
@@ -49,7 +49,7 @@ function Product() {
     [onDeleteProduct]
   )
 
-  const renderRowActions = (row: ProductResponse) => (
+  const renderRowActions = (row: ProductDTO) => (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
       <Tooltip title='Edit'>
         <EditOutlined
@@ -74,15 +74,15 @@ function Product() {
     </div>
   )
 
-  const handleRowClick = useCallback((row: ProductResponse) => {
+  const handleRowClick = useCallback((row: ProductDTO) => {
     setSelectedRow(row)
     setIsDetailModalVisible(true)
   }, [])
 
   return (
     <>
-      <CustomTable<ProductResponse>
-        data={data || []}
+      <CustomTable<ProductDTO>
+        data={products ? (Array.isArray(products) ? products : [products]) : []}
         isLoading={isFetching}
         columns={allColumns}
         isLayoutGridMode

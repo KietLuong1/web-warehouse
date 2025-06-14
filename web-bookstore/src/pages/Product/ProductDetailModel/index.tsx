@@ -41,12 +41,12 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ isVisibl
                 <Typography variant='body1'>{productData.name}</Typography>
               </Grid>
             )}
-            {productData.category && (
+            {productData.categoryId && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
                   Category
                 </Typography>
-                <Typography variant='body1'>{productData.category}</Typography>
+                <Typography variant='body1'>{productData.categoryId}</Typography>
               </Grid>
             )}
             {productData.description && (
@@ -65,44 +65,44 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ isVisibl
                 <Typography variant='body1'>{productData.price}</Typography>
               </Grid>
             )}
-            {productData.status && (
+            {productData.sku && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
-                  Status
+                  Sku
                 </Typography>
-                <Typography variant='body1'>{productData.status}</Typography>
+                <Typography variant='body1'>{productData.sku}</Typography>
               </Grid>
             )}
-            {productData.createDate && (
+            {productData.createdAt && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
                   Create Date
                 </Typography>
-                <Typography variant='body1'>{productData.createDate}</Typography>
+                <Typography variant='body1'>{productData.createdAt}</Typography>
               </Grid>
             )}
-            {productData.expiredDate && (
+            {productData.expiryDate && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
                   Expired Date
                 </Typography>
-                <Typography variant='body1'>{productData.expiredDate}</Typography>
+                <Typography variant='body1'>{productData.expiryDate}</Typography>
               </Grid>
             )}
-            {productData.minimumQuantity && (
+            {productData.stockQuantity && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
                   Minimum Quantity
                 </Typography>
-                <Typography variant='body1'>{productData.minimumQuantity}</Typography>
+                <Typography variant='body1'>{productData.stockQuantity}</Typography>
               </Grid>
             )}
-            {productData.limitQuantity && (
+            {productData.description && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
-                  Limit Quantity
+                  Description
                 </Typography>
-                <Typography variant='body1'>{productData.limitQuantity}</Typography>
+                <Typography variant='body1'>{productData.description}</Typography>
               </Grid>
             )}
           </Grid>

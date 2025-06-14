@@ -13,7 +13,7 @@ import { InventoryToolbar } from './InventoryToolbar'
 import { InventoryDetailModal } from './InventoryDetailModel'
 
 function Inventory() {
-  const { data, isFetching, handleInvalidateListInventory } = useGetListInventory()
+  const { inventories, isFetching, handleInvalidateListInventory } = useGetListInventory()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 
@@ -82,7 +82,7 @@ function Inventory() {
   return (
     <>
       <CustomTable<InventoryResponse>
-        data={data || []}
+        data={inventories || []}
         isLoading={isFetching}
         columns={allColumns}
         isLayoutGridMode
@@ -111,7 +111,7 @@ function Inventory() {
         centered
         styles={{ body: { maxHeight: '60vh', overflowY: 'auto', padding: '8px', backgroundColor: 'transparent' } }}
       >
-        <CreateUpdateInventoryModal onCloseModal={closeModal} isEdit inventoryId={selectedRow?.inventory_id} />
+        <CreateUpdateInventoryModal onCloseModal={closeModal} isEdit inventoryId={selectedRow?.id} />
       </Modal>
 
       <InventoryDetailModal isVisible={isDetailModalVisible} onClose={closeDetailModal} inventoryData={selectedRow} />

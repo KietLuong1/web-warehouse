@@ -1,19 +1,24 @@
-import { axiosInstance2 } from '../../configs/services/http/index'
+import { inventory } from '../../configs/services/http/index'
 import { InventoryPayload, InventoryResponse } from './types'
+import { ApiInventoryListResponse } from '../types'
 
-export const fetchListInventory = async (): Promise<InventoryResponse[]> => {
+export const fetchListInventory = async (): Promise<ApiInventoryListResponse<InventoryResponse>> => {
   try {
-    const response = await axiosInstance2.get<InventoryResponse[]>('/inventory')
+    const response = await inventory.get<ApiInventoryListResponse<InventoryResponse>>('/inventory/all')
     return response.data
   } catch (error) {
-    console.error('Failed to fetch list of inventorys:', error)
+    console.error('Failed to fetch list of inventories:', error)
     throw error
   }
 }
 
-export const getInventoryById = async ({ id }: { id: string }): Promise<InventoryResponse> => {
+export const getInventoryById = async ({
+  id
+}: {
+  id: string
+}): Promise<ApiInventoryListResponse<InventoryResponse>> => {
   try {
-    const response = await axiosInstance2.get<InventoryResponse>(`/inventory/${id}`)
+    const response = await inventory.get<ApiInventoryListResponse<InventoryResponse>>(`/inventory/${id}`)
     return response.data
   } catch (error) {
     console.error('Failed to get record:', error)
@@ -23,7 +28,7 @@ export const getInventoryById = async ({ id }: { id: string }): Promise<Inventor
 
 export const createInventory = async (body: InventoryPayload): Promise<InventoryPayload> => {
   try {
-    const response = await axiosInstance2.post<InventoryPayload>(`/inventory`, body)
+    const response = await inventory.post<InventoryPayload>(`/inventory/create`, body)
     return response.data
   } catch (error) {
     console.error('Failed to create record:', error)
@@ -33,7 +38,7 @@ export const createInventory = async (body: InventoryPayload): Promise<Inventory
 
 export const updateInventory = async (body: InventoryPayload, id: string): Promise<InventoryPayload> => {
   try {
-    const response = await axiosInstance2.put<InventoryPayload>(`/inventory/${id}`, body)
+    const response = await inventory.put<InventoryPayload>(`/inventory/update/${id}`, body)
     return response.data
   } catch (error) {
     console.error('Failed to update record:', error)
@@ -42,9 +47,9 @@ export const updateInventory = async (body: InventoryPayload, id: string): Promi
 }
 
 export const deleteInventory = async (body: InventoryPayload): Promise<InventoryPayload> => {
-  const { inventory_id } = body
+  const { id } = body
   try {
-    const response = await axiosInstance2.delete<InventoryPayload>(`/inventory/${inventory_id}`, {})
+    const response = await inventory.delete<InventoryPayload>(`/inventory/delete/${id}`, {})
     return response.data
   } catch (error) {
     console.error('Failed to delete record:', error)

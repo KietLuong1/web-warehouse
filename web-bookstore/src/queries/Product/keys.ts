@@ -1,12 +1,17 @@
 export enum ProductKey {
-  PRODUCT_ID = 'product_id',
+  ID = 'id',
+  CATEGORY_ID = 'categoryId',
+  PRODUCT_ID = 'productId',
+  SUPPLIER_ID = 'supplierId',
   NAME = 'name',
-  CATEGORY = 'category',
-  DESCRIPTION = 'description',
+  SKU = 'sku',
   PRICE = 'price',
-  STATUS = 'status',
-  CREATE_DATE = 'create_date',
-  EXPIRED_DATE = 'expired_date',
-  MINIMUM_QUANTITY = 'minimum_quantity',
-  LIMIT_QUANTITY = 'limit_quantity'
+  STOCK_QUANTITY = 'stockQuantity',
+  DESCRIPTION = 'description',
+  EXPIRY_DATE = 'expiryDate',
+  IMAGE_URL = 'imageUrl',
+  CREATED_AT = 'createdAt',
+  BATCH_NUMBER = 'batchNumber',
+  WAREHOUSE_ID = 'warehouseId',
+  BIN_LOCATION = 'binLocation'
 }

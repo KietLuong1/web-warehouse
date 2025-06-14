@@ -1,11 +1,8 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
-import { Home } from '@mui/icons-material'
-import { Chip } from '@mui/material'
 import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import Typography from '@mui/material/Typography'
 import { ReactNode } from 'react'
-import { useLocation, useNavigate } from 'react-router-dom'
 import { useAuthentication } from '../../context/AuthenticationContext'
 import CustomDatePicker from '../CustomDatePicker.tsx'
 import NotificationBell from '../NotificationBell'
