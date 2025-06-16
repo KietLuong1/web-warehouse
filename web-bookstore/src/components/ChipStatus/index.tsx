@@ -1,8 +1,7 @@
 import {
-  CheckCircle as ActiveIcon,
   RemoveCircleOutline as ClosedIcon,
-  Cancel as InactiveIcon,
-  HourglassEmpty as InProgressIcon
+  HourglassEmpty as InProgressIcon,
+  Schedule as PendingIcon
 } from '@mui/icons-material'
 import { Chip } from '@mui/material'
 import React from 'react'
@@ -14,22 +13,17 @@ const statusStyles = (variant: string) => {
   const iconStyle = { color: 'white', fontSize: '1.25rem', borderRadius: '50%' }
 
   switch (variant) {
-    case 'In progress':
+    case 'PROCESSING':
       return {
         icon: <InProgressIcon style={iconStyle} />,
         backgroundColor: '#1677FF'
       }
-    case 'Active':
+    case 'PENDING':
       return {
-        icon: <ActiveIcon style={iconStyle} />,
-        backgroundColor: '#28A745'
+        icon: <PendingIcon style={iconStyle} />,
+        backgroundColor: '#faad14'
       }
-    case 'Inactive':
-      return {
-        icon: <InactiveIcon style={iconStyle} />,
-        backgroundColor: '#F5A623'
-      }
-    case 'Closed':
+    case 'COMPLETED':
       return {
         icon: <ClosedIcon style={iconStyle} />,
         backgroundColor: '#6C757D'

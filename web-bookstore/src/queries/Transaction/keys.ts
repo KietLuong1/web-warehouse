@@ -1,8 +1,17 @@
 export enum TransactionKey {
   ID = 'id',
-  BATCH_ID = 'batchId',
+  TOTAL_PRODUCTS = 'totalProducts',
+  TOTAL_PRICE = 'totalPrice',
+  TRANSACTION_TYPE = 'transactionType',
+  STATUS = 'status',
+  DESCRIPTION = 'description',
+  NOTE = 'note',
+  CREATED_AT = 'createdAt',
+  UPDATE_AT = 'updateAt',
   PRODUCT = 'product',
-  LOCATION = 'location',
-  EXPIRED_DATE = 'expiredDate',
-  QUANTITY = 'quantity'
+  USER_ID = 'userId',
+  USERNAME = 'username',
+  SUPPLIER = 'supplier',
+  ORDER_TYPE = 'orderType',
+  PRIORITY = 'priority'
 }

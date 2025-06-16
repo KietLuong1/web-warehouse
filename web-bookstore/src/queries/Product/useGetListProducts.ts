@@ -5,6 +5,7 @@ import { ProductDTO } from './types'
 import { ApiListResponse } from '../types'
 
 export function useGetListProducts(options?: UseMutationOptions<any, Error, ApiListResponse<ProductDTO>>) {
+
   const {
     data,
     error,

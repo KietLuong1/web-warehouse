@@ -1,9 +1,10 @@
-import { axiosInstance } from '../../configs/services/http/index'
-import { TransactionPayload, TransactionResponse } from './types'
+import { axiosInstance, productAxiosInstance } from '../../configs/services/http/index'
+import { TransactionDTO, TransactionPayload } from './types'
+import { TransactionDetailResponse } from './useTransactionDetail'
 
-export const fetchListTransactions = async (): Promise<TransactionResponse[]> => {
+export const fetchListTransactions = async (): Promise<TransactionDTO[]> => {
   try {
-    const response = await axiosInstance.get<TransactionResponse[]>(`/imports`)
+    const response = await productAxiosInstance.get<TransactionDTO[]>(`/transactions/all`)
     return response.data
   } catch (error) {
     console.error('Failed to fetch list imports:', error)
@@ -11,9 +12,9 @@ export const fetchListTransactions = async (): Promise<TransactionResponse[]> =>
   }
 }
 
-export const getTransactionById = async ({ id }: { id: string }): Promise<TransactionResponse> => {
+export const getTransactionById = async ({ id }: { id: string }): Promise<TransactionDetailResponse> => {
   try {
-    const response = await axiosInstance.get<TransactionResponse>(`/imports/${id}`)
+    const response = await productAxiosInstance.get<TransactionDetailResponse>(`/transactions/${id}`)
     return response.data
   } catch (error) {
     console.error('Failed to get record:', error)
@@ -33,7 +34,7 @@ export const createTransaction = async (body: TransactionPayload): Promise<Trans
 
 export const updateTransaction = async (body: TransactionPayload, id: string): Promise<TransactionPayload> => {
   try {
-    const response = await axiosInstance.put<TransactionPayload>(`/imports/${id}`, body)
+    const response = await productAxiosInstance.put<TransactionPayload>(`/transactions/${id}`, body)
     return response.data
   } catch (error) {
     console.error('Failed to update record:', error)
@@ -41,10 +42,10 @@ export const updateTransaction = async (body: TransactionPayload, id: string): P
   }
 }
 
-export const deleteTransaction = async (body: TransactionPayload): Promise<TransactionPayload> => {
+export const deleteTransaction = async (body: TransactionPayload): Promise<TransactionDTO> => {
   const { id } = body
   try {
-    const response = await axiosInstance.delete<TransactionResponse>(`/imports/${id}`, {})
+    const response = await axiosInstance.delete<TransactionDTO>(`/imports/${id}`, {})
     return response.data
   } catch (error) {
     console.error('Failed to delete record:', error)

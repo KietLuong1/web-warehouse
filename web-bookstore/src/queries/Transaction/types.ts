@@ -1,27 +1,35 @@
+import { ProductDTO } from '../Product'
 import { TransactionKey } from './keys'
 
 export type TransactionTypes = {
-  [TransactionKey.BATCH_ID]: string
-  [TransactionKey.PRODUCT]: string
-  [TransactionKey.LOCATION]: string
-  [TransactionKey.EXPIRED_DATE]: string
-  [TransactionKey.QUANTITY]: number
+  [TransactionKey.ID]: string
+  [TransactionKey.TOTAL_PRODUCTS]: number
+  [TransactionKey.TOTAL_PRICE]: number
+  [TransactionKey.TRANSACTION_TYPE]: 'PURCHASE' | 'SALE' | 'RETURN'
+  [TransactionKey.STATUS]: 'PENDING' | 'PROCESSING' | 'COMPLETED'
+  [TransactionKey.DESCRIPTION]: string
+  [TransactionKey.CREATED_AT]: string
+  [TransactionKey.PRODUCT]: ProductDTO
 }
 
 export interface TransactionPayload {
   id?: string
-  batchId: string
-  product: string
-  location: string
-  expiredDate: string
-  quantity: number
+  totalProducts: number
+  totalPrice: number
+  transactionType: 'PURCHASE' | 'SALE' | 'RETURN'
+  status: 'PENDING' | 'PROCESSING' | 'COMPLETED'
+  description: string
+  createdAt: string
+  product: ProductDTO
 }
 
-export interface TransactionResponse {
+export interface TransactionDTO {
   id: string
-  batchId: string
-  product: string
-  location: string
-  expiredDate: string
-  quantity: number
+  totalProducts: number
+  totalPrice: number
+  transactionType: 'PURCHASE' | 'SALE' | 'RETURN'
+  status: 'PENDING' | 'PROCESSING' | 'COMPLETED'
+  description: string
+  createdAt: string
+  product: ProductDTO
 }

@@ -4,20 +4,20 @@ import { useCallback, useState } from 'react'
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
 import { Toastify } from '../../components/Toastify'
-import { TransactionResponse, TransactionTypes } from '../../queries'
+import { TransactionDTO } from '../../queries'
 import { useDeleteTransaction } from '../../queries/Transaction/useDeleteTransactiont'
 import { useGetListTransactions } from '../../queries/Transaction/useGetListTransactions'
 import { allColumns } from './allColumns'
 import { CreateUpdateTransactionModal } from './CreateUpdateTransactionModal'
-import { TransactionToolbar } from './TransactionToolbar'
 import { TransactionDetailModal } from './TransactionDetailModel'
+import { TransactionToolbar } from './TransactionToolbar'
 
 function Transaction() {
-  const { data, isFetching, handleInvalidateListTransactions } = useGetListTransactions()
+  const { transactions, isFetching, handleInvalidateListTransactions } = useGetListTransactions()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 
-  const [selectedRow, setSelectedRow] = useState<TransactionResponse | undefined>(undefined)
+  const [selectedRow, setSelectedRow] = useState<TransactionDTO | undefined>(undefined)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
@@ -36,7 +36,7 @@ function Transaction() {
   })
 
   const handleDeleteRecord = useCallback(
-    (rowData: TransactionTypes) => {
+    (rowData: TransactionDTO) => {
       Modal.confirm({
         title: 'Are you sure?',
         content: 'This action cannot be undone.',
@@ -49,7 +49,7 @@ function Transaction() {
     [onDeleteTransaction]
   )
 
-  const renderRowActions = (row: TransactionResponse) => (
+  const renderRowActions = (row: TransactionDTO) => (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
       <Tooltip title='Edit'>
         <EditOutlined
@@ -74,15 +74,15 @@ function Transaction() {
     </div>
   )
 
-  const handleRowClick = useCallback((row: TransactionResponse) => {
+  const handleRowClick = useCallback((row: TransactionDTO) => {
     setSelectedRow(row)
     setIsDetailModalVisible(true)
   }, [])
 
   return (
     <>
-      <CustomTable<TransactionResponse>
-        data={data || []}
+      <CustomTable<TransactionDTO>
+        data={transactions}
         isLoading={isFetching}
         columns={allColumns}
         isLayoutGridMode
@@ -94,9 +94,7 @@ function Transaction() {
         nameColumnPinning='mrt-row-actions'
         initialState={{ columnPinning: { right: ['mrt-row-actions'] } }}
         renderToolbarInternalActions={({ table }) => <TransactionToolbar table={table} />}
-        renderTopToolbarCustomActions={({ table }) => (
-          <CustomTableSearch table={table} placeholder='Search by Name or Email' />
-        )}
+        renderTopToolbarCustomActions={({ table }) => <CustomTableSearch table={table} placeholder='Search by Name' />}
         muiTableBodyRowProps={({ row }) => ({
           onClick: () => handleRowClick(row.original),
           sx: { cursor: 'pointer' }
@@ -111,7 +109,7 @@ function Transaction() {
         centered
         styles={{ body: { maxHeight: '60vh', overflowY: 'auto', padding: '8px', backgroundColor: 'transparent' } }}
       >
-        <CreateUpdateTransactionModal onCloseModal={closeModal} isEdit importId={selectedRow?.id} />
+        <CreateUpdateTransactionModal onCloseModal={closeModal} isEdit transactionId={selectedRow?.id} />
       </Modal>
 
       <TransactionDetailModal

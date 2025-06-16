@@ -1,6 +1,8 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Box, Divider, Grid, Stack, Typography } from '@mui/material'
 import { Modal } from 'antd'
 import { ProductTypes } from '../../../queries'
+import { useGetListCategories } from '../../../queries/Setting/useGetListCategories'
 
 interface ProductDetailModalProps {
   isVisible: boolean
@@ -9,11 +11,33 @@ interface ProductDetailModalProps {
 }
 
 export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ isVisible, onClose, productData }) => {
+  const { categories } = useGetListCategories()
+
   if (!productData) return null
+
+  const getCategoryName = (categoryId: string) => {
+    if (!categories || !Array.isArray(categories)) return categoryId
+    const category = categories.find((cat) => cat.id === categoryId)
+    return category?.name || categoryId
+  }
+
+  const formatDate = (dateString: string) => {
+    if (!dateString) return ''
+    try {
+      const date = new Date(dateString)
+      return date.toLocaleDateString('en-US', {
+        year: 'numeric',
+        month: 'long',
+        day: 'numeric'
+      })
+    } catch (error) {
+      return dateString
+    }
+  }
 
   return (
     <Modal
-      title='Product Details'
+      title={<Typography variant='h6'>Product Details</Typography>}
       open={isVisible}
       onCancel={onClose}
       footer={null}
@@ -22,17 +46,8 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ isVisibl
     >
       <Stack spacing={2}>
         <Box>
-          <Typography variant='subtitle1' fontWeight='bold'>
-            General Information
-          </Typography>
           <Divider sx={{ my: 1 }} />
           <Grid container spacing={2}>
-            <Grid item xs={6}>
-              <Typography variant='body2' color='text.secondary'>
-                Product ID
-              </Typography>
-              <Typography variant='body1'>{productData.productId}</Typography>
-            </Grid>
             {productData.name && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
@@ -46,23 +61,16 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ isVisibl
                 <Typography variant='body2' color='text.secondary'>
                   Category
                 </Typography>
-                <Typography variant='body1'>{productData.categoryId}</Typography>
+                <Typography variant='body1'>{getCategoryName(productData.categoryId)}</Typography>
               </Grid>
             )}
-            {productData.description && (
-              <Grid item xs={6}>
-                <Typography variant='body2' color='text.secondary'>
-                  Description
-                </Typography>
-                <Typography variant='body1'>{productData.description}</Typography>
-              </Grid>
-            )}
+
             {productData.price && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
                   Price
                 </Typography>
-                <Typography variant='body1'>{productData.price}</Typography>
+                <Typography variant='body1'>${productData.price}</Typography>
               </Grid>
             )}
             {productData.sku && (
@@ -78,7 +86,7 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ isVisibl
                 <Typography variant='body2' color='text.secondary'>
                   Create Date
                 </Typography>
-                <Typography variant='body1'>{productData.createdAt}</Typography>
+                <Typography variant='body1'>{formatDate(productData.createdAt)}</Typography>
               </Grid>
             )}
             {productData.expiryDate && (
@@ -86,19 +94,19 @@ export const ProductDetailModal: React.FC<ProductDetailModalProps> = ({ isVisibl
                 <Typography variant='body2' color='text.secondary'>
                   Expired Date
                 </Typography>
-                <Typography variant='body1'>{productData.expiryDate}</Typography>
+                <Typography variant='body1'>{formatDate(productData.expiryDate)}</Typography>
               </Grid>
             )}
             {productData.stockQuantity && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
-                  Minimum Quantity
+                  Stock Quantity
                 </Typography>
                 <Typography variant='body1'>{productData.stockQuantity}</Typography>
               </Grid>
             )}
             {productData.description && (
-              <Grid item xs={6}>
+              <Grid item xs={12}>
                 <Typography variant='body2' color='text.secondary'>
                   Description
                 </Typography>

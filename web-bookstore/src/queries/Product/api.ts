@@ -1,5 +1,6 @@
 import { productAxiosInstance } from '../../configs/services/http/index'
 import { ProductDTO, ProductPayload } from './types'
+import { ProductDetailResponse } from './useProductDetail'
 
 export const fetchListProducts = async (): Promise<ProductDTO[]> => {
   try {
@@ -11,9 +12,9 @@ export const fetchListProducts = async (): Promise<ProductDTO[]> => {
   }
 }
 
-export const getProductById = async ({ id }: { id: string }): Promise<ProductDTO> => {
+export const getProductById = async ({ id }: { id: string }): Promise<ProductDetailResponse> => {
   try {
-    const response = await productAxiosInstance.get<ProductDTO>(`/products/${id}`)
+    const response = await productAxiosInstance.get<ProductDetailResponse>(`/products/${id}`)
     return response.data
   } catch (error) {
     console.error('Failed to get product:', error)
@@ -33,7 +34,7 @@ export const createProduct = async (body: ProductPayload): Promise<ProductPayloa
 
 export const updateProduct = async (body: ProductPayload, id: string): Promise<ProductPayload> => {
   try {
-    const response = await productAxiosInstance.put<ProductPayload>(`/products/update/${id}`, body)
+    const response = await productAxiosInstance.put<ProductPayload>(`/products/${id}`, body)
     return response.data
   } catch (error) {
     console.error('Failed to update product:', error)
