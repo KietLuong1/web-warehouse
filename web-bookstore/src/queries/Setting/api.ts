@@ -1,4 +1,6 @@
 import axios from 'axios'
+import { CategoryDTO } from './types'
+import { productAxiosInstance } from '../../configs/services/http'
 
 export const fetchListProvince = async () => {
   try {
@@ -21,4 +23,14 @@ export const fetchDistrictsByProvince = async (id: number) => {
 export const fetchWardsByDistrict = async (id: number) => {
   const response = await axios.get(` https://esgoo.net/api-tinhthanh/3/${id}.htm`)
   return response.data
+}
+
+export const fetchListCategories = async (): Promise<CategoryDTO[]> => {
+  try {
+    const response = await productAxiosInstance.get<CategoryDTO[]>(`/categories/all`)
+    return response.data
+  } catch (error) {
+    console.error('Failed to fetch list products:', error)
+    throw error
+  }
 }

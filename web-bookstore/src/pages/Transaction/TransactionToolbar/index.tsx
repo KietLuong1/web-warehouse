@@ -1,14 +1,14 @@
-import { PlusOutlined } from '@ant-design/icons'
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { Refresh } from '@mui/icons-material'
 import { IconButton, Stack, Tooltip } from '@mui/material'
-import { Button, Modal } from 'antd'
+import { Modal } from 'antd'
 import { MRT_TableInstance } from 'material-react-table'
 import { useCallback, useState } from 'react'
 import CustomTableColumnOptions from '../../../components/TableColumnOptions'
 import CustomTableColumnOptionsModal from '../../../components/TableColumnOptions/CustomTableColumnOptionModal'
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
-import { TransactionResponse } from '../../../queries'
+import { TransactionDTO } from '../../../queries'
 import { useGetListTransactions } from '../../../queries/Transaction/useGetListTransactions'
 import { CreateUpdateTransactionModal } from '../CreateUpdateTransactionModal'
 import TransactionFilter from '../TransactionFillter'
@@ -52,12 +52,12 @@ export const TransactionToolbar: React.FC<Props> = ({ table }) => {
           </Tooltip>
           <CustomTableColumnOptions>
             <Tooltip title='Column Options' arrow placement='top'>
-              <CustomTableColumnOptionsModal<TransactionResponse> table={table} />
+              <CustomTableColumnOptionsModal<TransactionDTO> table={table} />
             </Tooltip>
           </CustomTableColumnOptions>
-          <Button type='primary' size='large' onClick={openCreateModal} icon={<PlusOutlined />}>
+          {/* <Button type='primary' size='large' onClick={openCreateModal} icon={<PlusOutlined />}>
             Create
-          </Button>
+          </Button> */}
         </Stack>
       </Stack>
 
@@ -76,7 +76,7 @@ export const TransactionToolbar: React.FC<Props> = ({ table }) => {
 }
 
 type Props = {
-  table: MRT_TableInstance<TransactionResponse>
+  table: MRT_TableInstance<TransactionDTO>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSetParams?: (params: any) => void
 }

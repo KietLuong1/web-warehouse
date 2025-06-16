@@ -1,24 +1,32 @@
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
-import { TransactionResponse, TransactionTypes } from './types'
 import { getTransactionById } from './api'
+import { TransactionDTO } from './types'
 
-export function useTransactionDetail(options: UseMutationOptions<TransactionResponse> & { id: string }) {
+export interface TransactionDetailResponse {
+  status: number
+  message: string
+  transaction: TransactionDTO
+  timestamp: string
+}
+export function useTransactionDetail(options: UseMutationOptions<TransactionDetailResponse> & { id: string }) {
   const {
     data,
     isPending: isLoadingDetail,
     isSuccess,
     error,
     refetch: getTransactionDetail
-  } = useQuery<TransactionTypes>({
-    queryKey: ['imports', { ...options }],
+  } = useQuery<TransactionDetailResponse>({
+    queryKey: ['transactions', { ...options }],
     queryFn: () => getTransactionById({ id: options.id }),
     ...options
   })
   const queryClient = useQueryClient()
 
-  const handleInvalidateDetail = () => queryClient.invalidateQueries({ queryKey: ['imports', { id: options.id }] })
+  const handleInvalidateDetail = () => queryClient.invalidateQueries({ queryKey: ['transactions', { id: options.id }] })
+
+  const { transaction } = data || {}
   return {
-    data,
+    transaction,
     isLoadingDetail,
     isSuccess,
     error,

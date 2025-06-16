@@ -33,48 +33,56 @@ export const TransactionDetailModal: React.FC<TransactionDetailModalProps> = ({
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <Typography variant='body2' color='text.secondary'>
-                Transaction ID
+                Transaction Number
               </Typography>
-              <Typography variant='body1'>{transactionData.id}</Typography>
+              <Typography variant='body1'>{'---'}</Typography>
             </Grid>
-            {transactionData.batchId && (
-              <Grid item xs={6}>
-                <Typography variant='body2' color='text.secondary'>
-                  Batch ID
-                </Typography>
-                <Typography variant='body1'>{transactionData.batchId}</Typography>
-              </Grid>
-            )}
             {transactionData.product && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
                   Product Name
                 </Typography>
-                <Typography variant='body1'>{transactionData.product}</Typography>
+                <Typography variant='body1'>{transactionData.product.name}</Typography>
               </Grid>
             )}
-            {transactionData.location && (
+            {transactionData.totalPrice && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
-                  Location
+                  Total Price
                 </Typography>
-                <Typography variant='body1'>{transactionData.location}</Typography>
+                <Typography variant='body1'>{transactionData.totalPrice}</Typography>
               </Grid>
             )}
-            {transactionData.quantity && (
+            {transactionData.totalProducts && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
-                  Quantity
+                  Total Products
                 </Typography>
-                <Typography variant='body1'>{transactionData.quantity}</Typography>
+                <Typography variant='body1'>{transactionData.totalProducts}</Typography>
               </Grid>
             )}
-            {transactionData.expiredDate && (
+            {transactionData.status && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>
-                  Expired Date
+                  Status
                 </Typography>
-                <Typography variant='body1'>{transactionData.expiredDate}</Typography>
+                <Typography variant='body1'>{transactionData.status}</Typography>
+              </Grid>
+            )}
+            {transactionData.transactionType && (
+              <Grid item xs={6}>
+                <Typography variant='body2' color='text.secondary'>
+                  Transaction Type
+                </Typography>
+                <Typography variant='body1'>{transactionData.transactionType}</Typography>
+              </Grid>
+            )}
+            {transactionData.description && (
+              <Grid item xs={12}>
+                <Typography variant='body2' color='text.secondary'>
+                  Description
+                </Typography>
+                <Typography variant='body1'>{transactionData.description}</Typography>
               </Grid>
             )}
           </Grid>

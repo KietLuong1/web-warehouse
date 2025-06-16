@@ -11,9 +11,11 @@ import { allColumns } from './allColumns'
 import { CreateUpdateProductModal } from './CreateUpdateProductModal'
 import { ProductToolbar } from './ProductToolbar'
 import { ProductDetailModal } from './ProductDetailModel'
+import { useGetListCategories } from '../../queries/Setting/useGetListCategories'
 
 function Product() {
   const { products, isFetching, handleInvalidateListProducts } = useGetListProducts()
+  const { categories } = useGetListCategories()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 
@@ -94,13 +96,12 @@ function Product() {
         nameColumnPinning='mrt-row-actions'
         initialState={{ columnPinning: { right: ['mrt-row-actions'] } }}
         renderToolbarInternalActions={({ table }) => <ProductToolbar table={table} />}
-        renderTopToolbarCustomActions={({ table }) => (
-          <CustomTableSearch table={table} placeholder='Search by Name or Email' />
-        )}
+        renderTopToolbarCustomActions={({ table }) => <CustomTableSearch table={table} placeholder='Search by Name' />}
         muiTableBodyRowProps={({ row }) => ({
           onClick: () => handleRowClick(row.original),
           sx: { cursor: 'pointer' }
         })}
+        meta={{ categories }} // Pass categories to table meta
       />
       <Modal
         title='Edit Record'
@@ -108,7 +109,14 @@ function Product() {
         onCancel={closeModal}
         footer={null}
         centered
-        styles={{ body: { maxHeight: '60vh', overflowY: 'auto', padding: '8px', backgroundColor: 'transparent' } }}
+        styles={{
+          body: {
+            maxHeight: '60vh',
+            overflowY: 'auto',
+            padding: '8px',
+            backgroundColor: 'transparent'
+          }
+        }}
       >
         <CreateUpdateProductModal onCloseModal={closeModal} isEdit productId={selectedRow?.productId} />
       </Modal>

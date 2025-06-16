@@ -14,7 +14,6 @@ import { useSearchParams } from 'react-router-dom'
 import { COLOR_CODE } from '../../../configs/color'
 
 const ProductFilter: React.FC<Props> = () => {
-  //example of using select component
   const [age, setAge] = React.useState('')
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value as string)

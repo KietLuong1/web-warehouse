@@ -19,29 +19,13 @@ export type ProductTypes = {
 }
 export interface ProductPayload {
   id?: string
-  name: string
   categoryId: string
-  description: string
+  name: string
   sku: string
   price: number
-  status: string
-  createdAt: string
-  expiryDate: string
   stockQuantity: number
+  description?: string
 }
-
-// export interface ProductResponse {
-//   id: string
-//   name: string
-//   category: string
-//   description: string
-//   price: number
-//   status: string
-//   createdAt: string
-//   expiryDate: string
-//   stockQuantity: number
-//   limit_quantity: number
-// }
 
 export interface ProductDTO {
   id: string
