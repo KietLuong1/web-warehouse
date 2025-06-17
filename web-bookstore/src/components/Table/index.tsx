@@ -132,10 +132,13 @@ export const CustomTable = <TData extends MRT_RowData>({
   const [pagination, setPagination] = useState<MRT_PaginationState>(
     () => initialStates.pagination as MRT_PaginationState
   )
-
   const defaultMRTOptions = useMemo(() => getDefaultMRTOptions<TData>(data), [data])
+  
+  // Only trigger actions for internal state changes when not using manual pagination
   useEffect(() => {
-    handleTriggerAction()
+    if (!props.manualPagination) {
+      handleTriggerAction()
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pagination, sorting, search, searchParams])
 
@@ -166,12 +169,13 @@ export const CustomTable = <TData extends MRT_RowData>({
     const params = getActionParams()
     onAction(params)
   }
-
   const range = useMemo(() => {
-    const end = (pagination.pageIndex + 1) * pagination.pageSize
-    const start = end - (pagination.pageSize - 1)
-    return `${start}-${(rowCount ?? 0 < end) ? rowCount : end}`
-  }, [rowCount, pagination])
+    // Use external pagination state when available, otherwise use internal state
+    const currentPagination = state?.pagination || pagination
+    const end = (currentPagination.pageIndex + 1) * currentPagination.pageSize
+    const start = end - (currentPagination.pageSize - 1)
+    return `${start}-${(rowCount ?? 0) < end ? rowCount : end}`
+  }, [rowCount, pagination, state?.pagination])
 
   const setOrDeleteSearchParamsByKey = ({ key, value }: { key: string; value: unknown }) => {
     if (value) {
@@ -227,9 +231,10 @@ export const CustomTable = <TData extends MRT_RowData>({
       })
     }
   }
-
   useEffect(() => {
-    handlePaginationChange(pagination)
+    if (!props.manualPagination) {
+      handlePaginationChange(pagination)
+    }
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [pagination])
 
@@ -240,7 +245,7 @@ export const CustomTable = <TData extends MRT_RowData>({
     rowCount,
     state: {
       ...state,
-      pagination,
+      pagination: state?.pagination || pagination,
       sorting,
       globalFilter: search,
       showLoadingOverlay: isLoading
@@ -296,7 +301,7 @@ export const CustomTable = <TData extends MRT_RowData>({
         boxShadow: 'none',
         background: 'transparent',
         marginLeft: '20px',
-        marginRight: '20px',
+        marginRight: '20px'
         // width: '100vw'
       }
     },
@@ -387,7 +392,7 @@ export const CustomTable = <TData extends MRT_RowData>({
       }
     },
     onGlobalFilterChange: setSearch,
-    onPaginationChange: setPagination,
+    onPaginationChange: props.onPaginationChange || setPagination,
     onSortingChange: setSorting,
     renderBottomToolbarCustomActions: () => {
       return rowCount ? (

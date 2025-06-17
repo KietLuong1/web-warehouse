@@ -1,10 +1,14 @@
+
 export interface ApiListResponse<T> {
   products: T
   message?: string
   status: 'success' | 'error'
   error?: string
+  totalPages?: number
+  totalElements?: number
+  pageSize?: number
+  currentPage?: number
 }
-
 export interface ApiInventoryListResponse<T> {
   status: number
   message: string
