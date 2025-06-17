@@ -7,14 +7,23 @@ import { Toastify } from '../../components/Toastify'
 import { ProductDTO } from '../../queries'
 import { useDeleteProduct } from '../../queries/Product/useDeleteProduct'
 import { useGetListProducts } from '../../queries/Product/useGetListProducts'
+import { useGetListCategories } from '../../queries/Setting/useGetListCategories'
 import { allColumns } from './allColumns'
 import { CreateUpdateProductModal } from './CreateUpdateProductModal'
-import { ProductToolbar } from './ProductToolbar'
 import { ProductDetailModal } from './ProductDetailModel'
-import { useGetListCategories } from '../../queries/Setting/useGetListCategories'
+import { ProductToolbar } from './ProductToolbar'
 
 function Product() {
-  const { products, isFetching, handleInvalidateListProducts } = useGetListProducts()
+  const [paginationState, setPaginationState] = useState({
+    pageIndex: 0,
+    pageSize: 10
+  })
+
+  const { products, isFetching, handleInvalidateListProducts, setParams, totalPages, totalElements } =
+    useGetListProducts({
+      page: paginationState.pageIndex + 1,
+      size: paginationState.pageSize
+    })
   const { categories } = useGetListCategories()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
@@ -25,10 +34,9 @@ function Product() {
     setIsModalVisible(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalVisible])
-
   const closeDetailModal = useCallback(() => {
     setIsDetailModalVisible(false)
-  }, [isDetailModalVisible])
+  }, [])
 
   const { onDeleteProduct } = useDeleteProduct({
     onSuccess() {
@@ -94,14 +102,30 @@ function Product() {
         renderRowActions={({ row }) => renderRowActions(row.original)}
         isColumnPinning={true}
         nameColumnPinning='mrt-row-actions'
-        initialState={{ columnPinning: { right: ['mrt-row-actions'] } }}
         renderToolbarInternalActions={({ table }) => <ProductToolbar table={table} />}
         renderTopToolbarCustomActions={({ table }) => <CustomTableSearch table={table} placeholder='Search by Name' />}
         muiTableBodyRowProps={({ row }) => ({
           onClick: () => handleRowClick(row.original),
           sx: { cursor: 'pointer' }
         })}
-        meta={{ categories }} // Pass categories to table meta
+        meta={{ categories }}
+        manualPagination={true}
+        pageCount={totalPages}
+        rowCount={totalElements}
+        initialState={{
+          columnPinning: { right: ['mrt-row-actions'] },
+          pagination: { pageIndex: 0, pageSize: 10 }
+        }}
+        state={{
+          pagination: paginationState
+        }}
+        onPaginationChange={(updater) => {
+          console.log('Pagination change triggered:', updater, 'Current state:', paginationState)
+          const newPagination = typeof updater === 'function' ? updater(paginationState) : updater
+          console.log('New pagination state:', newPagination)
+          setPaginationState(newPagination)
+          setParams({ page: newPagination.pageIndex + 1, size: newPagination.pageSize })
+        }}
       />
       <Modal
         title='Edit Record'
