@@ -1,10 +1,13 @@
 import { axiosInstance, productAxiosInstance } from '../../configs/services/http/index'
+import { PaginationParams } from '../types'
 import { TransactionDTO, TransactionPayload } from './types'
 import { TransactionDetailResponse } from './useTransactionDetail'
 
-export const fetchListTransactions = async (): Promise<TransactionDTO[]> => {
+export const fetchListTransactions = async (
+  params: PaginationParams = { page: 1, size: 10 }
+): Promise<TransactionDTO[]> => {
   try {
-    const response = await productAxiosInstance.get<TransactionDTO[]>(`/transactions/all`)
+    const response = await productAxiosInstance.get<TransactionDTO[]>(`/transactions/all`, { params })
     return response.data
   } catch (error) {
     console.error('Failed to fetch list imports:', error)

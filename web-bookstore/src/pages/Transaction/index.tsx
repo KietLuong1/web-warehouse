@@ -1,6 +1,7 @@
 import { DeleteOutlined, EditOutlined } from '@mui/icons-material'
 import { Modal, Tooltip } from 'antd'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
 import { Toastify } from '../../components/Toastify'
@@ -13,7 +14,35 @@ import { TransactionDetailModal } from './TransactionDetailModel'
 import { TransactionToolbar } from './TransactionToolbar'
 
 function Transaction() {
-  const { transactions, isFetching, handleInvalidateListTransactions } = useGetListTransactions()
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const pageFromUrl = parseInt(searchParams.get('page') || '1', 10)
+  const sizeFromUrl = parseInt(searchParams.get('size') || '10', 10)
+
+  const [paginationState, setPaginationState] = useState({
+    pageIndex: pageFromUrl - 1,
+    pageSize: sizeFromUrl
+  })
+
+  useEffect(() => {
+    const currentPage = searchParams.get('page')
+    const currentSize = searchParams.get('size')
+    const newPage = (paginationState.pageIndex + 1).toString()
+    const newSize = paginationState.pageSize.toString()
+
+    if (currentPage !== newPage || currentSize !== newSize) {
+      setSearchParams({
+        page: newPage,
+        size: newSize
+      })
+    }
+  }, [paginationState, searchParams, setSearchParams])
+
+  const { transactions, isFetching, handleInvalidateListTransactions, totalElements, totalPages, setParams } =
+    useGetListTransactions({
+      page: paginationState.pageIndex + 1,
+      size: paginationState.pageSize
+    })
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 
@@ -23,10 +52,9 @@ function Transaction() {
     setIsModalVisible(false)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [isModalVisible])
-
   const closeDetailModal = useCallback(() => {
     setIsDetailModalVisible(false)
-  }, [isDetailModalVisible])
+  }, [])
 
   const { onDeleteTransaction } = useDeleteTransaction({
     onSuccess() {
@@ -92,13 +120,28 @@ function Transaction() {
         renderRowActions={({ row }) => renderRowActions(row.original)}
         isColumnPinning={true}
         nameColumnPinning='mrt-row-actions'
-        initialState={{ columnPinning: { right: ['mrt-row-actions'] } }}
         renderToolbarInternalActions={({ table }) => <TransactionToolbar table={table} />}
         renderTopToolbarCustomActions={({ table }) => <CustomTableSearch table={table} placeholder='Search by Name' />}
         muiTableBodyRowProps={({ row }) => ({
           onClick: () => handleRowClick(row.original),
           sx: { cursor: 'pointer' }
         })}
+        manualPagination={true}
+        pageCount={totalPages}
+        rowCount={totalElements}
+        initialState={{
+          columnPinning: { right: ['mrt-row-actions'] },
+          pagination: { pageIndex: 0, pageSize: 10 }
+        }}
+        state={{
+          pagination: paginationState
+        }}
+        onPaginationChange={(updater) => {
+          const newPagination = typeof updater === 'function' ? updater(paginationState) : updater
+          setPaginationState(newPagination)
+          // The URL will be updated by the useEffect hook
+          setParams({ page: newPagination.pageIndex + 1, size: newPagination.pageSize })
+        }}
       />
 
       <Modal

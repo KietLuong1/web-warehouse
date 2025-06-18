@@ -4,17 +4,17 @@ import { InventoryResponse } from '../../queries/Inventory'
 export const allColumns: MRT_ColumnDef<InventoryResponse>[] = [
   {
     accessorKey: 'id',
-    header: 'Inventory ID',
+    header: 'Inventory Code',
     enableHiding: false,
-    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
+    Cell: () => <div>{'---'}</div>,
     size: 150
   },
-  {
-    accessorKey: 'productId',
-    header: 'Product ID',
-    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
-    size: 150
-  },
+  // {
+  //   accessorKey: 'productId',
+  //   header: 'Product ID',
+  //   Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
+  //   size: 150
+  // },
   // {
   //   accessorKey: 'warehouseId',
   //   header: 'Warehouse ID',
