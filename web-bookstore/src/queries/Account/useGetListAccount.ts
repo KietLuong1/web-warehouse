@@ -1,9 +1,9 @@
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
 import { fetchListAccount } from './api'
 import { AccountApiResponse, AccountTypes, QueryParams } from './types'
 
-export function useGetListAccount(initialParams: QueryParams = { pageNumber: 0, pageSize: 10 }) {
+export function useGetListAccount(initialParams: QueryParams = { page: 1, size: 10 }) {
   const [params, setParams] = useState<QueryParams>(initialParams)
   const queryClient = useQueryClient()
 
@@ -14,20 +14,15 @@ export function useGetListAccount(initialParams: QueryParams = { pageNumber: 0, 
   })
 
   // if data is undefined (first load), show an empty page with our initial pageSize:
-  const {
-    userDtos = [],
-    pageNumber = params.pageNumber!,
-    pageSize = params.pageSize!,
-    totalPages = 0,
-    isLast = false
-  } = data ?? {}
+  const { userDtos = [], page = params.page!, size = params.size!, totalPages = 0, totalElements = 0 } = data ?? {}
 
   return {
     accounts: userDtos as AccountTypes[],
-    pageNumber,
-    pageSize,
+    page: page - 1,
+    size,
     totalPages,
-    last: isLast,
+    totalElements,
+    // last: isLast,
     isFetching,
     error,
     setParams,

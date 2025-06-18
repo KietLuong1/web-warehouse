@@ -20,16 +20,16 @@ export interface UserDto {
 
 export interface AccountApiResponse {
   userDtos: AccountTypes[]
-  pageNumber: number
-  pageSize: number
+  page: number
+  size: number
   totalElements: number
   totalPages: number
-  isLast: boolean
+  // isLast: boolean
 }
 
 export interface QueryParams {
-  pageNumber?: number
-  pageSize?: number
+  page?: number
+  size?: number
   sortBy?: string
   dir?: 'asc' | 'desc'
 }
