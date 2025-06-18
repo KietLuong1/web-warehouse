@@ -12,10 +12,14 @@ import { allColumns } from './allColumns'
 import { CreateUpdateAccountModal } from './CreateUpdateAccountModal'
 
 function Account() {
-  // initialise pagination: page 0, size 10
-  const { accounts, isFetching, pageNumber, pageSize, totalPages, setParams, invalidate } = useGetListAccount({
-    pageNumber: 0,
+  const [paginationState, setPaginationState] = useState({
+    pageIndex: 1,
     pageSize: 10
+  })
+
+  const { accounts, isFetching, totalPages, setParams, invalidate, totalElements } = useGetListAccount({
+    page: paginationState.pageIndex + 1,
+    size: paginationState.pageSize
   })
 
   const [modalUserId, setModalUserId] = useState<number | undefined>()
@@ -70,15 +74,19 @@ function Account() {
             </Tooltip>
           </div>
         )}
-        manualPagination // ← enable server‑side paging
         pageCount={totalPages}
+        rowCount={totalElements}
+        initialState={{
+          columnPinning: { right: ['mrt-row-actions'] },
+          pagination: { pageIndex: 1, pageSize: 10 }
+        }}
         state={{
-          pagination: { pageIndex: pageNumber, pageSize }
+          pagination: paginationState
         }}
         onPaginationChange={(updater) => {
-          const { pageIndex, pageSize } =
-            typeof updater === 'function' ? updater({ pageIndex: 0, pageSize: 10 }) : updater
-          setParams({ pageNumber: pageIndex, pageSize })
+          const newPagination = typeof updater === 'function' ? updater(paginationState) : updater
+          setPaginationState(newPagination)
+          setParams({ page: newPagination.pageIndex + 1, size: newPagination.pageSize })
         }}
         renderToolbarInternalActions={({ table }) => <AccountToolbar table={table} onRefresh={invalidate} />}
         renderTopToolbarCustomActions={({ table }) => <CustomTableSearch table={table} placeholder='Search by Name' />}

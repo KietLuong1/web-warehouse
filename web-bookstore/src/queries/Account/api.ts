@@ -12,9 +12,7 @@ export const refreshToken = async (token: string): Promise<JwtAuthenticationResp
   return resp.data
 }
 
-export const fetchListAccount = async (
-  params: QueryParams = { pageNumber: 0, pageSize: 10 }
-): Promise<AccountApiResponse> => {
+export const fetchListAccount = async (params: QueryParams = { page: 1, size: 10 }): Promise<AccountApiResponse> => {
   const resp = await axiosAccount.get<AccountApiResponse>('/userManagement/users', { params })
   console.log('fetchListAccount', resp.data)
   return resp.data
