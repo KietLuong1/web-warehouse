@@ -1,10 +1,12 @@
 import { inventory } from '../../configs/services/http/index'
+import { ApiResponseTypes, PaginationParams, PaginationResponseType } from '../types'
 import { InventoryPayload, InventoryResponse } from './types'
-import { ApiInventoryListResponse } from '../types'
 
-export const fetchListInventory = async (): Promise<ApiInventoryListResponse<InventoryResponse>> => {
+export const fetchListInventory = async (
+  params: PaginationParams = { page: 1, size: 10 }
+): Promise<PaginationResponseType<InventoryResponse>> => {
   try {
-    const response = await inventory.get<ApiInventoryListResponse<InventoryResponse>>('/inventory/all')
+    const response = await inventory.get<PaginationResponseType<InventoryResponse>>('/inventory/all', { params })
     return response.data
   } catch (error) {
     console.error('Failed to fetch list of inventories:', error)
@@ -12,13 +14,9 @@ export const fetchListInventory = async (): Promise<ApiInventoryListResponse<Inv
   }
 }
 
-export const getInventoryById = async ({
-  id
-}: {
-  id: string
-}): Promise<ApiInventoryListResponse<InventoryResponse>> => {
+export const getInventoryById = async ({ id }: { id: string }): Promise<ApiResponseTypes<InventoryResponse>> => {
   try {
-    const response = await inventory.get<ApiInventoryListResponse<InventoryResponse>>(`/inventory/${id}`)
+    const response = await inventory.get<ApiResponseTypes<InventoryResponse>>(`/inventory/${id}`)
     return response.data
   } catch (error) {
     console.error('Failed to get record:', error)

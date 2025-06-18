@@ -1,6 +1,6 @@
 import { productAxiosInstance } from '../../configs/services/http/index'
+import { PaginationParams } from '../types'
 import { ProductDTO, ProductPayload } from './types'
-import { PaginationParams } from './useGetListProducts'
 import { ProductDetailResponse } from './useProductDetail'
 
 export const fetchListProducts = async (params: PaginationParams = { page: 1, size: 10 }): Promise<ProductDTO[]> => {

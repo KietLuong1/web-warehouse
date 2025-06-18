@@ -1,7 +1,7 @@
 /* eslint-disable @typescript-eslint/no-unused-vars */
 import { EditOutlined } from '@mui/icons-material'
 import { Modal, Tooltip } from 'antd'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
 import { useGetAccountDetail } from '../../queries/Account/useGetAccountDetail'
@@ -10,13 +10,44 @@ import { AccountDetailModal } from './AccountDetailModel'
 import { AccountToolbar } from './AccountToolbar'
 import { allColumns } from './allColumns'
 import { CreateUpdateAccountModal } from './CreateUpdateAccountModal'
+import { useSearchParams } from 'react-router-dom'
 
 function Account() {
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const pageFromUrl = parseInt(searchParams.get('page') || '1', 10)
+  const sizeFromUrl = parseInt(searchParams.get('size') || '10', 10)
+
   const [paginationState, setPaginationState] = useState({
-    pageIndex: 1,
-    pageSize: 10
+    pageIndex: pageFromUrl - 1,
+    pageSize: sizeFromUrl
   })
 
+  useEffect(() => {
+    if (!searchParams.get('page') || !searchParams.get('size')) {
+      setSearchParams(
+        {
+          page: pageFromUrl.toString(),
+          size: sizeFromUrl.toString()
+        },
+        { replace: true }
+      )
+    }
+  }, [])
+
+  useEffect(() => {
+    const currentPage = searchParams.get('page')
+    const currentSize = searchParams.get('size')
+    const newPage = (paginationState.pageIndex + 1).toString()
+    const newSize = paginationState.pageSize.toString()
+
+    if (currentPage !== newPage || currentSize !== newSize) {
+      setSearchParams({
+        page: newPage,
+        size: newSize
+      })
+    }
+  }, [paginationState, searchParams, setSearchParams])
   const { accounts, isFetching, totalPages, setParams, invalidate, totalElements } = useGetListAccount({
     page: paginationState.pageIndex + 1,
     size: paginationState.pageSize
@@ -78,7 +109,7 @@ function Account() {
         rowCount={totalElements}
         initialState={{
           columnPinning: { right: ['mrt-row-actions'] },
-          pagination: { pageIndex: 1, pageSize: 10 }
+          pagination: { pageIndex: pageFromUrl - 1, pageSize: sizeFromUrl }
         }}
         state={{
           pagination: paginationState

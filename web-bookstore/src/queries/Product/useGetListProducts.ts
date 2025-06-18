@@ -1,14 +1,10 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { ApiListResponse } from '../types'
+import { ApiListResponse, PaginationParams } from '../types'
 import { fetchListProducts } from './api'
 import { ProductDTO } from './types'
 
-export interface PaginationParams {
-  page?: number
-  size?: number
-}
 
 export function useGetListProducts(
   initialParams: PaginationParams = { page: 1, size: 10 },

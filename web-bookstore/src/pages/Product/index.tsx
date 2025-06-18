@@ -1,6 +1,6 @@
 import { DeleteOutlined, EditOutlined } from '@mui/icons-material'
 import { Modal, Tooltip } from 'antd'
-import { useCallback, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
 import { Toastify } from '../../components/Toastify'
@@ -12,12 +12,32 @@ import { allColumns } from './allColumns'
 import { CreateUpdateProductModal } from './CreateUpdateProductModal'
 import { ProductDetailModal } from './ProductDetailModel'
 import { ProductToolbar } from './ProductToolbar'
+import { useSearchParams } from 'react-router-dom'
 
 function Product() {
+  const [searchParams, setSearchParams] = useSearchParams()
+
+  const pageFromUrl = parseInt(searchParams.get('page') || '1', 10)
+  const sizeFromUrl = parseInt(searchParams.get('size') || '10', 10)
+
   const [paginationState, setPaginationState] = useState({
-    pageIndex: 0,
-    pageSize: 10
+    pageIndex: pageFromUrl - 1,
+    pageSize: sizeFromUrl
   })
+
+  useEffect(() => {
+    const currentPage = searchParams.get('page')
+    const currentSize = searchParams.get('size')
+    const newPage = (paginationState.pageIndex + 1).toString()
+    const newSize = paginationState.pageSize.toString()
+
+    if (currentPage !== newPage || currentSize !== newSize) {
+      setSearchParams({
+        page: newPage,
+        size: newSize
+      })
+    }
+  }, [paginationState, searchParams, setSearchParams])
 
   const { products, isFetching, handleInvalidateListProducts, setParams, totalPages, totalElements } =
     useGetListProducts({
@@ -120,9 +140,7 @@ function Product() {
           pagination: paginationState
         }}
         onPaginationChange={(updater) => {
-          console.log('Pagination change triggered:', updater, 'Current state:', paginationState)
           const newPagination = typeof updater === 'function' ? updater(paginationState) : updater
-          console.log('New pagination state:', newPagination)
           setPaginationState(newPagination)
           setParams({ page: newPagination.pageIndex + 1, size: newPagination.pageSize })
         }}

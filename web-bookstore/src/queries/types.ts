@@ -1,4 +1,3 @@
-
 export interface ApiListResponse<T> {
   products: T
   message?: string
@@ -9,15 +8,23 @@ export interface ApiListResponse<T> {
   pageSize?: number
   currentPage?: number
 }
-export interface ApiInventoryListResponse<T> {
+export interface PaginationResponseType<T> {
   status: number
   message: string
-  data: {
-    inventories: T[]
-  }
+  data: T[]
   timestamp: string
+  totalPages?: number
+  totalElements?: number
+  pageSize?: number
+  currentPage?: number
 }
 
+export interface ApiResponseTypes<T> {
+  data: T
+  message?: string
+  status: number
+  error?: string
+}
 export interface ApiCategoryListResponse<T> {
   categories: T
   message?: string
@@ -32,4 +39,11 @@ export interface ApiTransactionsListResponse<T> {
   error?: string
   totalPages?: number
   totalElements?: number
+  pageSize?: number
+  currentPage?: number
+}
+
+export interface PaginationParams {
+  page?: number
+  size?: number
 }
