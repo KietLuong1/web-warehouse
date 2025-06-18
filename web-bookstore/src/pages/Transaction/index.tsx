@@ -15,34 +15,31 @@ import { TransactionToolbar } from './TransactionToolbar'
 
 function Transaction() {
   const [searchParams, setSearchParams] = useSearchParams()
-
   const pageFromUrl = parseInt(searchParams.get('page') || '1', 10)
   const sizeFromUrl = parseInt(searchParams.get('size') || '10', 10)
+  const keywordFromUrl = searchParams.get('keyword') || ''
 
   const [paginationState, setPaginationState] = useState({
     pageIndex: pageFromUrl - 1,
     pageSize: sizeFromUrl
   })
 
-  useEffect(() => {
-    const currentPage = searchParams.get('page')
-    const currentSize = searchParams.get('size')
-    const newPage = (paginationState.pageIndex + 1).toString()
-    const newSize = paginationState.pageSize.toString()
-
-    if (currentPage !== newPage || currentSize !== newSize) {
-      setSearchParams({
-        page: newPage,
-        size: newSize
-      })
-    }
-  }, [paginationState, searchParams, setSearchParams])
+  const [searchKeyword, setSearchKeyword] = useState(keywordFromUrl)
 
   const { transactions, isFetching, handleInvalidateListTransactions, totalElements, totalPages, setParams } =
     useGetListTransactions({
       page: paginationState.pageIndex + 1,
-      size: paginationState.pageSize
+      size: paginationState.pageSize,
+      keyword: searchKeyword
     })
+
+  useEffect(() => {
+    setParams({
+      page: paginationState.pageIndex + 1,
+      size: paginationState.pageSize,
+      keyword: searchKeyword
+    })
+  }, [paginationState.pageIndex, paginationState.pageSize, searchKeyword, setParams])
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 
@@ -101,6 +98,24 @@ function Transaction() {
       </Tooltip>
     </div>
   )
+  const handleSearch = (keyword: string) => {
+    setSearchKeyword(keyword)
+    setPaginationState((prev) => ({
+      ...prev,
+      pageIndex: 0
+    }))
+
+    const params: Record<string, string> = {
+      page: '1',
+      size: paginationState.pageSize.toString()
+    }
+
+    if (keyword && keyword.trim() !== '') {
+      params.keyword = keyword
+    }
+
+    setSearchParams(params)
+  }
 
   const handleRowClick = useCallback((row: TransactionDTO) => {
     setSelectedRow(row)
@@ -121,7 +136,14 @@ function Transaction() {
         isColumnPinning={true}
         nameColumnPinning='mrt-row-actions'
         renderToolbarInternalActions={({ table }) => <TransactionToolbar table={table} />}
-        renderTopToolbarCustomActions={({ table }) => <CustomTableSearch table={table} placeholder='Search by Name' />}
+        renderTopToolbarCustomActions={({ table }) => (
+          <CustomTableSearch
+            table={table}
+            placeholder='Search by Product name'
+            onSearch={handleSearch}
+            searchText={searchKeyword}
+          />
+        )}
         muiTableBodyRowProps={({ row }) => ({
           onClick: () => handleRowClick(row.original),
           sx: { cursor: 'pointer' }
@@ -139,8 +161,17 @@ function Transaction() {
         onPaginationChange={(updater) => {
           const newPagination = typeof updater === 'function' ? updater(paginationState) : updater
           setPaginationState(newPagination)
-          // The URL will be updated by the useEffect hook
-          setParams({ page: newPagination.pageIndex + 1, size: newPagination.pageSize })
+
+          const params: Record<string, string> = {
+            page: (newPagination.pageIndex + 1).toString(),
+            size: newPagination.pageSize.toString()
+          }
+
+          if (searchKeyword && searchKeyword.trim() !== '') {
+            params.keyword = searchKeyword
+          }
+
+          setSearchParams(params)
         }}
       />
 
