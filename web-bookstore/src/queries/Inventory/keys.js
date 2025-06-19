@@ -1,0 +1,23 @@
+export var InventoryKey;
+(function (InventoryKey) {
+    InventoryKey["ID"] = "id";
+    InventoryKey["PRODUCT_ID"] = "productId";
+    InventoryKey["WAREHOUSE_ID"] = "warehouseId";
+    InventoryKey["QUANTITY_ON_HAND"] = "quantityOnHand";
+    InventoryKey["RESERVED_QUANTITY"] = "reservedQuantity";
+    InventoryKey["REORDER_LEVEL"] = "reorderLevel";
+    InventoryKey["MAX_STOCK_LEVEL"] = "maxStockLevel";
+    InventoryKey["UNIT_COST"] = "unitCost";
+    InventoryKey["LOCATION_CODE"] = "locationCode";
+    InventoryKey["BATCH_NUMBER"] = "batchNumber";
+    InventoryKey["EXPIRY_DATE"] = "expiryDate";
+    InventoryKey["LAST_COUNTED_DATE"] = "lastCountedDate";
+    InventoryKey["LAST_UPDATED"] = "lastUpdated";
+    InventoryKey["UPDATED_BY"] = "updatedBy";
+    InventoryKey["PRODUCT"] = "product";
+    InventoryKey["WAREHOUSE"] = "warehouse";
+    InventoryKey["AVAILABLE_QUANTITY"] = "availableQuantity";
+    InventoryKey["IS_LOW_STOCK"] = "isLowStock";
+    InventoryKey["IS_OVERSTOCK"] = "isOverstock";
+    InventoryKey["TOTAL_VALUE"] = "totalValue";
+})(InventoryKey || (InventoryKey = {}));
