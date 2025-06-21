@@ -1,0 +1,11 @@
+services:
+  - type: static
+    name: warehouse-management-system
+    env: static
+    # if your code lives in a subfolder, add root: web-bookstore
+    buildCommand: pnpm build
+    publishDir: dist
+    routes:
+      - type: rewrite
+        src: /*
+        dest: /index.html
