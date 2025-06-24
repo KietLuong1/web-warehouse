@@ -1,16 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { ApiListResponse, PaginationParams } from '../types'
-import { fetchListProducts } from './api'
+import { ApiListResponse, SearchParams } from '../types'
+import { fetchListProducts, searchProductByName } from './api'
 import { ProductDTO } from './types'
 
-
 export function useGetListProducts(
-  initialParams: PaginationParams = { page: 1, size: 10 },
+  initialParams: SearchParams = { page: 1, size: 10, keyword: '' },
   options?: UseMutationOptions<any, Error, ApiListResponse<ProductDTO>>
 ) {
-  const [params, setParams] = useState<PaginationParams>(initialParams)
+  const [params, setParams] = useState<SearchParams>(initialParams)
 
   const {
     data,
@@ -18,8 +17,13 @@ export function useGetListProducts(
     isFetching,
     refetch: onGetAllListProducts
   } = useQuery<any, Error, ApiListResponse<ProductDTO>>({
-    queryKey: ['products', params],
-    queryFn: () => fetchListProducts(params),
+    queryKey: ['products', params.page, params.size, params.keyword?.trim() || ''],
+    queryFn: () => {
+      if (params.keyword && params.keyword.trim() !== '') {
+        return searchProductByName(params)
+      }
+      return fetchListProducts({ page: params.page, size: params.size })
+    },
     ...options
   })
   const queryClient = useQueryClient()

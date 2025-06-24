@@ -9,23 +9,23 @@ export const allColumns: MRT_ColumnDef<InventoryResponse>[] = [
     Cell: () => <div>{'---'}</div>,
     size: 150
   },
-  // {
-  //   accessorKey: 'productId',
-  //   header: 'Product ID',
-  //   Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
-  //   size: 150
-  // },
-  // {
-  //   accessorKey: 'warehouseId',
-  //   header: 'Warehouse ID',
-  //   Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
-  //   size: 150
-  // },
+  {
+    accessorKey: 'product.name',
+    header: 'Product Name',
+    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
+    size: 200
+  },
+  {
+    accessorKey: 'warehouse.name',
+    header: 'Warehouse Name',
+    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
+    size: 200
+  },
   {
     accessorKey: 'quantityOnHand',
     header: 'Quantity',
     Cell: ({ cell }) => <div>{cell.getValue<number>()}</div>,
-    size: 200
+    size: 100
   },
   {
     accessorKey: 'batchNumber',

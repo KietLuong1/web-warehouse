@@ -18,32 +18,29 @@ function Inventory() {
 
   const pageFromUrl = parseInt(searchParams.get('page') || '1', 10)
   const sizeFromUrl = parseInt(searchParams.get('size') || '10', 10)
+  const keywordFromUrl = searchParams.get('keyword') || ''
+  const [searchKeyword, setSearchKeyword] = useState(keywordFromUrl)
 
   const [paginationState, setPaginationState] = useState({
     pageIndex: pageFromUrl - 1,
     pageSize: sizeFromUrl
   })
 
-  useEffect(() => {
-    const currentPage = searchParams.get('page')
-    const currentSize = searchParams.get('size')
-    const newPage = (paginationState.pageIndex + 1).toString()
-    const newSize = paginationState.pageSize.toString()
-
-    if (currentPage !== newPage || currentSize !== newSize) {
-      setSearchParams({
-        page: newPage,
-        size: newSize
-      })
-    }
-  }, [paginationState, searchParams, setSearchParams])
-
   const { data, isFetching, handleInvalidateListInventory, totalElements, totalPages, setParams } = useGetListInventory(
     {
       page: paginationState.pageIndex + 1,
-      size: paginationState.pageSize
+      size: paginationState.pageSize,
+      keyword: searchKeyword
     }
   )
+
+  useEffect(() => {
+    setParams({
+      page: paginationState.pageIndex + 1,
+      size: paginationState.pageSize,
+      keyword: searchKeyword
+    })
+  }, [paginationState.pageIndex, paginationState.pageSize, searchKeyword, setParams])
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 
@@ -109,6 +106,24 @@ function Inventory() {
     setIsDetailModalVisible(true)
   }, [])
 
+  const handleSearch = (keyword: string) => {
+    setSearchKeyword(keyword)
+    setPaginationState((prev) => ({
+      ...prev,
+      pageIndex: 0
+    }))
+
+    const params: Record<string, string> = {
+      page: '1',
+      size: paginationState.pageSize.toString()
+    }
+
+    if (keyword && keyword.trim() !== '') {
+      params.keyword = keyword
+    }
+
+    setSearchParams(params)
+  }
   return (
     <>
       <CustomTable<InventoryResponse>
@@ -124,7 +139,12 @@ function Inventory() {
         nameColumnPinning='mrt-row-actions'
         renderToolbarInternalActions={({ table }) => <InventoryToolbar table={table} />}
         renderTopToolbarCustomActions={({ table }) => (
-          <CustomTableSearch table={table} placeholder='Search by Inventory ID' />
+          <CustomTableSearch
+            table={table}
+            placeholder='Search by Product Name'
+            onSearch={handleSearch}
+            searchText={searchKeyword}
+          />
         )}
         muiTableBodyRowProps={({ row }) => ({
           onClick: () => handleRowClick(row.original),
