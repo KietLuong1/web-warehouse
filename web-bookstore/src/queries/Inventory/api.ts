@@ -1,5 +1,5 @@
 import { inventory } from '../../configs/services/http/index'
-import { ApiResponseTypes, PaginationParams, PaginationResponseType } from '../types'
+import { ApiResponseTypes, PaginationParams, PaginationResponseType, SearchParams } from '../types'
 import { InventoryPayload, InventoryResponse } from './types'
 
 export const fetchListInventory = async (
@@ -51,6 +51,30 @@ export const deleteInventory = async (body: InventoryPayload): Promise<Inventory
     return response.data
   } catch (error) {
     console.error('Failed to delete record:', error)
+    throw error
+  }
+}
+
+export const searchInventoryByName = async (
+  params: SearchParams = { page: 1, size: 10, keyword: '' }
+): Promise<PaginationResponseType<InventoryResponse>> => {
+  try {
+    const queryParams = {
+      keyword: params.keyword || '',
+      page: params.page || 1,
+      size: params.size || 10
+    }
+
+    const response = await inventory.get<PaginationResponseType<InventoryResponse>>(`/inventory/search`, {
+      params: queryParams
+    })
+    return response.data
+  } catch (error) {
+    if (error instanceof Error && 'response' in error) {
+      const axiosError = error as { response?: { data?: unknown; status?: number } }
+      console.error('Error details:', axiosError.response?.data)
+      console.error('Error status:', axiosError.response?.status)
+    }
     throw error
   }
 }

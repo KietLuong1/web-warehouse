@@ -1,6 +1,7 @@
 import { DeleteOutlined, EditOutlined } from '@mui/icons-material'
 import { Modal, Tooltip } from 'antd'
 import { useCallback, useEffect, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { CustomTableSearch } from '../../components/CustomTableSearch'
 import { CustomTable } from '../../components/Table'
 import { Toastify } from '../../components/Toastify'
@@ -12,38 +13,35 @@ import { allColumns } from './allColumns'
 import { CreateUpdateProductModal } from './CreateUpdateProductModal'
 import { ProductDetailModal } from './ProductDetailModel'
 import { ProductToolbar } from './ProductToolbar'
-import { useSearchParams } from 'react-router-dom'
 
 function Product() {
   const [searchParams, setSearchParams] = useSearchParams()
 
   const pageFromUrl = parseInt(searchParams.get('page') || '1', 10)
   const sizeFromUrl = parseInt(searchParams.get('size') || '10', 10)
+  const keywordFromUrl = searchParams.get('keyword') || ''
+  const [searchKeyword, setSearchKeyword] = useState(keywordFromUrl)
 
   const [paginationState, setPaginationState] = useState({
     pageIndex: pageFromUrl - 1,
     pageSize: sizeFromUrl
   })
 
-  useEffect(() => {
-    const currentPage = searchParams.get('page')
-    const currentSize = searchParams.get('size')
-    const newPage = (paginationState.pageIndex + 1).toString()
-    const newSize = paginationState.pageSize.toString()
-
-    if (currentPage !== newPage || currentSize !== newSize) {
-      setSearchParams({
-        page: newPage,
-        size: newSize
-      })
-    }
-  }, [paginationState, searchParams, setSearchParams])
-
   const { products, isFetching, handleInvalidateListProducts, setParams, totalPages, totalElements } =
     useGetListProducts({
       page: paginationState.pageIndex + 1,
-      size: paginationState.pageSize
+      size: paginationState.pageSize,
+      keyword: searchKeyword
     })
+
+  useEffect(() => {
+    setParams({
+      page: paginationState.pageIndex + 1,
+      size: paginationState.pageSize,
+      keyword: searchKeyword
+    })
+  }, [paginationState.pageIndex, paginationState.pageSize, searchKeyword, setParams])
+
   const { categories } = useGetListCategories()
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
@@ -79,6 +77,24 @@ function Product() {
     [onDeleteProduct]
   )
 
+  const handleSearch = (keyword: string) => {
+    setSearchKeyword(keyword)
+    setPaginationState((prev) => ({
+      ...prev,
+      pageIndex: 0
+    }))
+
+    const params: Record<string, string> = {
+      page: '1',
+      size: paginationState.pageSize.toString()
+    }
+
+    if (keyword && keyword.trim() !== '') {
+      params.keyword = keyword
+    }
+
+    setSearchParams(params)
+  }
   const renderRowActions = (row: ProductDTO) => (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
       <Tooltip title='Edit'>
@@ -123,7 +139,14 @@ function Product() {
         isColumnPinning={true}
         nameColumnPinning='mrt-row-actions'
         renderToolbarInternalActions={({ table }) => <ProductToolbar table={table} />}
-        renderTopToolbarCustomActions={({ table }) => <CustomTableSearch table={table} placeholder='Search by Name' />}
+        renderTopToolbarCustomActions={({ table }) => (
+          <CustomTableSearch
+            table={table}
+            placeholder='Search by Name'
+            onSearch={handleSearch}
+            searchText={searchKeyword}
+          />
+        )}
         muiTableBodyRowProps={({ row }) => ({
           onClick: () => handleRowClick(row.original),
           sx: { cursor: 'pointer' }
