@@ -1,12 +1,12 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { fetchListTransactions, searchTransactionsByProductName, TransactionSearchParams } from './api'
-import { TransactionDTO } from './types'
 import { ApiTransactionsListResponse } from '../types'
+import { fetchListTransactions, TransactionSearchParams } from './api'
+import { TransactionDTO } from './types'
 
 export function useGetListTransactions(
-  initialParams: TransactionSearchParams = { page: 1, size: 10, keyword: '' },
+  initialParams: TransactionSearchParams = { page: 1, size: 10, filter: '' },
   options?: UseMutationOptions<any, Error, ApiTransactionsListResponse<TransactionDTO>>
 ) {
   const [params, setParams] = useState<TransactionSearchParams>(initialParams)
@@ -17,13 +17,15 @@ export function useGetListTransactions(
     isFetching,
     refetch: onGetAllListTransactions
   } = useQuery<any, Error, ApiTransactionsListResponse<TransactionDTO>>({
-    queryKey: ['transactions', params.page, params.size, params.keyword?.trim() || ''],
-    queryFn: () => {
-      if (params.keyword && params.keyword.trim() !== '') {
-        return searchTransactionsByProductName(params)
-      }
-      return fetchListTransactions({ page: params.page, size: params.size })
-    },
+    queryKey: [
+      'transactions',
+      params.page,
+      params.size,
+      params.filter?.trim() || '',
+      params.status || '',
+      params.transactionType || ''
+    ],
+    queryFn: () => fetchListTransactions(params),
     ...options
   })
 

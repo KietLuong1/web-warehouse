@@ -32,6 +32,15 @@ export interface ApiCategoryListResponse<T> {
   error?: string
 }
 
+export interface ApiWarehouseResponse<T> {
+  dataList: {
+    warehouses: T[]
+  }
+  message?: string
+  status: 'success' | 'error'
+  error?: string
+}
+
 export interface ApiTransactionsListResponse<T> {
   transactions: T
   message?: string

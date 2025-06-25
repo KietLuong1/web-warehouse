@@ -46,7 +46,7 @@ export const TransactionToolbar: React.FC<Props> = ({ table }) => {
             </IconButton>
           </Tooltip>
           <Tooltip title='Filter' arrow placement='top'>
-            <CustomTableFilterContainer filterParamsKeys={undefined}>
+            <CustomTableFilterContainer filterParamsKeys={['status', 'transactionType']}>
               <TransactionFilter />
             </CustomTableFilterContainer>
           </Tooltip>

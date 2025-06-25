@@ -3,7 +3,13 @@ import { PaginationParams, SearchParams } from '../types'
 import { ProductDTO, ProductPayload } from './types'
 import { ProductDetailResponse } from './useProductDetail'
 
-export const fetchListProducts = async (params: PaginationParams = { page: 1, size: 10 }): Promise<ProductDTO[]> => {
+export interface ProductSearchParams extends PaginationParams {
+  keyword?: string
+  categoryId?: string
+  warehouseId?: string
+}
+
+export const fetchListProducts = async (params: ProductSearchParams = { page: 1, size: 10 }): Promise<ProductDTO[]> => {
   try {
     const response = await productAxiosInstance.get<ProductDTO[]>(`/products/all`, { params })
     return response.data
@@ -53,6 +59,7 @@ export const deleteProduct = async (body: ProductPayload): Promise<ProductPayloa
     throw error
   }
 }
+
 
 export const searchProductByName = async (
   params: SearchParams = { page: 1, size: 10, keyword: '' }
