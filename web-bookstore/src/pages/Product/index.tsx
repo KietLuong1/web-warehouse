@@ -20,7 +20,12 @@ function Product() {
   const pageFromUrl = parseInt(searchParams.get('page') || '1', 10)
   const sizeFromUrl = parseInt(searchParams.get('size') || '10', 10)
   const keywordFromUrl = searchParams.get('keyword') || ''
+  const categoryIdFromUrl = searchParams.get('categoryId') || ''
+  const warehouseIdFromUrl = searchParams.get('warehouseId') || ''
+
   const [searchKeyword, setSearchKeyword] = useState(keywordFromUrl)
+  const [selectedCategoryId, setSelectedCategoryId] = useState(categoryIdFromUrl)
+  const [selectedWarehouseId, setSelectedWarehouseId] = useState(warehouseIdFromUrl)
 
   const [paginationState, setPaginationState] = useState({
     pageIndex: pageFromUrl - 1,
@@ -31,16 +36,34 @@ function Product() {
     useGetListProducts({
       page: paginationState.pageIndex + 1,
       size: paginationState.pageSize,
-      keyword: searchKeyword
+      keyword: searchKeyword,
+      categoryId: selectedCategoryId,
+      warehouseId: selectedWarehouseId
     })
 
   useEffect(() => {
     setParams({
       page: paginationState.pageIndex + 1,
       size: paginationState.pageSize,
-      keyword: searchKeyword
+      keyword: searchKeyword,
+      categoryId: selectedCategoryId,
+      warehouseId: selectedWarehouseId
     })
-  }, [paginationState.pageIndex, paginationState.pageSize, searchKeyword, setParams])
+  }, [
+    paginationState.pageIndex,
+    paginationState.pageSize,
+    searchKeyword,
+    selectedCategoryId,
+    selectedWarehouseId,
+    setParams
+  ])
+
+  useEffect(() => {
+    const categoryIdFromUrl = searchParams.get('categoryId') || ''
+    const warehouseIdFromUrl = searchParams.get('warehouseId') || ''
+    setSelectedCategoryId(categoryIdFromUrl)
+    setSelectedWarehouseId(warehouseIdFromUrl)
+  }, [searchParams])
 
   const { categories } = useGetListCategories()
   const [isModalVisible, setIsModalVisible] = useState(false)
@@ -93,6 +116,14 @@ function Product() {
       params.keyword = keyword
     }
 
+    if (selectedCategoryId && selectedCategoryId.trim() !== '') {
+      params.categoryId = selectedCategoryId
+    }
+
+    if (selectedWarehouseId && selectedWarehouseId.trim() !== '') {
+      params.warehouseId = selectedWarehouseId
+    }
+
     setSearchParams(params)
   }
   const renderRowActions = (row: ProductDTO) => (
@@ -128,7 +159,7 @@ function Product() {
   return (
     <>
       <CustomTable<ProductDTO>
-        data={products ? (Array.isArray(products) ? products : [products]) : []}
+        data={products || []}
         isLoading={isFetching}
         columns={allColumns}
         isLayoutGridMode
@@ -165,7 +196,13 @@ function Product() {
         onPaginationChange={(updater) => {
           const newPagination = typeof updater === 'function' ? updater(paginationState) : updater
           setPaginationState(newPagination)
-          setParams({ page: newPagination.pageIndex + 1, size: newPagination.pageSize })
+          setParams({
+            page: newPagination.pageIndex + 1,
+            size: newPagination.pageSize,
+            keyword: searchKeyword,
+            categoryId: selectedCategoryId,
+            warehouseId: selectedWarehouseId
+          })
         }}
       />
       <Modal

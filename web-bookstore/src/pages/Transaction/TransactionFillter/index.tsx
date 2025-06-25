@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Button,
   Container,
@@ -13,30 +14,42 @@ import React from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { COLOR_CODE } from '../../../configs/color'
 
+const STATUS_OPTIONS = ['PENDING', 'PROCESSING', 'COMPLETED', 'CANCELLED']
+const TRANSACTION_TYPE_OPTIONS = ['PURCHASE', 'SALE', 'RETURN_TO_SUPPLIER']
+
 const TransactionFilter: React.FC<Props> = () => {
-  //example of using select component
-  const [age, setAge] = React.useState('')
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string)
-  }
   const [searchParams, setSearchParams] = useSearchParams()
 
   const currentSearchParams = Object.fromEntries([...searchParams])
 
-  const handleClearAll = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { industryIds, accountIds, sectorIds, ...restSearchParams } = currentSearchParams
-    setSearchParams(restSearchParams)
+  const currentStatus = searchParams.get('status') || ''
+  const currentTransactionType = searchParams.get('transactionType') || ''
+
+  const handleStatusChange = (event: SelectChangeEvent) => {
+    const value = event.target.value as string
+    if (value) {
+      setSearchParams({ ...currentSearchParams, status: value })
+    } else {
+      const { status, ...restParams } = currentSearchParams
+      setSearchParams(restParams)
+    }
   }
 
-  //   const onFilter = (name: string, value: Array<any> = []) => {
-  //     if (isEmpty(value)) {
-  //       const { [name]: _, ...restParams } = currentSearchParams
-  //       setSearchParams(restParams)
-  //       return
-  //     }
-  //     setSearchParams({ ...currentSearchParams, [name]: value?.join(',') })
-  //   }
+  const handleTransactionTypeChange = (event: SelectChangeEvent) => {
+    const value = event.target.value as string
+    if (value) {
+      setSearchParams({ ...currentSearchParams, transactionType: value })
+    } else {
+      const { transactionType, ...restParams } = currentSearchParams
+      setSearchParams(restParams)
+    }
+  }
+
+  const handleClearAll = () => {
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    const { status, transactionTypes, ...restSearchParams } = currentSearchParams
+    setSearchParams(restSearchParams)
+  }
 
   return (
     <Container maxWidth='xs' sx={{ p: 2, width: 340 }}>
@@ -50,19 +63,39 @@ const TransactionFilter: React.FC<Props> = () => {
       </Stack>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <InputLabel id='demo-simple-select-label'>Age</InputLabel>
+          <InputLabel id='status-select-label'>Status</InputLabel>
           <Select
-            labelId='demo-simple-select-label'
-            id='demo-simple-select'
-            value={age}
-            label='Age'
+            labelId='status-select-label'
+            id='status-select'
+            value={currentStatus}
             size='small'
             fullWidth
-            onChange={handleChange}
+            onChange={handleStatusChange}
+            displayEmpty
           >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {STATUS_OPTIONS.map((status) => (
+              <MenuItem key={status} value={status}>
+                {status}
+              </MenuItem>
+            ))}
+          </Select>
+        </Grid>
+        <Grid item xs={12}>
+          <InputLabel id='transaction-type-select-label'>Transaction Type</InputLabel>
+          <Select
+            labelId='transaction-type-select-label'
+            id='transaction-type-select'
+            value={currentTransactionType}
+            size='small'
+            fullWidth
+            onChange={handleTransactionTypeChange}
+            displayEmpty
+          >
+            {TRANSACTION_TYPE_OPTIONS.map((type) => (
+              <MenuItem key={type} value={type}>
+                {type.replace('_', ' ')}
+              </MenuItem>
+            ))}
           </Select>
         </Grid>
       </Grid>

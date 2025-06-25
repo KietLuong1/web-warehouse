@@ -1,15 +1,15 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
 import { useState } from 'react'
-import { ApiListResponse, SearchParams } from '../types'
-import { fetchListProducts, searchProductByName } from './api'
+import { ApiListResponse } from '../types'
+import { fetchListProducts, ProductSearchParams } from './api'
 import { ProductDTO } from './types'
 
 export function useGetListProducts(
-  initialParams: SearchParams = { page: 1, size: 10, keyword: '' },
+  initialParams: ProductSearchParams = { page: 1, size: 10, keyword: '' },
   options?: UseMutationOptions<any, Error, ApiListResponse<ProductDTO>>
 ) {
-  const [params, setParams] = useState<SearchParams>(initialParams)
+  const [params, setParams] = useState<ProductSearchParams>(initialParams)
 
   const {
     data,
@@ -17,12 +17,16 @@ export function useGetListProducts(
     isFetching,
     refetch: onGetAllListProducts
   } = useQuery<any, Error, ApiListResponse<ProductDTO>>({
-    queryKey: ['products', params.page, params.size, params.keyword?.trim() || ''],
+    queryKey: [
+      'products',
+      params.page,
+      params.size,
+      params.keyword?.trim() || '',
+      params.categoryId || '' || '',
+      params.warehouseId || ''
+    ],
     queryFn: () => {
-      if (params.keyword && params.keyword.trim() !== '') {
-        return searchProductByName(params)
-      }
-      return fetchListProducts({ page: params.page, size: params.size })
+      return fetchListProducts(params)
     },
     ...options
   })

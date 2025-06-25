@@ -46,7 +46,7 @@ export const ProductToolbar: React.FC<Props> = ({ table }) => {
             </IconButton>
           </Tooltip>
           <Tooltip title='Filter' arrow placement='top'>
-            <CustomTableFilterContainer filterParamsKeys={undefined}>
+            <CustomTableFilterContainer filterParamsKeys={['categoryId', 'warehouseId']}>
               <ProductFilter />
             </CustomTableFilterContainer>
           </Tooltip>

@@ -1,5 +1,5 @@
 import axios from 'axios'
-import { CategoryDTO } from './types'
+import { CategoryDTO, WarehouseDTO } from './types'
 import { productAxiosInstance } from '../../configs/services/http'
 
 export const fetchListProvince = async () => {
@@ -31,6 +31,16 @@ export const fetchListCategories = async (): Promise<CategoryDTO[]> => {
     return response.data
   } catch (error) {
     console.error('Failed to fetch list products:', error)
+    throw error
+  }
+}
+
+export const getListWarehouse = async (): Promise<WarehouseDTO[]> => {
+  try {
+    const response = await productAxiosInstance.get<WarehouseDTO[]>(`/warehouses/active`)
+    return response.data
+  } catch (error) {
+    console.error('Failed to fetch list warehouse:', error)
     throw error
   }
 }

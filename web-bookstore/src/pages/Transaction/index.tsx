@@ -15,47 +15,61 @@ import { TransactionToolbar } from './TransactionToolbar'
 
 function Transaction() {
   const [searchParams, setSearchParams] = useSearchParams()
+
   const pageFromUrl = parseInt(searchParams.get('page') || '1', 10)
   const sizeFromUrl = parseInt(searchParams.get('size') || '10', 10)
-  const keywordFromUrl = searchParams.get('keyword') || ''
+  const filterFromUrl = searchParams.get('filter') || ''
+  const statusFromUrl = searchParams.get('status') || ''
+  const transactionTypeFromUrl = searchParams.get('transactionType') || ''
 
   const [paginationState, setPaginationState] = useState({
     pageIndex: pageFromUrl - 1,
     pageSize: sizeFromUrl
   })
 
-  const [searchKeyword, setSearchKeyword] = useState(keywordFromUrl)
+  const [searchKeyword, setSearchKeyword] = useState(filterFromUrl)
 
   const { transactions, isFetching, handleInvalidateListTransactions, totalElements, totalPages, setParams } =
     useGetListTransactions({
       page: paginationState.pageIndex + 1,
       size: paginationState.pageSize,
-      keyword: searchKeyword
+      filter: searchKeyword,
+      status: statusFromUrl,
+      transactionType: transactionTypeFromUrl
     })
 
   useEffect(() => {
     setParams({
       page: paginationState.pageIndex + 1,
       size: paginationState.pageSize,
-      keyword: searchKeyword
+      filter: searchKeyword,
+      status: statusFromUrl,
+      transactionType: transactionTypeFromUrl
     })
-  }, [paginationState.pageIndex, paginationState.pageSize, searchKeyword, setParams])
+  }, [
+    paginationState.pageIndex,
+    paginationState.pageSize,
+    searchKeyword,
+    statusFromUrl,
+    transactionTypeFromUrl,
+    setParams
+  ])
+
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
-
   const [selectedRow, setSelectedRow] = useState<TransactionDTO | undefined>(undefined)
 
   const closeModal = useCallback(() => {
     setIsModalVisible(false)
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isModalVisible])
+  }, [])
+
   const closeDetailModal = useCallback(() => {
     setIsDetailModalVisible(false)
   }, [])
 
   const { onDeleteTransaction } = useDeleteTransaction({
     onSuccess() {
-      Toastify(`success`, `Deleted record successfully!`)
+      Toastify('success', 'Deleted record successfully!')
       handleInvalidateListTransactions()
     }
   })
@@ -73,6 +87,36 @@ function Transaction() {
     },
     [onDeleteTransaction]
   )
+
+  const handleSearch = (keyword: string) => {
+    setSearchKeyword(keyword)
+    setPaginationState((prev) => ({
+      ...prev,
+      pageIndex: 0
+    }))
+
+    const params: Record<string, string> = {
+      page: '1',
+      size: paginationState.pageSize.toString()
+    }
+
+    if (keyword && keyword.trim() !== '') {
+      params.filter = keyword
+    }
+    if (statusFromUrl) {
+      params.status = statusFromUrl
+    }
+    if (transactionTypeFromUrl) {
+      params.transactionType = transactionTypeFromUrl
+    }
+
+    setSearchParams(params)
+  }
+
+  const handleRowClick = useCallback((row: TransactionDTO) => {
+    setSelectedRow(row)
+    setIsDetailModalVisible(true)
+  }, [])
 
   const renderRowActions = (row: TransactionDTO) => (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
@@ -98,29 +142,6 @@ function Transaction() {
       </Tooltip>
     </div>
   )
-  const handleSearch = (keyword: string) => {
-    setSearchKeyword(keyword)
-    setPaginationState((prev) => ({
-      ...prev,
-      pageIndex: 0
-    }))
-
-    const params: Record<string, string> = {
-      page: '1',
-      size: paginationState.pageSize.toString()
-    }
-
-    if (keyword && keyword.trim() !== '') {
-      params.keyword = keyword
-    }
-
-    setSearchParams(params)
-  }
-
-  const handleRowClick = useCallback((row: TransactionDTO) => {
-    setSelectedRow(row)
-    setIsDetailModalVisible(true)
-  }, [])
 
   return (
     <>
@@ -168,7 +189,13 @@ function Transaction() {
           }
 
           if (searchKeyword && searchKeyword.trim() !== '') {
-            params.keyword = searchKeyword
+            params.filter = searchKeyword
+          }
+          if (statusFromUrl) {
+            params.status = statusFromUrl
+          }
+          if (transactionTypeFromUrl) {
+            params.transactionType = transactionTypeFromUrl
           }
 
           setSearchParams(params)
@@ -181,7 +208,9 @@ function Transaction() {
         onCancel={closeModal}
         footer={null}
         centered
-        styles={{ body: { maxHeight: '60vh', overflowY: 'auto', padding: '8px', backgroundColor: 'transparent' } }}
+        styles={{
+          body: { maxHeight: '60vh', overflowY: 'auto', padding: '8px', backgroundColor: 'transparent' }
+        }}
       >
         <CreateUpdateTransactionModal onCloseModal={closeModal} isEdit transactionId={selectedRow?.id} />
       </Modal>
