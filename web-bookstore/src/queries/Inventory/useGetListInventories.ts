@@ -1,26 +1,23 @@
-import { UseQueryOptions, useQuery, useQueryClient } from '@tanstack/react-query'
+import { useQuery, useQueryClient, UseQueryOptions } from '@tanstack/react-query'
 import { useState } from 'react'
-import { PaginationResponseType, SearchParams } from '../types'
-import { fetchListInventory, searchInventoryByName } from './api'
+import { PaginationResponseType } from '../types'
+import { fetchListInventory, InventorySearchParams } from './api'
 import { InventoryResponse } from './types'
 
 export function useGetListInventory(
-  initialParams: SearchParams = { page: 1, size: 10, keyword: '' },
+  initialParams: InventorySearchParams = { page: 1, size: 10, keyword: '' },
   options?: UseQueryOptions<PaginationResponseType<InventoryResponse>, Error>
 ) {
-  const [params, setParams] = useState<SearchParams>(initialParams)
+  const [params, setParams] = useState<InventorySearchParams>(initialParams)
   const {
     data,
     error,
     isFetching,
     refetch: onGetAllListInventory
   } = useQuery<PaginationResponseType<InventoryResponse>, Error>({
-    queryKey: ['inventory', params.page, params.size, params.keyword?.trim() || ''],
+    queryKey: ['inventory', params.page, params.size, params.keyword?.trim() || '', params.warehouseId || ''],
     queryFn: () => {
-      if (params.keyword && params.keyword.trim() !== '') {
-        return searchInventoryByName(params)
-      }
-      return fetchListInventory({ page: params.page, size: params.size })
+      return fetchListInventory(params)
     },
     ...options
   })

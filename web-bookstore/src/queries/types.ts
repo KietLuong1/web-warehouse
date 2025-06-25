@@ -56,7 +56,3 @@ export interface PaginationParams {
   page?: number
   size?: number
 }
-
-export interface SearchParams extends PaginationParams {
-  keyword?: string
-}
