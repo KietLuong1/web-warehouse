@@ -9,7 +9,7 @@ import CustomTableColumnOptionsModal from '../../../components/TableColumnOption
 import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
 import { InventoryResponse } from '../../../queries/Inventory'
-import { useGetListInventory } from '../../../queries/Inventory/useGetListInventorys'
+import { useGetListInventory } from '../../../queries/Inventory/useGetListInventories'
 import { CreateUpdateInventoryModal } from '../CreateUpdateInventoryModal'
 import InventoryFilter from '../InventoryFilter'
 
@@ -46,7 +46,7 @@ export const InventoryToolbar: React.FC<Props> = ({ table }) => {
             </IconButton>
           </Tooltip>
           <Tooltip title='Filter' arrow placement='top'>
-            <CustomTableFilterContainer filterParamsKeys={undefined}>
+            <CustomTableFilterContainer filterParamsKeys={['warehouseId']}>
               <InventoryFilter />
             </CustomTableFilterContainer>
           </Tooltip>

@@ -6,7 +6,7 @@ import { CustomTable } from '../../components/Table'
 import { Toastify } from '../../components/Toastify'
 import { InventoryResponse } from '../../queries/Inventory'
 import { useDeleteInventory } from '../../queries/Inventory/useDeleteInventory'
-import { useGetListInventory } from '../../queries/Inventory/useGetListInventorys'
+import { useGetListInventory } from '../../queries/Inventory/useGetListInventories'
 import { allColumns } from './allColumns'
 import { CreateUpdateInventoryModal } from './CreateUpdateInventoryModal'
 import { InventoryToolbar } from './InventoryToolbar'
@@ -19,7 +19,9 @@ function Inventory() {
   const pageFromUrl = parseInt(searchParams.get('page') || '1', 10)
   const sizeFromUrl = parseInt(searchParams.get('size') || '10', 10)
   const keywordFromUrl = searchParams.get('keyword') || ''
+  const warehouseIdFromUrl = searchParams.get('warehouseId') || ''
   const [searchKeyword, setSearchKeyword] = useState(keywordFromUrl)
+  const [selectedWarehouseId, setSelectedWarehouseId] = useState(warehouseIdFromUrl)
 
   const [paginationState, setPaginationState] = useState({
     pageIndex: pageFromUrl - 1,
@@ -30,7 +32,8 @@ function Inventory() {
     {
       page: paginationState.pageIndex + 1,
       size: paginationState.pageSize,
-      keyword: searchKeyword
+      keyword: searchKeyword,
+      warehouseId: selectedWarehouseId
     }
   )
 
@@ -38,9 +41,16 @@ function Inventory() {
     setParams({
       page: paginationState.pageIndex + 1,
       size: paginationState.pageSize,
-      keyword: searchKeyword
+      keyword: searchKeyword,
+      warehouseId: selectedWarehouseId
     })
-  }, [paginationState.pageIndex, paginationState.pageSize, searchKeyword, setParams])
+  }, [paginationState.pageIndex, paginationState.pageSize, searchKeyword, selectedWarehouseId, setParams])
+
+  useEffect(() => {
+    const warehouseIdFromUrl = searchParams.get('warehouseId') || ''
+    setSelectedWarehouseId(warehouseIdFromUrl)
+  }, [searchParams])
+
   const [isModalVisible, setIsModalVisible] = useState(false)
   const [isDetailModalVisible, setIsDetailModalVisible] = useState(false)
 
@@ -122,6 +132,10 @@ function Inventory() {
       params.keyword = keyword
     }
 
+    if (selectedWarehouseId && selectedWarehouseId.trim() !== '') {
+      params.warehouseId = selectedWarehouseId
+    }
+
     setSearchParams(params)
   }
   return (
@@ -141,7 +155,7 @@ function Inventory() {
         renderTopToolbarCustomActions={({ table }) => (
           <CustomTableSearch
             table={table}
-            placeholder='Search by Product Name'
+            placeholder='Search by keyword'
             onSearch={handleSearch}
             searchText={searchKeyword}
           />
@@ -163,8 +177,12 @@ function Inventory() {
         onPaginationChange={(updater) => {
           const newPagination = typeof updater === 'function' ? updater(paginationState) : updater
           setPaginationState(newPagination)
-          // The URL will be updated by the useEffect hook
-          setParams({ page: newPagination.pageIndex + 1, size: newPagination.pageSize })
+          setParams({
+            page: newPagination.pageIndex + 1,
+            size: newPagination.pageSize,
+            keyword: searchKeyword,
+            warehouseId: selectedWarehouseId
+          })
         }}
       />
 

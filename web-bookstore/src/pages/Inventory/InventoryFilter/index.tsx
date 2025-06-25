@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import {
   Button,
   Container,
@@ -12,31 +13,30 @@ import {
 import React from 'react'
 import { useSearchParams } from 'react-router-dom'
 import { COLOR_CODE } from '../../../configs/color'
+import { useGetListWarehouse } from '../../../queries/Setting/useGetListWarehouse'
 
 const InventoryFilter: React.FC<Props> = () => {
-  //example of using select component
-  const [age, setAge] = React.useState('')
-  const handleChange = (event: SelectChangeEvent) => {
-    setAge(event.target.value as string)
-  }
   const [searchParams, setSearchParams] = useSearchParams()
+  const { warehouses, isFetching: warehousesLoading } = useGetListWarehouse()
 
   const currentSearchParams = Object.fromEntries([...searchParams])
 
-  const handleClearAll = () => {
-    // eslint-disable-next-line @typescript-eslint/no-unused-vars
-    const { industryIds, accountIds, sectorIds, ...restSearchParams } = currentSearchParams
-    setSearchParams(restSearchParams)
+  const currentWarehouse = searchParams.get('warehouseId') || ''
+
+  const handleWarehouseChange = (event: SelectChangeEvent) => {
+    const value = event.target.value as string
+    if (value) {
+      setSearchParams({ ...currentSearchParams, warehouseId: value })
+    } else {
+      const { warehouseId, ...restParams } = currentSearchParams
+      setSearchParams(restParams)
+    }
   }
 
-  //   const onFilter = (name: string, value: Array<any> = []) => {
-  //     if (isEmpty(value)) {
-  //       const { [name]: _, ...restParams } = currentSearchParams
-  //       setSearchParams(restParams)
-  //       return
-  //     }
-  //     setSearchParams({ ...currentSearchParams, [name]: value?.join(',') })
-  //   }
+  const handleClearAll = () => {
+    const { warehouseId, ...restSearchParams } = currentSearchParams
+    setSearchParams(restSearchParams)
+  }
 
   return (
     <Container maxWidth='xs' sx={{ p: 2, width: 340 }}>
@@ -50,22 +50,24 @@ const InventoryFilter: React.FC<Props> = () => {
       </Stack>
       <Grid container spacing={2}>
         <Grid item xs={12}>
-          <InputLabel id='demo-simple-select-label'>Quantity</InputLabel>
+          <InputLabel id='warehouse-select-label'>Warehouse</InputLabel>
           <Select
-            labelId='demo-simple-select-label'
-            id='demo-simple-select'
-            value={age}
-            label='Quantity'
+            labelId='warehouse-select-label'
+            id='warehouse-select'
+            value={currentWarehouse}
             size='small'
             fullWidth
-            onChange={handleChange}
+            onChange={handleWarehouseChange}
+            disabled={warehousesLoading}
+            displayEmpty
           >
-            <MenuItem value={10}>10</MenuItem>
-            <MenuItem value={20}>20</MenuItem>
-            <MenuItem value={50}>50</MenuItem>
-            <MenuItem value={100}>100</MenuItem>
-            <MenuItem value={200}>200</MenuItem>
-            <MenuItem value={500}>500</MenuItem>
+            {Array.isArray(warehouses)
+              ? warehouses.map((warehouse) => (
+                  <MenuItem key={warehouse.id} value={warehouse.id}>
+                    {warehouse.name}
+                  </MenuItem>
+                ))
+              : null}
           </Select>
         </Grid>
       </Grid>
