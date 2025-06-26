@@ -14,7 +14,7 @@ import {
   ProductionMetrics
 } from '../dashboard.types'
 
-const API_BASE_URL = 'http://localhost:8081/warehouse-svc/api/v1'
+const API_BASE_URL = 'http://localhost:8085/warehouse-svc/api/v1'
 
 class WarehouseService {
   private baseURL: string

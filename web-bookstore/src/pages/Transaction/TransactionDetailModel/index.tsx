@@ -31,12 +31,12 @@ export const TransactionDetailModal: React.FC<TransactionDetailModalProps> = ({
           </Typography>
           <Divider sx={{ my: 1 }} />
           <Grid container spacing={2}>
-            <Grid item xs={6}>
+            {/* <Grid item xs={6}>
               <Typography variant='body2' color='text.secondary'>
                 Transaction Number
               </Typography>
               <Typography variant='body1'>{'---'}</Typography>
-            </Grid>
+            </Grid> */}
             {transactionData.product && (
               <Grid item xs={6}>
                 <Typography variant='body2' color='text.secondary'>

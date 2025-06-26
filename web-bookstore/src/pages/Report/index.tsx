@@ -66,7 +66,7 @@ function Report() {
 
   const renderRowActions = (row: ReportResponse) => (
     <div style={{ display: 'flex', gap: '8px', justifyContent: 'center' }}>
-      <Tooltip title='Edit'>
+      {/* <Tooltip title='Edit'>
         <EditOutlined
           style={{ fontSize: '16px', color: 'blue', cursor: 'pointer' }}
           onClick={(e) => {
@@ -76,7 +76,7 @@ function Report() {
             setSelectedRow(row)
           }}
         />
-      </Tooltip>
+      </Tooltip> */}
 
       <Tooltip title='Delete'>
         <DeleteOutlined

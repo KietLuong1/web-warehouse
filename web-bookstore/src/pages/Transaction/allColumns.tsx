@@ -3,13 +3,13 @@ import { TransactionDTO } from '../../queries'
 import ChipStatus from '../../components/ChipStatus'
 
 export const allColumns: MRT_ColumnDef<TransactionDTO>[] = [
-  {
-    accessorKey: 'id',
-    header: 'Transaction Number',
-    enableHiding: false,
-    size: 160,
-    Cell: () => <div>{'---'}</div>
-  },
+  // {
+  //   accessorKey: 'id',
+  //   header: 'Transaction Number',
+  //   enableHiding: false,
+  //   size: 160,
+  //   Cell: () => <div>{'---'}</div>
+  // },
   {
     accessorKey: 'product.name',
     header: 'Product Name',

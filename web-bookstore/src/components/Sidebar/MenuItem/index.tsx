@@ -74,9 +74,9 @@ export const MenuItems = [
   // }
   //   ]
   // },
-  {
-    title: 'Logout',
-    icon: <ArrowBack />,
-    action: 'logout'
-  }
+  // {
+  //   title: 'Logout',
+  //   icon: <ArrowBack />,
+  //   action: 'logout'
+  // }
 ]

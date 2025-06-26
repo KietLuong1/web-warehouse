@@ -47,12 +47,12 @@ export const SupplierDetailModal: React.FC<SupplierDetailModalProps> = ({ isVisi
               <Typography variant='body1'>{supplierData.contactInfo}</Typography>
             </Grid>
             
-            <Grid item xs={6}>
+            {/* <Grid item xs={6}>
               <Typography variant='body2' color='text.secondary'>
                 Create Date
               </Typography>
               <Typography variant='body1'>{supplierData.createdAt || '---'}</Typography>
-            </Grid>
+            </Grid> */}
           </Grid>
         </Box>
       </Stack>

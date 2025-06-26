@@ -18,7 +18,7 @@ export default function DashboardDebugger() {
     const token = localStorage.getItem('accessToken') || localStorage.getItem('authToken')
 
     try {
-      const response = await fetch(`http://localhost:8081/warehouse-svc/api/v1${endpoint.url}`, {
+      const response = await fetch(`http://localhost:8085/warehouse-svc/api/v1${endpoint.url}`, {
         headers: {
           'Content-Type': 'application/json',
           ...(token && { Authorization: `Bearer ${token}` })
