@@ -11,15 +11,14 @@ export default function DashboardDebugger() {
   const endpoints = [
     { name: 'Dashboard Summary', url: '/dashboard/summary' },
     { name: 'Transaction Trends', url: '/dashboard/transaction-trends?period=DAILY' },
-    { name: 'Low Stock Alerts', url: '/dashboard/low-stock-alerts' },
-    { name: 'User Info', url: '/users/me' }
+    { name: 'Low Stock Alerts', url: '/dashboard/low-stock-alerts' }
   ]
 
   const testEndpoint = async (endpoint: any) => {
     const token = localStorage.getItem('accessToken') || localStorage.getItem('authToken')
 
     try {
-      const response = await fetch(`http://localhost:8080/api/v1${endpoint.url}`, {
+      const response = await fetch(`http://localhost:8081/warehouse-svc/api/v1${endpoint.url}`, {
         headers: {
           'Content-Type': 'application/json',
           ...(token && { Authorization: `Bearer ${token}` })

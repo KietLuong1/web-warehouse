@@ -1,16 +1,13 @@
 import Stack from '@mui/material/Stack'
 import Box from '@mui/material/Box'
-import { useState } from 'react'
 import MainStack from './components/mainStack'
-import DashboardErrorHandler from './components/DashboardErrorHandler'
-import { useDashboard } from '../../queries/Dashboard/useDashboard'
 
 function Dashboard() {
-  const [dateRange] = useState<[Date, Date] | null>(null)
-  const [refreshInterval] = useState<number | null>(30000) // 30 seconds default
+  // const [dateRange] = useState<[Date, Date] | null>(null)
+  // const [refreshInterval] = useState<number | null>(30000) // 30 seconds default
 
-  // Use the real dashboard hook
-  const { error: dashboardError, refresh } = useDashboard(dateRange, refreshInterval)
+  // // Use the real dashboard hook
+  // const { error: dashboardError, refresh } = useDashboard(dateRange, refreshInterval)
 
   return (
     <Box
@@ -23,7 +20,7 @@ function Dashboard() {
       }}
     >
       <Stack spacing={2} sx={{ width: '100%' }}>
-        <DashboardErrorHandler error={dashboardError} onRetry={refresh} />
+        {/* <DashboardErrorHandler error={dashboardError} onRetry={refresh} /> */}
         <MainStack />
       </Stack>
     </Box>

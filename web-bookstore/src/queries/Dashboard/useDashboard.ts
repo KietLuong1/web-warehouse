@@ -14,7 +14,7 @@ export const useDashboard = (
   dateRange: [Date, Date] | null = null,
   refreshInterval: number | null = null
 ): UseDashboardReturn => {
-  const [data, setData] = useState<DashboardData | null>(null)
+  const [data, setData] = useState<DashboardData| null>(null)
   const [loading, setLoading] = useState<boolean>(true)
   const [error, setError] = useState<string | null>(null)
 
@@ -29,8 +29,9 @@ export const useDashboard = (
       } else {
         result = await warehouseService.getDashboardSummary()
       }
+      console.log("🚀 ~ loadDashboardData ~ result:", result?.data)
 
-      setData(result.data.dashboard)
+      setData(result?.data)
     } catch (err) {
       const errorMessage = err instanceof Error ? err.message : 'Unknown error occurred'
       setError(errorMessage)

@@ -14,7 +14,7 @@ import {
   ProductionMetrics
 } from '../dashboard.types'
 
-const API_BASE_URL = 'http://localhost:8080/api/v1'
+const API_BASE_URL = 'http://localhost:8081/warehouse-svc/api/v1'
 
 class WarehouseService {
   private baseURL: string
@@ -41,6 +41,15 @@ class WarehouseService {
     try {
       const response = await fetch(url, config)
 
+      // Enhanced logging for debugging
+      console.log('Request details:', {
+        url,
+        method: config.method || 'GET',
+        headers: config.headers,
+        token: this.token ? 'Present' : 'Missing',
+        tokenLength: this.token?.length || 0
+      })
+
       if (!response.ok) {
         const errorData = await response.json().catch(() => ({}))
         
@@ -50,7 +59,9 @@ class WarehouseService {
           console.error('403 Forbidden Error:', {
             url,
             token: this.token ? 'Present' : 'Missing',
-            response: errorData
+            tokenPreview: this.token?.substring(0, 50) + '...' || 'None',
+            response: errorData,
+            headers: Object.fromEntries(response.headers.entries())
           })
           throw new Error(errorMessage)
         }
