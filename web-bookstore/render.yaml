@@ -1,0 +1,13 @@
+services:
+  - type: static
+    name: warehouse-management-system
+    env: static
+    # if your code lives in a subfolder, add root: web-bookstore
+    root: web-bookstore
+    buildCommand: pnpm build
+    publishDir: dist
+    routes:
+      - type: rewrite
+        src: /*
+        dest: /index.html
+        # added /* → /index.html in Redirects/Rewrites — this is correct for React Router SPA.
