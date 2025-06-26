@@ -31,7 +31,6 @@ export interface InventoryPayload {
   warehouseId: string
   quantityOnHand: number
   batchNumber: string
-  lastUpdated: string
   expiryDate: string
 }
 

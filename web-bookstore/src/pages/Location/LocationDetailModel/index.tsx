@@ -1,11 +1,11 @@
-import { Box, Divider, Grid, Stack, Typography } from '@mui/material'
+import { Box, Chip, Divider, Grid, Stack, Typography } from '@mui/material'
 import { Modal } from 'antd'
-import { LocationTypes } from '../../../queries'
+import { WarehouseDTO } from '../../../queries'
 
 interface LocationDetailModalProps {
   isVisible: boolean
   onClose: () => void
-  locationData?: LocationTypes
+  locationData?: WarehouseDTO
 }
 
 export const LocationDetailModal: React.FC<LocationDetailModalProps> = ({ isVisible, onClose, locationData }) => {
@@ -29,66 +29,42 @@ export const LocationDetailModal: React.FC<LocationDetailModalProps> = ({ isVisi
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <Typography variant='body2' color='text.secondary'>
-                Location ID
+                Name
               </Typography>
-              <Typography variant='body1'>{locationData.location_id}</Typography>
+              <Typography variant='body1'>{locationData.name}</Typography>
             </Grid>
-            {locationData.code && (
-              <Grid item xs={6}>
-                <Typography variant='body2' color='text.secondary'>
-                  Code
-                </Typography>
-                <Typography variant='body1'>{locationData.code}</Typography>
-              </Grid>
-            )}
-            {locationData.zone && (
-              <Grid item xs={6}>
-                <Typography variant='body2' color='text.secondary'>
-                  Zone
-                </Typography>
-                <Typography variant='body1'>{locationData.zone}</Typography>
-              </Grid>
-            )}
-            {locationData.shelf && (
-              <Grid item xs={6}>
-                <Typography variant='body2' color='text.secondary'>
-                  Shelf
-                </Typography>
-                <Typography variant='body1'>{locationData.shelf}</Typography>
-              </Grid>
-            )}
-            {locationData.rack && (
-              <Grid item xs={6}>
-                <Typography variant='body2' color='text.secondary'>
-                  Rack
-                </Typography>
-                <Typography variant='body1'>{locationData.rack}</Typography>
-              </Grid>
-            )}
-            {locationData.capacity && (
-              <Grid item xs={6}>
-                <Typography variant='body2' color='text.secondary'>
-                  Capacity
-                </Typography>
-                <Typography variant='body1'>{locationData.capacity}</Typography>
-              </Grid>
-            )}
-            {locationData.status && (
-              <Grid item xs={6}>
-                <Typography variant='body2' color='text.secondary'>
-                  Status
-                </Typography>
-                <Typography variant='body1'>{locationData.status}</Typography>
-              </Grid>
-            )}
-            {locationData.description && (
-              <Grid item xs={6}>
-                <Typography variant='body2' color='text.secondary'>
-                  Description
-                </Typography>
-                <Typography variant='body1'>{locationData.description}</Typography>
-              </Grid>
-            )}
+            <Grid item xs={6}>
+              <Typography variant='body2' color='text.secondary'>
+                Location
+              </Typography>
+              <Typography variant='body1'>{locationData.location}</Typography>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Typography variant='body2' color='text.secondary'>
+                Capacity
+              </Typography>
+              <Typography variant='body1'>{locationData.capacity}</Typography>
+            </Grid>
+
+            <Grid item xs={6}>
+              <Typography variant='body2' color='text.secondary'>
+                Status
+              </Typography>
+              <Chip
+                label={locationData.active ? 'Active' : 'Inactive'}
+                color={locationData.active ? 'success' : 'error'}
+                variant='filled'
+                size='small'
+              />
+            </Grid>
+
+            <Grid item xs={6}>
+              <Typography variant='body2' color='text.secondary'>
+                Created At
+              </Typography>
+              <Typography variant='body1'>{locationData.createdAt}</Typography>
+            </Grid>
           </Grid>
         </Box>
       </Stack>

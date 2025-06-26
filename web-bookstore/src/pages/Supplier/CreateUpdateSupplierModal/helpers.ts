@@ -1,22 +1,24 @@
-import { SupplierKey, SupplierTypes } from '../../../queries'
+import { SupplierPayload } from '../../../queries'
 import yup from '../../../../yupGlobal'
 
-export const SupplierInitValues: SupplierTypes = {
-  [SupplierKey.NAME]: '',
-  [SupplierKey.PHONE]: 0,
-  [SupplierKey.EMAIL]: '',
-  [SupplierKey.ADDRESS]: '',
-  [SupplierKey.CREATE_AT]: ''
+export type SupplierFormData = Omit<SupplierPayload, 'contactInfo'> & {
+  email: string
+  phone: string
+  contactInfo?: string
+}
+
+export const SupplierInitValues: SupplierFormData = {
+  name: '',
+  address: '',
+  email: '',
+  phone: '',
+  createdAt: '',
+  contactInfo: ''
 }
 
 export const SupplierValidationSchema = yup.object().shape({
-  [SupplierKey.NAME]: yup.string().required('Supplier Name is required'),
-  [SupplierKey.PHONE]: yup
-    .number()
-    .required('Phone number is required')
-    .positive('Phone number must be a valid number')
-    .integer('Phone number must be a whole number'),
-  [SupplierKey.EMAIL]: yup.string().email('Invalid email format').required('Email is required'),
-  [SupplierKey.ADDRESS]: yup.string().required('Address is required'),
-  [SupplierKey.CREATE_AT]: yup.string().required('Create Date is required')
+  name: yup.string().required('Supplier Name is required'),
+  email: yup.string().email('Invalid email format').required('Email is required'),
+  phone: yup.string().required('Phone number is required'),
+  address: yup.string().required('Address is required')
 })

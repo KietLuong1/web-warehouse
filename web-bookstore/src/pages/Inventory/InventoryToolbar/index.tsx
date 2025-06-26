@@ -25,6 +25,7 @@ export const InventoryToolbar: React.FC<Props> = ({ table }) => {
     setIsModalVisible(false)
   }, [])
 
+
   return (
     <Stack direction='column' mt={1}>
       <Stack direction='row' mb={1} justifyContent='space-between'>

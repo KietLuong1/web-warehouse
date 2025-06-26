@@ -6,12 +6,10 @@ import { MRT_TableInstance } from 'material-react-table'
 import { useCallback, useState } from 'react'
 import CustomTableColumnOptions from '../../../components/TableColumnOptions'
 import CustomTableColumnOptionsModal from '../../../components/TableColumnOptions/CustomTableColumnOptionModal'
-import CustomTableFilterContainer from '../../../components/TableFilter'
 import { COLOR_CODE } from '../../../configs/color'
-import { LocationResponse } from '../../../queries'
 import { useGetListLocation } from '../../../queries/Location/useGetListLocation'
 import { CreateUpdateLocationModal } from '../CreateUpdateLocationModal'
-import LocationFilter from '../LocationFilter'
+import { WarehouseDTO } from '../../../queries'
 
 export const LocationToolbar: React.FC<Props> = ({ table }) => {
   const { handleInvalidateListLocation } = useGetListLocation()
@@ -45,14 +43,14 @@ export const LocationToolbar: React.FC<Props> = ({ table }) => {
               <Refresh />
             </IconButton>
           </Tooltip>
-          <Tooltip title='Filter' arrow placement='top'>
+          {/* <Tooltip title='Filter' arrow placement='top'>
             <CustomTableFilterContainer filterParamsKeys={undefined}>
               <LocationFilter />
             </CustomTableFilterContainer>
-          </Tooltip>
+          </Tooltip> */}
           <CustomTableColumnOptions>
             <Tooltip title='Column Options' arrow placement='top'>
-              <CustomTableColumnOptionsModal<LocationResponse> table={table} />
+              <CustomTableColumnOptionsModal<WarehouseDTO> table={table} />
             </Tooltip>
           </CustomTableColumnOptions>
           <Button type='primary' size='large' onClick={openCreateModal} icon={<PlusOutlined />}>
@@ -76,7 +74,7 @@ export const LocationToolbar: React.FC<Props> = ({ table }) => {
 }
 
 type Props = {
-  table: MRT_TableInstance<LocationResponse>
+  table: MRT_TableInstance<WarehouseDTO>
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   onSetParams?: (params: any) => void
 }
