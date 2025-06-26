@@ -52,7 +52,11 @@ const Login: React.FC = () => {
         storage.setItem('userId', userId.toString())
 
         Toastify('success', 'Login successfully')
-        navigate('/dashboard')
+        if (userRole === 'ADMIN') {
+          navigate('/dashboard')
+        } else {
+          navigate('/transaction')
+        }
       } else {
         Toastify('error', 'Invalid credentials')
       }
