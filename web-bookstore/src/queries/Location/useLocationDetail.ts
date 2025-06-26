@@ -1,24 +1,32 @@
 import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
 import { getLocationById } from './api'
-import { LocationResponse } from './types'
+import { WarehouseDTO } from './types'
 
-export function useLocationDetail(options: UseMutationOptions<LocationResponse> & { id: string }) {
+export interface WarehouseDetailResponse {
+  status: number
+  message: string
+  warehouse: WarehouseDTO
+  timestamp: string
+}
+
+export function useLocationDetail(options: UseMutationOptions<WarehouseDetailResponse> & { id: string }) {
   const {
     data,
     isPending: isLoadingDetail,
     isSuccess,
     error,
     refetch: getLocationDetail
-  } = useQuery<LocationResponse>({
-    queryKey: ['location', { ...options }],
+  } = useQuery<WarehouseDetailResponse>({
+    queryKey: ['warehouses', { ...options }],
     queryFn: () => getLocationById({ id: options.id }),
     ...options
   })
   const queryClient = useQueryClient()
+  const warehouse = data?.warehouse || {}
 
-  const handleInvalidateDetail = () => queryClient.invalidateQueries({ queryKey: ['location', { id: options.id }] })
+  const handleInvalidateDetail = () => queryClient.invalidateQueries({ queryKey: ['warehouses', { id: options.id }] })
   return {
-    data,
+    warehouse,
     isLoadingDetail,
     isSuccess,
     error,

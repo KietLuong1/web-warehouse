@@ -1,5 +1,5 @@
 import { inventory } from '../../configs/services/http/index'
-import { ApiResponseTypes, PaginationParams, PaginationResponseType } from '../types'
+import { ApiInventoryResponse, PaginationParams, PaginationResponseType } from '../types'
 import { InventoryPayload, InventoryResponse } from './types'
 
 export interface InventorySearchParams extends PaginationParams {
@@ -19,9 +19,9 @@ export const fetchListInventory = async (
   }
 }
 
-export const getInventoryById = async ({ id }: { id: string }): Promise<ApiResponseTypes<InventoryResponse>> => {
+export const getInventoryById = async ({ id }: { id: string }): Promise<ApiInventoryResponse<InventoryResponse>> => {
   try {
-    const response = await inventory.get<ApiResponseTypes<InventoryResponse>>(`/inventory/${id}`)
+    const response = await inventory.get<ApiInventoryResponse<InventoryResponse>>(`/inventory/${id}`)
     return response.data
   } catch (error) {
     console.error('Failed to get record:', error)
@@ -59,4 +59,3 @@ export const deleteInventory = async (body: InventoryPayload): Promise<Inventory
     throw error
   }
 }
-

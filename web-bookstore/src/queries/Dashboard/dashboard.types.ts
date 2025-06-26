@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 export interface DashboardData {
   inventoryMetrics: InventoryMetrics
   transactionMetrics: TransactionMetrics
@@ -8,24 +9,31 @@ export interface InventoryMetrics {
   totalProducts: number
   lowStockProducts: number
   outOfStockProducts: number
-  totalValue: number
+  totalInventoryValue: number
   averageStockLevel: number
+  expiringSoon: number
+  lowStockAlerts: LowStockAlert[]
+  topProductsByValue: TopProduct[]
 }
 
 export interface TransactionMetrics {
-  totalSales: number
+  completedTransactions: number
   dailyRevenue: number
   monthlyRevenue: number
+  pendingTransactions: number
+  processingTransactions: number
   totalPurchases: number
   totalReturns: number
-  transactionCount: number
+  totalSales: number
 }
 
 export interface ProductionMetrics {
   productionValue: number
-  unitsProduced: number
+  totalProductsProduced: number
   productionEfficiency: number
-  averageProductionTime: number
+  activeSuppliers: number
+  monthlyProduction: Record<string, number>
+  categoryPerformance: any[]
 }
 
 export interface TransactionTrend {

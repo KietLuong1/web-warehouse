@@ -34,14 +34,14 @@ export default function TransactionTrends({ period = 'DAILY', height = 350 }: Tr
   })
 
   const chartData = useMemo(() => {
-    if (!trends || trends.length === 0) return null
+    // if (!trends || trends.length === 0) return null
 
-    const salesData = trends.filter((t) => t.type === 'SALE')
-    const purchaseData = trends.filter((t) => t.type === 'PURCHASE')
-    const returnData = trends.filter((t) => t.type === 'RETURN')
+    const salesData = trends?.filter((t) => t.type === 'SALE')
+    const purchaseData = trends?.filter((t) => t.type === 'PURCHASE')
+    const returnData = trends?.filter((t) => t.type === 'RETURN')
 
     // Create time labels based on period
-    const labels = trends.map((trend) => {
+    const labels = trends?.map((trend) => {
       const date = new Date(trend.date)
       if (period === 'DAILY') {
         return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
@@ -53,8 +53,8 @@ export default function TransactionTrends({ period = 'DAILY', height = 350 }: Tr
     })
 
     // Calculate percentage changes
-    const totalCurrent = trends.reduce((sum, t) => sum + t.amount, 0)
-    const totalPrevious = trends.slice(0, Math.floor(trends.length / 2)).reduce((sum, t) => sum + t.amount, 0)
+    const totalCurrent = trends?.reduce((sum, t) => sum + t.amount, 0)
+    const totalPrevious = trends?.slice(0, Math.floor(trends?.length / 2)).reduce((sum, t) => sum + t.amount, 0)
     const change = totalPrevious > 0 ? ((totalCurrent - totalPrevious) / totalPrevious) * 100 : 0
 
     return {
@@ -74,46 +74,47 @@ export default function TransactionTrends({ period = 'DAILY', height = 350 }: Tr
       </Card>
     )
   }
+  console.log('TransactionTrends Chart Data:', chartData)
   if (error || !chartData) {
     const is403Error = error?.includes('403') || error?.includes('Forbidden')
     const isAuthError = error?.includes('Unauthorized') || error?.includes('401')
-    
+
     return (
       <Card sx={{ width: '100%', height }}>
         <CardContent>
-          <Typography color='error' variant="h6" gutterBottom>
+          <Typography color='error' variant='h6' gutterBottom>
             Failed to load transaction trends
           </Typography>
-          
+
           {is403Error && (
             <Stack spacing={1}>
-              <Typography variant="body2" color='error'>
+              <Typography variant='body2' color='error'>
                 Access Denied (403): You don't have permission to access this resource.
               </Typography>
-              <Typography variant="caption" color='text.secondary'>
+              <Typography variant='caption' color='text.secondary'>
                 This might be due to:
               </Typography>
-              <Typography variant="caption" component="ul" sx={{ pl: 2 }}>
+              <Typography variant='caption' component='ul' sx={{ pl: 2 }}>
                 <li>Insufficient user permissions</li>
                 <li>Invalid or expired authentication token</li>
                 <li>Server-side access restrictions</li>
               </Typography>
             </Stack>
           )}
-          
+
           {isAuthError && (
-            <Typography variant="body2" color='error'>
+            <Typography variant='body2' color='error'>
               Authentication Required: Please log in again.
             </Typography>
           )}
-          
+
           {error && !is403Error && !isAuthError && (
-            <Typography variant="body2" color='error'>
+            <Typography variant='body2' color='error'>
               Error: {error}
             </Typography>
           )}
-          
-          <Typography variant="caption" sx={{ mt: 2, display: 'block' }}>
+
+          <Typography variant='caption' sx={{ mt: 2, display: 'block' }}>
             Endpoint: /dashboard/transaction-trends?period={period}
           </Typography>
         </CardContent>

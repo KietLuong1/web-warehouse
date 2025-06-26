@@ -51,27 +51,27 @@ export const useDashboardData = (
         {
           category: 'Electronics',
           totalQuantity: Math.floor(dashboardData.inventoryMetrics.totalProducts * 0.3),
-          value: dashboardData.inventoryMetrics.totalValue * 0.4
+          value: dashboardData.inventoryMetrics.totalInventoryValue * 0.4
         },
         {
           category: 'Clothing',
           totalQuantity: Math.floor(dashboardData.inventoryMetrics.totalProducts * 0.25),
-          value: dashboardData.inventoryMetrics.totalValue * 0.2
+          value: dashboardData.inventoryMetrics.totalInventoryValue * 0.2
         },
         {
           category: 'Home & Garden',
           totalQuantity: Math.floor(dashboardData.inventoryMetrics.totalProducts * 0.2),
-          value: dashboardData.inventoryMetrics.totalValue * 0.15
+          value: dashboardData.inventoryMetrics.totalInventoryValue * 0.15
         },
         {
           category: 'Books',
           totalQuantity: Math.floor(dashboardData.inventoryMetrics.totalProducts * 0.15),
-          value: dashboardData.inventoryMetrics.totalValue * 0.1
+          value: dashboardData.inventoryMetrics.totalInventoryValue * 0.1
         },
         {
           category: 'Sports',
           totalQuantity: Math.floor(dashboardData.inventoryMetrics.totalProducts * 0.1),
-          value: dashboardData.inventoryMetrics.totalValue * 0.15
+          value: dashboardData.inventoryMetrics.totalInventoryValue * 0.15
         }
       ],
       totalItems: dashboardData.inventoryMetrics.totalProducts,
@@ -90,7 +90,7 @@ export const useDashboardData = (
       const date = new Date(today)
       date.setDate(date.getDate() - i)
 
-      const baseQuantity = dashboardData.transactionMetrics.transactionCount / 30
+      const baseQuantity = dashboardData?.transactionMetrics?.completedTransactions / 30
       const variation = 0.3 // 30% variation
       const dailyQuantity = Math.floor(baseQuantity * (1 + (Math.random() - 0.5) * variation))
 
@@ -107,7 +107,7 @@ export const useDashboardData = (
 
     for (let i = 0; i < 6; i++) {
       const monthlyQuantity = Math.floor(
-        dashboardData.transactionMetrics.transactionCount * (0.15 + Math.random() * 0.1)
+        dashboardData.transactionMetrics.completedTransactions * (0.15 + Math.random() * 0.1)
       )
       monthlyTransactions.push({
         month: monthNames[i],
@@ -119,7 +119,7 @@ export const useDashboardData = (
     return {
       dailyTransactions,
       monthlyTransactions,
-      totalTransactions: dashboardData.transactionMetrics.transactionCount
+      totalTransactions: dashboardData.transactionMetrics.completedTransactions
     }
   }, [dashboardData, trends])
 

@@ -1,33 +1,31 @@
 import { LocationKey } from './keys'
 
 export type LocationTypes = {
-  [LocationKey.CODE]: number
-  [LocationKey.ZONE]: string
-  [LocationKey.SHELF]: string
-  [LocationKey.RACK]: string
+  [LocationKey.ID]: string
+  [LocationKey.NAME]: string
+  [LocationKey.LOCATION]: string
   [LocationKey.CAPACITY]: number
-  [LocationKey.STATUS]: string
-  [LocationKey.DESCRIPTION]: string
+  [LocationKey.ACTIVE]: boolean
+  [LocationKey.CREATED_AT]: string
+  [LocationKey.UPDATED_AT]: string
 }
 
 export interface LocationPayload {
-  location_id?: string
-  code: number
-  zone: string
-  shelf: string
-  rack: string
+  id?: string
+  name: string
+  location: string
   capacity: number
-  status: string
-  description: string
+  active?: boolean
+  createdAt?: string
+  updatedAt?: string
 }
 
-export interface LocationResponse {
-  location_id: string
-  code: number
-  zone: string
-  shelf: string
-  rack: string
+export interface WarehouseDTO {
+  id: string
+  name: string
+  location: string
   capacity: number
-  status: string
-  description: string
+  active: boolean
+  createdAt: string
+  updatedAt?: string
 }

@@ -40,10 +40,10 @@ export default function SessionsChart() {
     if (!transactionAnalytics) return null
 
     const days = generateLast30Days()
-    const dailyData = transactionAnalytics.dailyTransactions
+    const dailyData = transactionAnalytics?.dailyTransactions
 
     // Create data arrays for the chart - using transaction types as series
-    const inboundData = days.map(() => {
+    const inboundData = days?.map(() => {
       // Simulate different transaction types based on available data
       const baseValue = dailyData[0]?.totalQuantity || 0
       return Math.floor(baseValue * 0.4 + Math.random() * baseValue * 0.2)
@@ -70,7 +70,7 @@ export default function SessionsChart() {
     const change = yesterday > 0 ? ((today - yesterday) / yesterday) * 100 : 0
 
     return {
-      total: transactionAnalytics.dailyTransactions.reduce(
+      total: transactionAnalytics?.dailyTransactions?.reduce(
         (sum: any, day: { totalQuantity: any }) => sum + day.totalQuantity,
         0
       ),
@@ -98,7 +98,7 @@ export default function SessionsChart() {
       </Card>
     )
   }
-
+  console.log(totalTransactions)
   return (
     <Card sx={{ width: '100%' }}>
       <CardContent>
@@ -116,7 +116,7 @@ export default function SessionsChart() {
             }}
           >
             <Typography variant='h4' component='p'>
-              {totalTransactions.total.toLocaleString()}
+              {totalTransactions?.total}
             </Typography>
             <Chip
               size='small'

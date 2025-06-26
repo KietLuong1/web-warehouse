@@ -1,10 +1,9 @@
 export enum LocationKey {
-  LOCATION_ID = 'location_id',
-  CODE = 'code',
-  ZONE = 'zone',
-  SHELF = 'shelf',
-  RACK = 'rack',
+  ID = 'id',
+  NAME = 'name',
+  LOCATION = 'location',
   CAPACITY = 'capacity',
-  STATUS = 'status',
-  DESCRIPTION = 'description'
+  ACTIVE = 'active',
+  CREATED_AT = 'createdAt',
+  UPDATED_AT = 'updatedAt'
 }

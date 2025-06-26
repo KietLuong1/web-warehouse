@@ -1,33 +1,21 @@
 import { MRT_ColumnDef } from 'material-react-table'
-import ChipStatus from '../../components/ChipStatus'
-import { LocationResponse } from '../../queries/Location'
+import { Chip } from '@mui/material'
+import { WarehouseDTO } from '../../queries/Location'
 
-export const allColumns: MRT_ColumnDef<LocationResponse>[] = [
+export const allColumns: MRT_ColumnDef<WarehouseDTO>[] = [
   {
-    accessorKey: 'code',
-    header: 'Code',
-    enableHiding: false,
-    size: 100,
-    Cell: ({ cell }) => <div>{cell.getValue<number>()}</div>
+    accessorKey: 'name',
+    header: 'Name',
+    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
+    size: 300
   },
   {
-    accessorKey: 'zone',
-    header: 'Zone',
+    accessorKey: 'location',
+    header: 'Location',
     Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
     size: 200
   },
-  {
-    accessorKey: 'shelf',
-    header: 'Shelf',
-    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
-    size: 200
-  },
-  {
-    accessorKey: 'rack',
-    header: 'Rack',
-    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
-    size: 200
-  },
+
   {
     accessorKey: 'capacity',
     header: 'Capacity',
@@ -35,19 +23,25 @@ export const allColumns: MRT_ColumnDef<LocationResponse>[] = [
     size: 150
   },
   {
-    accessorKey: 'status',
-    header: 'Status',
-    Cell: ({ cell }) => (
-      <div>
-        <ChipStatus status={cell.getValue<string>()} />
-      </div>
-    ),
+    accessorKey: 'active',
+    header: 'Active',
+    Cell: ({ cell }) => {
+      const isActive = cell.getValue<boolean>()
+      return (
+        <Chip
+          label={isActive ? 'Active' : 'Inactive'}
+          color={isActive ? 'success' : 'error'}
+          variant='filled'
+          size='small'
+        />
+      )
+    },
     size: 150
   },
   {
-    accessorKey: 'description',
-    header: 'Description',
-    Cell: ({ cell }) => <div>{cell.getValue<string>()}</div>,
-    size: 250
+    accessorKey: 'createdAt',
+    header: 'Created At',
+    Cell: ({ cell }) => <div>{new Date(cell.getValue<string>()).toLocaleDateString()}</div>,
+    size: 150
   }
 ]

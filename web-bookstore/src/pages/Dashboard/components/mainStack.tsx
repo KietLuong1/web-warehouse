@@ -3,7 +3,6 @@ import Box from '@mui/material/Box'
 import Stack from '@mui/material/Stack'
 import { useDashboard } from '../../../queries/Dashboard/useDashboard'
 import '../styles/animations.css'
-import DashboardDebugger from './DashboardDebugger'
 import LowStockAlerts from './LowStockAlerts'
 import PageViewsBarChart from './pageViewsBarChart'
 import SessionsChart from './sessionsChart'
@@ -26,6 +25,7 @@ function Item({ children }: { children: React.ReactNode }) {
 export default function MainStack() {
   // Auto-refresh dashboard data every 30 seconds
   const { data: dashboardMetrics, loading } = useDashboard(null, 30000)
+  console.log('🚀 ~ MainStack ~ dashboardMetrics:', dashboardMetrics)
   const data: StatCardProps[] = [
     {
       title: 'Inventory',
@@ -63,14 +63,14 @@ export default function MainStack() {
     },
     {
       title: 'Transactions',
-      value: dashboardMetrics?.transactionMetrics?.transactionCount?.toLocaleString() || '0',
+      value: dashboardMetrics?.transactionMetrics?.completedTransactions?.toLocaleString() || '0',
       interval: `Revenue: $${dashboardMetrics?.transactionMetrics?.dailyRevenue?.toLocaleString() || 0}`,
       trend: dashboardMetrics?.transactionMetrics
         ? dashboardMetrics.transactionMetrics.dailyRevenue > 10000
           ? 'up'
           : 'neutral'
         : 'neutral',
-      realTimeValue: dashboardMetrics?.transactionMetrics?.transactionCount,
+      realTimeValue: dashboardMetrics?.transactionMetrics?.completedTransactions,
       isConnected: !!dashboardMetrics && !loading,
       isAnimating: loading,
       data: [
@@ -85,9 +85,10 @@ export default function MainStack() {
       sx={{
         paddingX: 2
       }}
-    >      <DashboardDebugger />
+    >
+      {/* <DashboardDebugger /> */}
       <Grid2 container spacing={2}>
-        {data.map((card, index) => (
+        {data?.map((card, index) => (
           <Grid2 size={4} mt={2} key={index}>
             <Item children={<StatCard {...card} />} />
           </Grid2>
