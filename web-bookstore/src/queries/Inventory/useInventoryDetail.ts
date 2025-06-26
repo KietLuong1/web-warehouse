@@ -1,24 +1,29 @@
-import { UseMutationOptions, useQuery, useQueryClient } from '@tanstack/react-query'
+import { UseQueryOptions, useQuery, useQueryClient } from '@tanstack/react-query'
 import { InventoryResponse } from './types'
 import { getInventoryById } from './api'
+import { ApiInventoryResponse } from '../types'
 
-export function useInventoryDetail(options: UseMutationOptions<InventoryResponse> & { id: string }) {
+export function useInventoryDetail(
+  options: { id: string } & Omit<UseQueryOptions<ApiInventoryResponse<InventoryResponse>>, 'queryKey' | 'queryFn'>
+) {
   const {
     data,
     isPending: isLoadingDetail,
     isSuccess,
     error,
     refetch: getInventoryDetail
-  } = useQuery<InventoryResponse>({
-    queryKey: ['inventory', { ...options }],
+  } = useQuery<ApiInventoryResponse<InventoryResponse>>({
+    queryKey: ['inventory', options.id],
     queryFn: () => getInventoryById({ id: options.id }),
+    enabled: !!options.id,
     ...options
   })
   const queryClient = useQueryClient()
+  const { inventory } = data?.dataList || {}
 
-  const handleInvalidateDetail = () => queryClient.invalidateQueries({ queryKey: ['inventory', { id: options.id }] })
+  const handleInvalidateDetail = () => queryClient.invalidateQueries({ queryKey: ['inventory', options.id] })
   return {
-    data,
+    inventory,
     isLoadingDetail,
     isSuccess,
     error,

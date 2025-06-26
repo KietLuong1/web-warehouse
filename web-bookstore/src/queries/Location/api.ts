@@ -1,9 +1,21 @@
-import { axiosInstance } from '../../configs/services/http/index'
-import { LocationPayload, LocationResponse } from './types'
+import { productAxiosInstance } from '../../configs/services/http/index'
+import { PaginationResponseType } from '../types'
+import { LocationPayload, WarehouseDTO } from './types'
+import { WarehouseDetailResponse } from './useLocationDetail'
 
-export const fetchListLocation = async (): Promise<LocationResponse[]> => {
+export interface LocationSearchParams {
+  keyword?: string
+  page?: number
+  size?: number
+}
+
+export const fetchListLocation = async (
+  params: LocationSearchParams = { page: 1, size: 10 }
+): Promise<PaginationResponseType<WarehouseDTO[]>> => {
   try {
-    const response = await axiosInstance.get<LocationResponse[]>(`/location`)
+    const response = await productAxiosInstance.get<PaginationResponseType<WarehouseDTO[]>>(`/warehouses`, {
+      params
+    })
     return response.data
   } catch (error) {
     console.error('Failed to fetch list location:', error)
@@ -11,9 +23,9 @@ export const fetchListLocation = async (): Promise<LocationResponse[]> => {
   }
 }
 
-export const getLocationById = async ({ id }: { id: string }): Promise<LocationResponse> => {
+export const getLocationById = async ({ id }: { id: string }): Promise<WarehouseDetailResponse> => {
   try {
-    const response = await axiosInstance.get<LocationResponse>(`/location/${id}`)
+    const response = await productAxiosInstance.get<WarehouseDetailResponse>(`/warehouses/${id}`)
     return response.data
   } catch (error) {
     console.error('Failed to get location:', error)
@@ -23,7 +35,7 @@ export const getLocationById = async ({ id }: { id: string }): Promise<LocationR
 
 export const createLocation = async (body: LocationPayload): Promise<LocationPayload> => {
   try {
-    const response = await axiosInstance.post<LocationPayload>(`/location`, body)
+    const response = await productAxiosInstance.post<LocationPayload>(`/warehouses`, body)
     return response.data
   } catch (error) {
     console.error('Failed to create location:', error)
@@ -33,7 +45,7 @@ export const createLocation = async (body: LocationPayload): Promise<LocationPay
 
 export const updateLocation = async (body: LocationPayload, id: string): Promise<LocationPayload> => {
   try {
-    const response = await axiosInstance.put<LocationPayload>(`/location/${id}`, body)
+    const response = await productAxiosInstance.put<LocationPayload>(`/warehouses/${id}`, body)
     return response.data
   } catch (error) {
     console.error('Failed to update location:', error)
@@ -42,9 +54,9 @@ export const updateLocation = async (body: LocationPayload, id: string): Promise
 }
 
 export const deleteLocation = async (body: LocationPayload): Promise<LocationPayload> => {
-  const { location_id } = body
+  const { id } = body
   try {
-    const response = await axiosInstance.delete<LocationPayload>(`/location/${location_id}`, {})
+    const response = await productAxiosInstance.delete<LocationPayload>(`/warehouses/${id}`, {})
     return response.data
   } catch (error) {
     console.error('Failed to delete location:', error)

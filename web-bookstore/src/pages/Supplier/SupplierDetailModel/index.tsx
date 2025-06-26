@@ -29,50 +29,30 @@ export const SupplierDetailModal: React.FC<SupplierDetailModalProps> = ({ isVisi
           <Grid container spacing={2}>
             <Grid item xs={6}>
               <Typography variant='body2' color='text.secondary'>
-                Supplier ID
+                Name
               </Typography>
-              <Typography variant='body1'>{supplierData.supplierId}</Typography>
+              <Typography variant='body1'>{supplierData.name}</Typography>
             </Grid>
-            {supplierData.name && (
-              <Grid item xs={6}>
-                <Typography variant='body2' color='text.secondary'>
-                  Name
-                </Typography>
-                <Typography variant='body1'>{supplierData.name}</Typography>
-              </Grid>
-            )}
-            {supplierData.phone && (
-              <Grid item xs={6}>
-                <Typography variant='body2' color='text.secondary'>
-                  Phone
-                </Typography>
-                <Typography variant='body1'>{supplierData.phone}</Typography>
-              </Grid>
-            )}
-            {supplierData.email && (
-              <Grid item xs={6}>
-                <Typography variant='body2' color='text.secondary'>
-                  Email
-                </Typography>
-                <Typography variant='body1'>{supplierData.email}</Typography>
-              </Grid>
-            )}
-            {supplierData.create_at && (
-              <Grid item xs={6}>
-                <Typography variant='body2' color='text.secondary'>
-                  Create Date
-                </Typography>
-                <Typography variant='body1'>{supplierData.create_at}</Typography>
-              </Grid>
-            )}
-            {supplierData.address && (
-              <Grid item xs={6}>
-                <Typography variant='body2' color='text.secondary'>
-                  Address
-                </Typography>
-                <Typography variant='body1'>{supplierData.address}</Typography>
-              </Grid>
-            )}
+            <Grid item xs={6}>
+              <Typography variant='body2' color='text.secondary'>
+                Address
+              </Typography>
+              <Typography variant='body1'>{supplierData.address}</Typography>
+            </Grid>
+
+            <Grid item xs={12}>
+              <Typography variant='body2' color='text.secondary'>
+                Contact Info
+              </Typography>
+              <Typography variant='body1'>{supplierData.contactInfo}</Typography>
+            </Grid>
+            
+            <Grid item xs={6}>
+              <Typography variant='body2' color='text.secondary'>
+                Create Date
+              </Typography>
+              <Typography variant='body1'>{supplierData.createdAt || '---'}</Typography>
+            </Grid>
           </Grid>
         </Box>
       </Stack>

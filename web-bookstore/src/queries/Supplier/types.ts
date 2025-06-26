@@ -2,26 +2,24 @@ import { SupplierKey } from './keys'
 
 export type SupplierTypes = {
   [SupplierKey.NAME]: string
-  [SupplierKey.PHONE]: number
-  [SupplierKey.EMAIL]: string
+  [SupplierKey.CONTACT_INFO]: string
   [SupplierKey.ADDRESS]: string
   [SupplierKey.CREATE_AT]: string
 }
 
 export interface SupplierPayload {
-  supplierId?: string
+  id?: string
   name: string
-  phone: number
-  email: string
+  contactInfo: string
   address: string
-  create_at: string
+  createdAt: string
 }
 
-export interface SupplierResponse {
-  supplierId: string
+export interface SupplierDTO {
+  id: string
   name: string
-  phone: number
-  email: string
+  contactInfo: string
   address: string
-  create_at: string
+  createdAt: string
 }
+
