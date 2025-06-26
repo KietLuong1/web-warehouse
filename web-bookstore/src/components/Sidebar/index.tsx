@@ -22,7 +22,7 @@ export const SidebarCmp = () => {
     setIsAdmin(userRole === 'ADMIN')
   }, [])
 
-  const filterMenuItem = isAdmin ? MenuItems : MenuItems.filter((item) => item.title !== 'Account')
+  const filterMenuItem = isAdmin ? MenuItems : MenuItems.filter((item) => item.title !== 'Account' && item.title !== 'Dashboard')
 
   const handleMenuClick = (item: (typeof MenuItems)[0]) => {
     if (item.action === 'logout') {
